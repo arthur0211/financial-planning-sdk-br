@@ -1,6 +1,6 @@
 # Checklist de publicação no GitHub
 
-_Estado em 30 de agosto de 2026: licença e publicação do source autorizadas; staging privado ativo em `arthur0211/financial-planning-sdk-br`; checks remotos em remediação multi-OS; conversão pública pendente; release/package em `NO-GO`._
+_Estado em 30 de agosto de 2026: código-fonte público em `arthur0211/financial-planning-sdk-br`; CI técnica da `main` verde; Private Vulnerability Reporting, secret scanning e push protection ativos; release/package em `NO-GO`._
 
 Este checklist separa quatro decisões que não são equivalentes: preparar o checkout, criar um remoto privado, tornar o source público e publicar um package/release. Um resultado verde em qualquer etapa não autoriza a etapa seguinte.
 
@@ -9,14 +9,14 @@ Este checklist separa quatro decisões que não são equivalentes: preparar o ch
 - [x] manter a venv fora do checkout inspecionado por `Structure`;
 - [x] substituir o backend vulnerável por `setuptools==84.0.0` e registrar o [ADR 0011](decisions/0011-secure-build-backend-baseline.md);
 - [x] fixar GitHub Actions por SHA completo, remover persistência de credencial do checkout e declarar permissões/timeouts;
-- [x] preparar testes em Python 3.11, 3.13 e 3.14, cobertura de branches com piso de 80%, CodeQL e dependency review;
+- [x] preparar runtime CI em Python 3.11–3.14, cobertura de branches com piso de 80%, CodeQL e dependency review;
 - [x] oferecer README equivalente em PT-BR e inglês;
 - [x] concluir a revalidação local pós-remediação e registrar resultados reais, inclusive skips e limites;
 - [x] executar Gitleaks dedicado sobre a árvore candidata antes do primeiro commit;
 - [x] registrar a autorização explícita do proprietário sobre PII, proveniência, titularidade e publicação da árvore candidata, sem alegar revisão jurídica independente;
 - [x] confirmar pelo proprietário que os arquivos candidatos podem ser redistribuídos sob os termos declarados e que recursos externos continuam separados pelos manifestos aplicáveis.
 
-Resultado local reconciliado em 30 de agosto de 2026: `Structure` passou sobre 840 arquivos e 88 diretórios; contratos passaram em 44/44; SDK em 112/112; a conformidade executou 69 testes, com 68 aprovados e um skip POSIX esperado; o runner de conformidade fechou 71 propriedades e 23/23 mutantes; governança passou em 87/87; cobertura de branches ficou em 81% sobre 100 testes não temporais; Ruff, mypy e actionlint passaram. Gitleaks 8.30.1 foi obtido do release oficial, conferido por SHA-256 e terminou sem findings depois de aplicar a única exceção exata do fixture negativo sintético. O smoke instalado passou em CPython 3.14 com `setuptools==84.0.0`.
+Resultado local reconciliado em 30 de agosto de 2026: `Structure`, contratos, SDK 112/112, conformidade 68 aprovações + um skip POSIX esperado, 71 propriedades, 23/23 mutantes de conformance, cobertura de branches de 81%, Ruff, mypy e actionlint passaram. A portabilidade coletou 195 testes: 193 passaram e os dois lives AppContainer opt-in foram corretamente ignorados. Gitleaks 8.30.1 foi obtido do release oficial, conferido por SHA-256 e terminou sem findings depois de aplicar a única exceção exata do fixture negativo sintético. O smoke instalado passou em CPython 3.14 com `setuptools==84.0.0`. Contagens de arquivos do gate `Structure` não são registradas como invariantes porque caches externos e inventários temporários alteram essa telemetria sem mudar o contrato.
 
 A portabilidade foi validada de forma dividida, não como célula oficial: todo o recorte host-bound executado no Python regular ficou verde, salvo dois lives AppContainer corretamente ignorados; a classe canônica de artefatos passou no ambiente CPython 3.14. O runtime Astral 3.14 recusou o host PowerShell com `host_path_unexpected`, enquanto o Python regular não tinha o backend 84 para build. A matriz Windows/Linux × Python 3.11–3.14 do freeze atual continua pendente e nenhum desses resultados concede autoridade.
 
@@ -28,7 +28,7 @@ Regexes internas e Gitleaks são defesa em profundidade; não substituem revisã
 - [x] o mantenedor confirmou identidade pública, responsabilidades e contato em `MAINTAINERS.md` e `GOVERNANCE.md`;
 - [ ] existe ao menos um reviewer humano independente para mudanças materiais;
 - [x] existe regra honesta para manter mudanças materiais bloqueadas enquanto reviewer independente não estiver disponível;
-- [ ] o Private Vulnerability Reporting está ativo; no GitHub ele só pode ser habilitado depois que o repositório se tornar público, portanto a conversão precisa habilitá-lo e verificá-lo imediatamente ou reverter para privado;
+- [x] o Private Vulnerability Reporting está ativo e foi verificado depois da conversão pública;
 - [x] o owner autorizou explicitamente a criação do remoto privado, o primeiro push e a conversão posterior para público após checks verdes.
 
 A ausência de reviewer independente mantém mudanças materiais, package e release bloqueados; ela não deve ser disfarçada com aprovação fictícia. A visibilidade pública só avança com o canal de segurança tratado na própria transição.
@@ -45,21 +45,25 @@ Depois da autorização explícita:
 
 Staging privado é preparação colaborativa. Ele não altera `authority=none`, `artifact_status=draft` ou `release_authorized=false`.
 
-Estado observado: os commits iniciais foram enviados para o remoto privado, sem tag, Release, Package, environment, secret ou variável. Dependabot, labels, políticas de merge e token read-only do workflow foram configurados. As primeiras execuções remotas falharam fechado e expuseram diferenças reais de symlink/junction, ADS, path 8.3, metadata ZIP e Python 3.14.7. O discovery de portabilidade também misturava fixtures Windows e a admissão Linux oficial `uid/gid=65532` com um runner Ubuntu genérico. Depois da separação, o backend Windows passou, mas quatro testes de PowerShell real recusaram corretamente a raiz mutável `D:` do runner. A CI agora classifica essa boundary como não suportada e ainda precisa voltar verde no mesmo commit antes da conversão pública.
+Estado observado: os commits iniciais foram enviados para o remoto privado, sem tag, Release, Package, environment, secret ou variável. Dependabot, labels, políticas de merge e token read-only do workflow foram configurados. As primeiras execuções remotas falharam fechado e expuseram diferenças reais de symlink/junction, ADS, path 8.3, metadata ZIP e Python 3.14.7. O discovery de portabilidade também misturava fixtures Windows e a admissão Linux oficial `uid/gid=65532` com um runner Ubuntu genérico. Depois da separação, o backend Windows passou e o runner hospedado mutável passou a receber somente a classificação de boundary não suportada. A execução técnica `33348644268` fechou os seis jobs com sucesso no commit `4bf12a3`; somente então o source foi convertido para público.
 
 ## 4. Configuração obrigatória no GitHub
 
-- [ ] imediatamente após tornar o repositório público, habilitar e verificar Private Vulnerability Reporting; reverter para privado se a operação falhar;
-- [ ] habilitar secret scanning e push protection quando disponíveis após a conversão pública;
+- [x] imediatamente após tornar o repositório público, habilitar e verificar Private Vulnerability Reporting; o rollback não foi necessário;
+- [x] habilitar e verificar secret scanning e push protection após a conversão pública;
 - [x] habilitar Dependabot alerts e security updates no staging privado;
-- [ ] confirmar execução do CodeQL e dependency review sem permissões extras;
+- [x] confirmar execução pública do CodeQL sem permissões extras além das declaradas;
+- [x] confirmar dependency review no pull request final;
 - [x] criar os labels usados pelos templates e Dependabot, incluindo `proposal` e `dependencies`;
-- [ ] configurar ruleset de `main`: pull request obrigatório, checks obrigatórios, resolução de conversas, bloqueio de force-push e deleção;
+- [x] restringir Actions a ações mantidas pelo GitHub e exigir referências por SHA integral;
+- [x] configurar ruleset de `main`: pull request obrigatório, checks obrigatórios, resolução de conversas, histórico linear, bloqueio de force-push e deleção;
 - [ ] exigir review real quando houver reviewer independente; não configurar uma ficção de independência baseada no mesmo owner;
 - [x] manter ausentes environments, secrets e variables de publicação enquanto release continuar fora do escopo;
-- [ ] revisar a aba Community Standards e corrigir qualquer arquivo ainda não reconhecido pelo GitHub.
+- [x] revisar a aba Community Standards; o GitHub reporta 100% de health.
 
 Checks candidatos para o ruleset devem ser escolhidos somente depois de sua primeira execução real, usando os nomes exibidos pelo GitHub. Não adivinhar nomes de checks antes dessa execução.
+
+Estado observado no PR #9: o ruleset ativo `main-source-governance` (`id=21893891`) exige dez contextos emitidos pelo GitHub Actions (`integration_id=15368`): SDK 3.11–3.14, static/coverage, diagnósticos neutros, artefatos/Windows, governança, CodeQL e dependency review. Não há bypass. Aprovações exigidas continuam em zero até existir reviewer humano independente; assinatura verificada permanece na issue #6.
 
 ## 5. Conversão para público
 
@@ -72,6 +76,8 @@ Somente considerar a mudança de visibilidade quando:
 - README, disclaimer e metadata descreverem corretamente o status pre-alpha/draft.
 
 A publicação do source não autoriza tag estável, GitHub Release, GitHub Packages, PyPI, deployment ou uso profissional.
+
+Backlog público rastreável: [#4 toolchain coordenado](https://github.com/arthur0211/financial-planning-sdk-br/issues/4), [#5 dívida Ruff ampla](https://github.com/arthur0211/financial-planning-sdk-br/issues/5), [#6 assinatura verificada](https://github.com/arthur0211/financial-planning-sdk-br/issues/6), [#7 reviewer independente](https://github.com/arthur0211/financial-planning-sdk-br/issues/7) e [#8 hashes para dependências transitivas de CI](https://github.com/arthur0211/financial-planning-sdk-br/issues/8).
 
 ## 6. Release e package permanecem separados
 

@@ -1,4 +1,4 @@
-# Progresso vivo — Financial Planning SDK Brasil
+# Progresso vivo: Financial Planning SDK Brasil
 
 _Página mantida pelo lead agent · atualização: 30 de agosto de 2026_
 
@@ -12,9 +12,9 @@ _Página mantida pelo lead agent · atualização: 30 de agosto de 2026_
 | matemática normativa | `builder_complete_pending_independent_critic` | self-check separado de SUT e 46/46 testes R7 verdes; ainda sem aprovação independente |
 | contratos F0 | `major_revision_loop_standby` | críticos R19 provaram rosters autoconsistentes mas reduzíveis, approval sem review, parser Markdown incompleto e inventário `schemas/` aberto; R20 parcial está local, loop pausado pelo owner |
 | governança regulatória/LGPD/dados | `major_revision_loop_standby` | críticos R19 provaram headings/links CommonMark invisíveis, TOCTOU no Structure e perfis ZIP/gzip incompletos; patches R20 parciais permanecem diagnósticos locais |
-| núcleo 0.1 | `builder_complete_pending_independent_critic` | `finplanbr 0.1.0.dev0`: SDK/CLI comuns, 107 testes e diagnóstico do package em 7 vetores + 71 propriedades + 1 gate do pack + 23 mutações; SUT integral continua não avaliado |
+| núcleo 0.1 | `builder_complete_pending_independent_critic` | `finplanbr 0.1.0.dev0`: SDK/CLI comuns, 112 testes e diagnóstico do package em 7 vetores + 71 propriedades + 1 gate do pack + 23 mutações; SUT integral continua não avaliado |
 | Reference Acceptance Pack v1/v2 | `builder_complete_pending_independent_critic` | v1 congelado como fixture histórica; runner v2 3/3, compute bytes preservados e paridade SDK/CLI instalada; `reference_independence=not_claimed` |
-| release/package | `local_only_no_go` | metadata v5 usa `setuptools==84.0.0` e liga Apache-2.0 ao source; CI/CodeQL/dependency review ainda não executaram no GitHub; branch segue sem commits/remotes/tags, reviewer independente, dist autorizado ou supply-chain authority |
+| release/package | `public_source_release_no_go` | metadata v5 usa `setuptools==84.0.0` e liga Apache-2.0 ao source; repositório, CI, CodeQL e dependency review são públicos e verdes, sem tags, package, release, reviewer independente, `dist` autorizado ou supply-chain authority |
 | alegação SOTA | `not_demonstrated` | benchmark pré-registrado, holdout e challenge externo ausentes |
 
 ## 🎯 Bar
@@ -59,9 +59,9 @@ O bar normativo está em [agent-loop-prompt.md](agent-loop-prompt.md): conforman
 | 3 R10 | AppContainer command-free + PE byte-bound | agent builder | crítico independente | outer/inner eram parseados semanticamente sem binding lexical; prefixo ASCII preservava RC0 com digest do produtor | `revision_required` |
 | 3 R11 | AppContainer frame byte-bound | agent builder | crítico independente fresco pendente | reatacar canonicalidade outer/inner, binding pré-ScriptBlock, digests child-observed e runner mutante no freeze novo | `builder_complete_pending_independent_critic` |
 | 4 boundary full | CPython 3.13 + FS/job/handle/network/profile leases | agent builder + críticos mutable/read-only | oito RC1 históricos; nenhum nono live autorizado | o oitavo, no freeze integral `a3a34d78…e52c` (212 entradas/30.785 bytes), admitiu somente receipt v5 `network_differential/network_preflight_zero_token_validate_lpac/not_observed`; sem raw/summary/dimensões/A-B-B-A/conclusão/crédito, com cleanup endpoint/profile/TEMP, pós-inventário e freeze estáveis. Wrapper v23/helper v17/failure receipt v6 são prospectivos; request16/input15/input-inmemory9/raw9/expected-summary11/profile4 permanecem. O v6 fecha 98 substages, com dez fases tipadas em cada token, policy regular, same-primary-token facts+efeito AAP e root classic proof; não refina o oitavo. Crítica pre-doc P0/P1/P2=0 cobriu 17 categorias compiled/mutant, zero survivor, somente source/compile/IL/fakes. `OwnedProfileBinding` e proofs intrínsecos permanecem; Python candidato arbitrariamente comprometido fica fora da claim | `failed_live_diagnostic_v6_no_ninth_live` |
-| 5 process boundary | subprocessos de validators, smoke e matriz | builder + crítico independente | supervisor compartilhado e gates integrais verdes; matriz oficial no freeze histórico `7b05a078…e9eba`: 4 Linux pass + 4 Windows not_observed | bootstrap gated, ownership pre-create, Job/process-group cleanup, cap+1 concorrente, deadline/cancelamento e envelope fechado implementados; freeze exige `-I`; Docker limpa tag nonce-bound quando inspect/inventory falham. A crítica fechou 14/14 pontos de interrupção e o recorte bounded/adoption 33/33; gates atuais: portabilidade 194/194 com dois skips live, SDK 112/112, smoke/Ruff/mypy/Structure. O source corrente ainda exige novo rebaseline e matriz após backend/docs/docstrings; os hashes anteriores permanecem históricos. Windows não elevado e autenticação externa mantêm RC1 | `builder_complete_pending_integral_freeze_critic` |
+| 5 process boundary | subprocessos de validators, smoke e matriz | builder + crítico independente | supervisor compartilhado e gates integrais verdes; matriz oficial no freeze histórico `7b05a078…e9eba`: 4 Linux pass + 4 Windows not_observed | bootstrap gated, ownership pre-create, Job/process-group cleanup, cap+1 concorrente, deadline/cancelamento e envelope fechado implementados; freeze exige `-I`; Docker limpa tag nonce-bound quando inspect/inventory falham. A crítica fechou 14/14 pontos de interrupção e o recorte bounded/adoption 33/33; gates atuais: 195 testes de portabilidade coletados, com 193 passes + dois skips live, SDK 112/112, smoke/Ruff/mypy/Structure. O source público foi rebaselineado para wheel `da7a0161…` e sdist `9edd73cc…`, mas ainda exige a matriz oficial no mesmo freeze. Windows não elevado e autenticação externa mantêm RC1 | `builder_complete_pending_integral_freeze_critic` |
 | implementação local | `deterministic_cashflow_ledger` | lead | loop adversarial em standby por decisão do owner | bridge local fecha 7/21; pins externos, roster integral e execução CI Windows/Linux ainda pendentes | `local_draft_validated_locally` |
-| preparação GitHub | onboarding, supply chain, CI e docs | lead | reviewer independente ausente | venv externa regular, setuptools 84/metadata v5, Apache-2.0, mantenedor/governança, autorização do owner, cobertura, CodeQL/dependency review e README PT-BR/EN estão locais; primeiro commit, remoto, canal privado e execução remota permanecem pendentes | `source_authorized_private_staging_pending` |
+| preparação GitHub | onboarding, supply chain, CI e docs | lead | reviewer independente ausente | source público, Apache-2.0, mantenedor/governança, README PT-BR/EN, PVR, secret scanning, push protection, CI/CodeQL/dependency review e ruleset estão ativos; assinatura, hashes transitivos e reviewer real seguem abertos | `public_source_hardening` |
 
 ## 🚦 Gate de avanço
 
@@ -119,15 +119,15 @@ Evidência local observada após o ADR 0004: SDK/CLI 30/30; diagnóstico do SDK 
 
 `Structure` passou diretamente em Windows PowerShell 5.1 e PowerShell 7.x com 27 Markdown/5 CSV; F0/Release00/Release01 permaneceram RC1 nos dois hosts. A matriz histórica completa de 31 testes de gate foi tentada com limites de 9 e 20 minutos, mas o inventário R20 de aproximadamente dois minutos por scan continuava avançando quando ambos expiraram. Portanto não há alegação de rerun completo dessa matriz nesta fatia; os gates canônicos e as suítes de domínio nomeadas acima são a evidência observada.
 
-O loop pausado não converte R19/R20 em aceite. Esta evidência sustenta somente `local_draft_validated_locally`: não há regra brasileira, validação de benefício, reviewer humano externo, authority, licença, commit, remote, CI de produto, `dist` autorizado ou release.
+O loop pausado não converte R19/R20 em aceite. Esta evidência sustenta somente `local_draft_validated_locally`: a licença Apache-2.0, os commits, o remoto público e a CI técnica existem, mas não há regra brasileira, validação de benefício, reviewer humano externo, authority, `dist` autorizado ou release.
 
-### Sprint 1.2 — fechamento defensivo do Reference Acceptance Pack v2
+### Sprint 1.2: fechamento defensivo do Reference Acceptance Pack v2
 
 O builder manteve byte a byte o pack matemático v1 e endureceu somente aquisição, manifesto e envelope. O recurso é acumulado sob short reads até EOF ou 1 MiB + 1 byte antes de qualquer hash; JSON estrito recusa lone surrogate; índices de pointer são limitados lexicalmente; roster, requests, assertions e manifesto têm digests canônicos independentes antes da execução. O report fica abaixo de 64 KiB, redige assertion divergente para `observed=null`, aceita apenas bytes canônicos imutáveis na fábrica e vincula status cacheado/serializado; seu schema liga status/diagnóstico/contadores/cases/exact/assertions/hashes. A CLI só escreve stdout depois de preparar a linha completa e trata short write como erro. Isso é fail-closed no boundary da aplicação, não atomicidade garantida do descritor.
 
 O package smoke descartável passou a chamar `build --wheel` e `build --sdist` separadamente, construir um segundo wheel a partir do sdist, instalar ambos e comparar os bytes do report SDK/CLI com source. No snapshot final, focused 41/41, SDK 66/66, Ruff, mypy strict, contracts e conformance retornaram RC0; o smoke real retornou RC0 com nominal 3/3 e bytes de report idênticos nas três superfícies. Um crítico read-only repetiu 41/41 e 46 mutações de pack/schema sem observar report runtime fora do schema. Os hashes globais dos wheels não são requisito, portanto não há claim de build reproduzível. Estado desta fatia: `builder_complete_pending_additional_fresh_review`; nenhum diagnóstico local estabelece authority, aprovação, licença, F0, publicação ou release.
 
-### Sprint 2 — contexto decimal explícito e boundary público único
+### Sprint 2: contexto decimal explícito e boundary público único
 
 O builder fechou os dois P0 reproduzidos sem ampliar o vertical financeiro. Toda operação decimal material usa um `Context` novo e explícito; a quantização monetária é o único ponto que admite `Inexact`/`Rounded`, enquanto sinais inesperados recebem diagnóstico próprio. O ledger mantém saldos e reconciliação em centavos inteiros, derivados e formatados sem aritmética decimal ambiente. O contrato de 38 dígitos permanece uma escolha local e não é apresentado como decimal128.
 
@@ -135,7 +135,7 @@ A superfície pública passou a aceitar somente `Mapping`/JSON e sempre reconstr
 
 Evidência builder anterior a este registro: SDK 78/78, Ruff, mypy strict, contracts, math self-check e Reference Pack 3/3 passaram; o diagnóstico executou 7 vetores, 58 propriedades em 7 famílias e matou 19/19 mutações em 18,44 s, sem survivor, crash, timeout ou mutante não viável. A matriz hostil cobriu oito modos de arredondamento, precisão 98/97/128, `Emin`/`Emax`, traps e flags preexistentes, verificando bytes idênticos e preservação integral do contexto do chamador. O smoke de 26,62 s repetiu o roster de 4.096 cashflows por SDK/CLI em source, wheel direto e wheel do sdist com bytes idênticos. Estado: `builder_complete_pending_independent_critic`; esses resultados locais não estabelecem authority, aprovação, licença, F0, publicação ou release.
 
-### Sprint 2.1 R2 — entrada totalizável, ValidationReport v2 e mutantes compostos
+### Sprint 2.1 R2: entrada totalizável, ValidationReport v2 e mutantes compostos
 
 A boundary Python agora aceita somente `JsonObject` recursivo de tipos built-in exatos. Custom `Mapping`, subclasses e custom containers são recusados antes de walker/encoder invocar seu código; o processo não promete isolamento para código Python arbitrário. SDK e CLI aplicam o mesmo teto lógico de 1 MiB/76.814 nós/profundidade 32, e o strict reparse do snapshot canônico é a única entrada do parser. O typing público expõe `JsonScalar`, `JsonValue` e `JsonObject`, sem `Any`.
 
@@ -147,7 +147,7 @@ O pack v1 permanece byte a byte congelado (SHA-256 raw `b3e5c8078a7258d8df521bb5
 
 Evidência builder antes da crítica fresca: SDK 92/92; recorte report/CLI/Reference Pack 52/52 e pack 3/3; Ruff, mypy strict, contracts 10/33/62 e Structure 31 Markdown/5 CSV em RC0; self-check matemático com 21 vetores/51 propriedades e SUT `not_evaluated`; conformance local com 7 vetores/71 propriedades/1 gate/23 mutantes; smoke RC0 em source, wheel direto e wheel do sdist. Estado: `builder_complete_pending_independent_critic`. Esta evidência é local/draft e não estabelece authority, reviewer independente, F0, licença, publicação ou release.
 
-### Sprint 2.1 R3 — value objects opacos e validação integral do wire
+### Sprint 2.1 R3: value objects opacos e validação integral do wire
 
 A crítica do snapshot R2 encontrou uma fronteira inconsistente, sem alterar o domínio financeiro: o schema do `ValidationReport` aceitava LF final onde `ValidationIssue` recusava; as factories de `DeterministicResult` e `ReferenceAcceptanceReport` admitiam objetos canônicos mínimos fora de seus schemas; e `tuple.__new__` contornava os quatro construtores públicos, permitindo acesso/emissão de wire arbitrário.
 
@@ -159,7 +159,7 @@ O mutante de bypass tipado foi reformulado para ser semanticamente viável: prod
 
 **Estado R3:** `major_revision`. A crítica independente reproduziu subclass por left-MRO e custom metaclass antes da guarda, `$id`/`$schema` aninhados, tokens de ref percent-escaped e ciclos diretos/indiretos que vazavam `RecursionError`. Não houve promoção para PASS, authority, isolamento same-UID, F0, licença, publicação ou release.
 
-### Sprint 2.1 R4 — tipo exato, dispatch não virtual e topologia fechada
+### Sprint 2.1 R4: tipo exato, dispatch não virtual e topologia fechada
 
 O registro dos quatro value objects agora liga cada identidade também ao tipo público exato. Toda factory, operação sequencial, cópia, propriedade e método/descriptor herdado começa por essa guarda não virtual; somente depois chama helpers qualificados pela classe pública. Subclass comum continua recusada, enquanto uma classe hostil criada ao suprimir o hook fica não registrada e inerte. A troca de `__class__` entre layouts públicos compatíveis também fica inerte enquanto o tipo diverge; restaurá-lo recupera somente o wire original. Método público escrito ou substituído pelo próprio atacante no mesmo processo permanece fora da claim, que cobre as operações herdadas do SDK.
 
@@ -169,7 +169,7 @@ Evidência builder antes do freeze final: focused 15/15, SDK 107/107, Ruff e myp
 
 **Estado R4:** `local_technical_pass`. O crítico fresco reproduziu o freeze de 175 entradas, reexecutou os gates e atacou os quatro value objects, MRO/metaclass, reutilização de identidades, copy/deepcopy/pickle, 52 posições aninhadas de resources, refs inválidas, ciclos e as três superfícies instaláveis sem finding. O hash identifica apenas um snapshot local não atômico e não autenticado; o PASS não estabelece authority, F0, licença, publicação ou release.
 
-### Sprint 3 R1–R4 — instalação offline, portabilidade e wheels canônicos
+### Sprint 3 R1–R4: instalação offline, portabilidade e wheels canônicos
 
 Foi criado um probe black-box único para SDK, module CLI e o entry point `finplanbr`, cobrindo validate/compute válido, inválido e malformado, Reference Acceptance Pack, versão, quatro schemas e roster de reason codes. Cada célula compara source, wheel direto instalado e wheel reconstruído/instalado do sdist em contextos baseline e hostil. A matriz de hash seed usa `-P -s` com ambiente sanitizado; `-I`, que ignora `PYTHONHASHSEED`, fica restrito à conferência separada de origem de import.
 
@@ -252,8 +252,8 @@ Nenhuma atestação real, authority externa, freshness/rollback, reviewer humano
 - nome de distribuição/package;
 - reviewer humano independente e quórum para mudanças materiais;
 - counsel para implantação, policy packs materiais, LGPD e direitos de dados;
-- execução e verificação dos gates remotos antes da conversão pública;
-- package, release e deployment — não autorizados pela decisão de publicar source.
+- assinatura verificada, hashes transitivos da CI e matriz oficial Windows/Linux no mesmo freeze;
+- package, release e deployment: não autorizados pela decisão de publicar source.
 
 ---
 

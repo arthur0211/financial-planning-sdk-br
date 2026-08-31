@@ -19,7 +19,7 @@ Não abra uma issue pública com exploit, segredo, PII ou caminho de reproduçã
 
 Não envie dados reais de clientes, contas, documentos, credenciais ou tokens.
 
-O GitHub permite habilitar private vulnerability reporting somente depois que o repositório é público. A transição operacional deve converter a visibilidade, habilitar e verificar imediatamente o canal e retornar o repositório a privado se a verificação falhar. Enquanto o canal não existir, não publique detalhes sensíveis em issue, discussão ou pull request.
+O canal privado de vulnerabilidades está habilitado e verificado neste repositório público. Secret scanning e push protection também estão ativos como defesa em profundidade; eles não substituem a comunicação privada nem autorizam publicar detalhes sensíveis em issue, discussão ou pull request.
 
 ## Escopo de interesse
 

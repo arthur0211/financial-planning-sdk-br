@@ -94,6 +94,34 @@ class GitHubWorkflowSecurityTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, source)
 
+    def test_supported_python_matrix_and_windows_smoke_are_explicit(self) -> None:
+        source = self.workflow_sources()["technical-quality.yml"]
+        self.assertIn("\n  push:\n    branches: [main]\n", source)
+        self.assertIn(
+            'python-version: ["3.11", "3.12", "3.13", "3.14"]',
+            source,
+        )
+        self.assertEqual(1, source.count("Smoke-test the installed package on Windows"))
+        self.assertGreaterEqual(source.count("python scripts/smoke_local_package.py"), 2)
+
+    def test_publication_status_docs_cannot_return_to_pre_remote_claims(self) -> None:
+        progress = (REPOSITORY_ROOT / "docs" / "progress.md").read_text(encoding="utf-8")
+        compatibility = (REPOSITORY_ROOT / "docs" / "compatibility.md").read_text(
+            encoding="utf-8"
+        )
+        for stale_claim in (
+            "CI/CodeQL/dependency review ainda não executaram no GitHub",
+            "branch segue sem commits/remotes/tags",
+            "primeiro commit, remoto, canal privado e execução remota permanecem pendentes",
+            "não há lockfile transitivo nem execução remota observada neste checkout",
+        ):
+            with self.subTest(stale_claim=stale_claim):
+                self.assertNotIn(stale_claim, progress + compatibility)
+        self.assertIn("public_source_release_no_go", progress)
+        self.assertIn("public_source_hardening", progress)
+        self.assertIn("Python 3.11, 3.12, 3.13 e 3.14", compatibility)
+        self.assertIn("CI pública observada", compatibility)
+
     def test_gitleaks_exception_is_exactly_scoped_to_the_synthetic_fixture(self) -> None:
         ignore_path = REPOSITORY_ROOT / ".gitleaksignore"
         active_lines = [

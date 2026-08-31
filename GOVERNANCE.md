@@ -38,7 +38,7 @@ O commit inicial é uma publicação de source autorizada pelo proprietário e c
 
 ## Branch principal e proteções
 
-`main` é a branch pública de desenvolvimento. Force-push e deleção devem ficar bloqueados. Pull request, resolução de conversas e checks remotos são exigidos para mudanças posteriores quando suportados pelo plano do GitHub. A exigência de aprovação independente só deve ser habilitada quando existir reviewer real; não criar aprovação fictícia ou usar o mesmo owner como independência.
+`main` é a branch pública de desenvolvimento. O ruleset ativo exige pull request, histórico linear, resolução de conversas e dez checks reais do GitHub Actions; também bloqueia force-push e deleção. O contador de aprovações permanece zero porque ainda não existe reviewer independente. Essa lacuna está explícita e a exigência só deve subir quando houver uma pessoa real; não criar aprovação fictícia ou usar o mesmo owner como independência. Assinatura verificada permanece rastreada separadamente e ainda não é uma regra.
 
 ## Segurança e conduta
 

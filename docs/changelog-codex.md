@@ -2,6 +2,21 @@
 
 _Registro local de mudanças assistidas; não é changelog de release_
 
+## 🗓️ 2026-08-30: publicação pública e fechamento de governança GitHub
+
+- a execução técnica `33348644268` concluiu seis jobs com sucesso no commit `4bf12a3`, incluindo SDK 3.11/3.14, análise estática/cobertura, diagnósticos neutros, artefatos/Windows e a suíte adversarial de governança. A anotação Windows registra corretamente que a cadeia mutável do runner hospedado não produz claim host-bound;
+- somente depois desse verde, `arthur0211/financial-planning-sdk-br` foi convertido de privado para público. Private Vulnerability Reporting foi habilitado e verificado na mesma transação; secret scanning e push protection ficaram ativos, sem alertas abertos. Ações permanecem restritas às mantidas pelo GitHub e com pin SHA obrigatório;
+- o rerun público do CodeQL `33348644261`, tentativa 2, concluiu com sucesso e gravou a análise `1695656801` sem erro ou alerta no mesmo commit. O Community Profile reportou 100%, e o repositório permaneceu sem Actions secrets, variables, environments, tag, Release, Package ou deployment;
+- a CI de runtime foi ampliada para todas as versões declaradas, Python 3.11–3.14, e o job Windows passou a executar também o smoke instalado. Regressões de governança fixam a matriz, o smoke e a ausência do opt-in do live AppContainer;
+- o primeiro PR público revelou duas execuções técnicas para o mesmo SHA, uma por `push` da branch e outra por `pull_request`. O evento `push` ficou restrito à `main`; branches colaborativas usam somente o evento de PR, sem remover a validação pós-merge;
+- depois que os contextos Python 3.12/3.13 e dependency review apareceram de fato no PR #9, foi ativado o ruleset `main-source-governance` (`id=21893891`). Ele liga dez checks ao GitHub Actions (`integration_id=15368`), exige PR, histórico linear e conversas resolvidas, bloqueia deleção/force-push e não possui bypass. O contador de approvals fica honestamente em zero; assinatura e reviewer seguem nas issues #6 e #7;
+- o review automático do PR encontrou drift semântico nas páginas vinculadas pelo scorecard: `progress.md` ainda dizia que commit/remoto/CI não existiam e `compatibility.md` omitia Python 3.12 e execução remota. O `doc-gardener` temporal retornou 0 missing/0 stale, mostrando o limite da heurística por mtime; busca semântica e correção mínima reconciliaram os estados correntes. Esse review continua challenge interno, não reviewer humano independente;
+- uma regressão de governança recusa os quatro claims pré-remoto encontrados e exige `public_source_release_no_go`, `public_source_hardening`, CI pública e a matriz Python 3.11–3.14 nas páginas correntes;
+- README PT-BR/EN, política de segurança, arquitetura, runbook, checklist e scorecard foram reconciliados com o estado público. A contagem de portabilidade agora diz corretamente 195 coletados = 193 aprovados + dois skips live opt-in, sem apresentar skips como passes;
+- como `README.md` integra `METADATA` e o sdist, o perfil canônico foi rebaselineado explicitamente: wheel direto/reconstruído `da7a0161c8d6e752e644f9811de221f99f5794ad152588de63b66b9c4c02d106` e sdist `9edd73cc3205d13510147c0831f834c8d7009cd1f15b9e202f567594e5d697f3`. São candidatos self-issued; nenhum `dist` foi persistido ou publicado;
+- issues públicas `#4`–`#8` registram toolchain, dívida Ruff ampla, assinatura verificada, reviewer independente e hashes transitivos de CI. Nenhum reviewer foi inventado e nenhum nono live AppContainer foi executado;
+- source público continua separado de package/release: `F0`, `Release00` e `Release01` permanecem fail-closed, `authority=none` e `release_authorized=false`.
+
 ## 🗓️ 2026-08-30: hardening da terceira rodada de CI remoto
 
 - o Python 3.14.7 mostrou que `ArgumentParser(color=False)` sozinho não controla o formatter temporário usado pela validação interna do `argparse`. O CLI agora injeta formatters privados sem cor tanto na ajuda padrão quanto na ajuda `RawText`, evitando sondagem de `fileno()` em streams substituídos;
@@ -9,7 +24,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - no runner Windows remoto, 139 diagnósticos eram independentes do host, mas quatro testes de PowerShell real recusaram a raiz `D:` mutável pelo token corrente com `host_chain_mutable_by_current_token`. O workflow agora executa a classe host-bound somente após uma aquisição protegida bem-sucedida; aceita como não suportado apenas esse reason exato e falha para crash ou outra classificação. Os seis arquivos pinados da crítica ZERO-LIVE não foram alterados;
 - uma regressão de governança recusa o retorno do discovery amplo, a ausência das suítes explícitas e qualquer variável de opt-in do live nos workflows;
 - o build descartável com `setuptools==84.0.0` convergiu a wheel direto/reconstruído `6147b8ef294681e056abdfba6ad5111c3b44670e8e27c01c8da5a53b5d5764d8` e sdist `79df5ba4396a82e0a61e636233c20250bcad54b3572cfb8899e93d23e5f9b954`. Os dois continuam candidatos self-issued, sem crédito de matriz, authority ou release;
-- os testes locais pós-correção passaram em 112/112 no SDK sob Python 3.14.6, mypy estrito, Ruff, seis controles de workflow, 31 diagnósticos neutros, 23 testes de artifact binding e 143 diagnósticos Windows; os dois testes do live foram os únicos skips. A terceira execução remota ainda é necessária para confirmar Python 3.14.7 e o host Windows do GitHub.
+- os testes locais pós-correção passaram em 112/112 no SDK sob Python 3.14.6, mypy estrito, Ruff, seis controles de workflow, 31 diagnósticos neutros, 23 testes de artifact binding e 141 diagnósticos Windows, além de dois skips live opt-in. A execução remota posterior está registrada na seção acima.
 
 ## 🗓️ 2026-08-30: fechamento da segunda rodada de CI remoto
 

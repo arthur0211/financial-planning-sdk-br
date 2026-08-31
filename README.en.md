@@ -2,6 +2,10 @@
 
 [Português](README.md) | [English](README.en.md)
 
+[![Technical quality](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/technical-quality.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/technical-quality.yml)
+[![CodeQL](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/codeql.yml)
+[![Mathematical self-check](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/math-conformance.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/math-conformance.yml)
+
 Local Python SDK and CLI for validating and reproducing a deterministic BRL cash-flow ledger.
 
 > **Project status:** technical pre-release (`0.1.0.dev0`). The current scope is `draft`, carries no professional or regulatory authority, and is not authorized for registry publication, financial recommendations, or deployment.
@@ -134,11 +138,13 @@ Most recent local evidence:
 | SDK conformance | 71 properties, 23 of 23 mutations killed | seven supported vectors out of 21 |
 | SDK tests | 112 tests passed | local execution |
 | SDK coverage | 80% branch floor configured | subprocesses, C#, PowerShell, and live probes remain outside this metric |
-| portability | 195 tests passed, 2 opt-in live tests skipped | does not authenticate external execution |
+| portability | 195 tests collected: 193 passed and 2 opt-in live tests skipped | does not authenticate external execution |
 | installed Linux matrix | Python 3.11 through 3.14 observed on an earlier snapshot | current source not rerun as a matrix; Windows remains `not_observed` without an elevated runner |
 | release gates | `F0`, `Release00`, and `Release01` fail | intentional until external authority exists |
 
 A green gate proves only its named surface. It does not prove professional correctness, regulatory compliance, complete security, or release authorization.
+
+Public CI exercises the SDK on Python 3.11, 3.12, 3.13, and 3.14. The badges above report only the technical state of the `main` branch; they do not confer professional authority or package/release authorization.
 
 ## Documentation
 
