@@ -124,18 +124,20 @@ class BoundedSubprocessTests(unittest.TestCase):
                 "time.sleep(30)"
             )
             real_sleep = time.sleep
-            calls = 0
+            cancellation_injected = False
 
-            def cancel_after_candidate_start(_: float) -> None:
-                nonlocal calls
-                calls += 1
-                real_sleep(0.2)
-                raise KeyboardInterrupt
+            def cancel_after_candidate_start(delay: float) -> None:
+                nonlocal cancellation_injected
+                if not cancellation_injected:
+                    cancellation_injected = True
+                    real_sleep(0.2)
+                    raise KeyboardInterrupt
+                real_sleep(delay)
 
             with mock.patch.object(bounded.time, "sleep", cancel_after_candidate_start):
                 with self.assertRaises(KeyboardInterrupt):
                     self.run_python(parent, cwd=root)
-            self.assertEqual(calls, 1)
+            self.assertTrue(cancellation_injected)
             real_sleep(1)
             self.assertFalse(marker.exists())
 

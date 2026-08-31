@@ -31,31 +31,31 @@
       },
       {
         "path": "oracle_methods/__init__.py",
-        "sha256": "ec2329659df5329e58d2738aaad6a78eae67f2b404e451efee8bb77d2c6ca277"
+        "sha256": "1e00e7e1f9b1b9d6116c1b9d4df2d59fac03ad51ac43fa5dde9f6f4d70fff95e"
       },
       {
         "path": "oracle_methods/annuity_explicit.py",
-        "sha256": "e5c894c207a4310f833bb958f8a9875e701fb30a0536dfce9e6517f48285a824"
+        "sha256": "bcfbc2ec4659096d68f4a5143a44b535c94927aff7da14a1be0ee04b899d7c9c"
       },
       {
         "path": "oracle_methods/common.py",
-        "sha256": "c828d6280b954ab8cb0edd601f35fa8c598755e7227ed236e1367ed1855155e8"
+        "sha256": "2b42008593c2d65bfc382c80f3ba8b427156999c889af3e4b7b58b86e38c4469"
       },
       {
         "path": "oracle_methods/contribution_root.py",
-        "sha256": "ed13f504e1cdafabb2bffc39fbbd382bb7ca465c75fe25dd3e0e9b5d23a38376"
+        "sha256": "9977404e54bcd35b21793b887045a082ac083b7e8bcc578ecd662b9c67b0f7ee"
       },
       {
         "path": "oracle_methods/cvar_eta.py",
-        "sha256": "578ac60b86ff58e8c8e439b8f5d354bdd56b43c88da8084e232c86b6a0a9707a"
+        "sha256": "e020fa81d4d5cabaf97227c631730b2c590d87cf5eb5175a0c39ea3166772bae"
       },
       {
         "path": "oracle_methods/household_sample_space.py",
-        "sha256": "5738c21756e391a242468578a42917bc22920c2ccae0a8e918878468dc9fdceb"
+        "sha256": "7a9e8b2d8a57318be369dd15162151a0224d7de8d822cca8f5acab398a23e28c"
       },
       {
         "path": "oracle_methods/ledger_replay.py",
-        "sha256": "d0d75b82bfac05035e81bc3e37eee38727b6c20f99cfd1509288a61a9092ecf2"
+        "sha256": "2ef78f5cd27b01706d8d815332b23c297b4710218294e2287307a0b36c29007b"
       },
       {
         "path": "oracle_methods/nonanticipative_candidates.py",
@@ -67,7 +67,7 @@
       },
       {
         "path": "oracle_methods/tax_state_machine.py",
-        "sha256": "cc1a6cc8f8a5eef5d1ce27590bc54c7055e9b7f7a392423279feaa2efc6bcdb5"
+        "sha256": "5ef1b4bf71aa109422e12a6ad18d32fe2da76be1823ad8efc39043a58459dcb3"
       }
     ],
     "harness": [

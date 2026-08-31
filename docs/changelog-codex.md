@@ -2,6 +2,13 @@
 
 _Registro local de mudanças assistidas; não é changelog de release_
 
+## 🗓️ 2026-08-30: correção do primeiro CI remoto
+
+- o primeiro push privado falhou fechado nos dois hosts porque oito arquivos da rota de validação tiveram apenas a linha vazia final removida, mas o manifesto ainda pinava os bytes anteriores. Os oito SHA-256 foram reconciliados; nenhuma fórmula, derivação, fixture ou output esperado mudou;
+- no Ubuntu, `actions/setup-python` expôs um launcher por symlink. A fixture de mutation manifest agora resolve o executável regular antes de hashear e continua sujeita ao mesmo gate de path, `nlink=1` e ausência de reparse ancestry;
+- o teste POSIX de cancelamento não presume mais que o patch global de `time.sleep` será chamado uma única vez: a injeção ocorre exatamente uma vez e chamadas internas posteriores de `subprocess.wait` usam o sleep real. A obrigação material permanece matar e reapear a árvore antes de o descendente escrever;
+- a correção é de harness/CI e não promove self-check a SUT conformance, authority, package ou release.
+
 ## 🗓️ 2026-08-30: licença e staging GitHub autorizados pelo owner
 
 - registrada no ADR 0012 a decisão do proprietário por Apache-2.0, staging privado inicial e publicação posterior do source somente após checks remotos; package, GitHub Release, registry e deployment continuam fora de escopo;
@@ -37,7 +44,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - preservados os relatórios históricos e a ausência de `LICENSE`; a publicação do repositório continua uma decisão separada da publicação de pacote.
 - como README e metadata integram os artefatos, os caminhos canônicos direct/rebuilt, CRLF, alternate-zlib e manual-USTAR foram reconciliados sob `metadata.v3`, após retirar a data manual e registrar a contagem final de portabilidade: wheel `a8b3a74049419b69da171d3441986cb9c9a7f83e843d5f629aa043ca044803fa` e sdist `af6b2e3339f0af934b42f38aa5405c2d90bc3e9e0e662ab9a16e2ed258f7f15c`. Os hashes anteriores permanecem históricos.
 
-## 🗓️ 2026-08-12 — Supervisor bounded e cleanup fail-closed da matriz
+## 🗓️ 2026-08-12: Supervisor bounded e cleanup fail-closed da matriz
 
 - unificado o lançamento de subprocessos candidatos em bootstrap gated, captura concorrente cap+1, deadline monotônica, stderr público apenas por tamanho/SHA-256 e classes fechadas para timeout/output/start/cleanup/configuração. No Windows a admissão ocorre só depois do Job Object; em ambas as plataformas o subtipo privado de `Popen` publica sua identidade ao owner em `__new__`, antes de `__init__` poder criar o processo, fechando cancelamento pós-create/pré-retorno sem escrever o gate. A chamada nativa de create continua não preemptível e o deadline é rechecado antes da admissão;
 - migrados conformance, matemática, smoke e probes de portabilidade para a boundary compartilhada. Regressões cobrem cap+1 em stdout/stderr, cancelamento, pipes herdados, assign tardio/falho, `NaN` fechado sem traceback e build/pip sob ambiente hostil;
@@ -45,7 +52,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - a execução oficial temporária Windows/Linux × Python 3.11–3.14 sobre o freeze pré-supervisor `7b05a078…e9eba` preservou wheel `598a31b7…`, sdist `fde397d5…` e paridade `635b266f…`: quatro Linux passaram, quatro Windows retornaram RC1 `windows_firewall_control_requires_elevated_runner`, e o agregador continuou RC1 por células `not_observed` e autenticação externa ausente. Evidência ficou fora do checkout; as mudanças posteriores invalidam esse freeze para handoff, e o resultado não cria PASS, authority, crédito ou release.
 - no source posterior, a ampliação documentada do README alterou os bytes empacotados: dois builds independentes convergiram ao wheel canônico `5deb64351e9fba573edf8c349cc9e8b923d6a6323bac83d4bfa8b5ebb3707966` e sdist canônico `f6ff4ac9a620a932ddabdc0a1078473495807c5aa50750ceab936f08b199e53d`, com direct/rebuilt wheel idênticos. Os goldens correntes foram atualizados sem reescrever os hashes históricos; o negativo de EOF agora reconhece quando o TAR canônico já ocupa exatamente os dois blocos mínimos. Gates pós-correção: contratos 10/33/62, matemática 21 vetores e 14/14 mutantes, SDK conformance 71 propriedades e 23/23 mutantes, SDK 111/111, portabilidade 194/194 com dois skips live esperados, smoke instalado, Ruff/mypy/Structure verdes. Isso continua diagnóstico local sem release authority.
 
-## 🗓️ 2026-08-12 — Sprint 4: oitavo RC1 histórico e prova regular prospectiva v6
+## 🗓️ 2026-08-12: Sprint 4, oitavo RC1 histórico e prova regular prospectiva v6
 
 - o oitavo live foi autorizado e executado uma única vez, sem retry, sobre `finplanbr.source-freeze.v1` `a3a34d782152974b9b9f81b211c36402d1ef110f4a2ce55b6dfc0c9cdb72e52c`, 212 entradas e 30.785 bytes canônicos. Retornou RC1 com `status=not_observed` e `reason=primary_reason=helper_not_observed`; o único receipt admitido foi exatamente `{"failure_class":"not_observed","format":"finplanbr.windows-appcontainer-helper-failure-receipt.v5","stage":"network_differential","status":"not_observed","substage":"network_preflight_zero_token_validate_lpac"}`. `helper_report`, `boundary_summary` e `driver_binding` ficaram `null`; raw, dimensões, ordem A-B-B-A, conclusão e crédito permaneceram ausentes. Cleanup/pós-inventário/freeze ficaram limpos e estáveis;
 - diagnóstico posterior estritamente read-only confirmou enum/ABI da classe 46 e reproduziu Win32 87/`STATUS_INVALID_INFO_CLASS`, inclusive no helper compilado. Como a consulta LPAC ocorria antes de validar `IsAppContainer`, esse receipt não prova token regular, LPAC ou causa do sistema operacional. Fontes oficiais exigem `SECURITY_CAPABILITIES` para AppContainer regular e atributo adicional `ALL_APPLICATION_PACKAGES_POLICY`/`OPT_OUT` para LPAC; o candidato nunca aplica o atributo LPAC;
@@ -54,7 +61,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - classe 46 `true` falha como invariante, `false` suportado é apenas corroborativo e erro 87 vira `null/unsupported` neutro. `NotObserved` pode surgir por membership API indisponível em `aap_membership`, ou por roster AAP/efeito regular ausentes enquanto `validate_roster` está ativo; esse substage não distingue os dois últimos. Child/grandchild fornecem lineage por PID/parent, SID, integridade, capabilities e roster AAP, não prova comportamental regular direta;
 - crítica independente fresca nos pins pré-documentação `Program.cs=0fb585d4b80b642db8776e814afc7f94c7b5e699fdea6015fd843c72b0400443`, wrapper `0f31bc363feecfdb585c3e8d1a653b66b9fc13d10e247ec20c03304f39e79cdc`, boundary report `22f68ed9c43068ca7171c2a82a586328bf0aae8c6ec3ceae0b9d27cc8b1e4746`, authority `0101d5032863fda4e40e6e364d4156fdb2dbadd448a4a80e50ab2ad64b707be9`, spike `9fe74e93738135479674558450c66445642890c5a966c5c9e45b0421beee4b4d` e boundary test `4764f3d0f7d89d11031be3fc87ce31535b681f157a48a7cf209cc3adb0837fdf` devolveu P0=0/P1=0/P2=0 no recorte ZERO-LIVE. Dois testes compilados/reflection passaram; 17 categorias independentes de mutação mudaram, compilaram e morreram, zero survivor. Isso não é live v6, PASS, authority, crédito, release ou autorização para um nono live.
 
-## 🗓️ 2026-08-12 — Sprint 4: sétimo RC1 histórico e receipt de token prospectivo v5
+## 🗓️ 2026-08-12: Sprint 4, sétimo RC1 histórico e receipt de token prospectivo v5
 
 - o sétimo live foi autorizado e executado uma única vez, sem retry, sobre `finplanbr.source-freeze.v1` `6378174a1da09a711511ee7e4f2335150c695060820de2de142e308d77a89639`, 212 entradas e 30.784 bytes canônicos. Retornou RC1 com `status=not_observed` e `reason=primary_reason=helper_not_observed`; o único receipt admitido foi exatamente `{"failure_class":"not_observed","format":"finplanbr.windows-appcontainer-helper-failure-receipt.v4","stage":"network_differential","status":"not_observed","substage":"network_preflight_zero_token"}`. `helper_report`, `boundary_summary` e `driver_binding` ficaram `null`; raw, dimensões, ordem A-B-B-A, conclusão e crédito permaneceram ausentes;
 - o cleanup e o pós-inventário confirmaram ausência do endpoint/marker/listener/watchdog/launcher, processos e resíduos do moniker, TEMP/Packages e mapping de profile; snapshot WSL/BusyBox/IP permaneceu estável e duas leituras pós-run conservaram o freeze exato. Isso é evidência de cleanup/estabilidade, não de conclusão do token ou da boundary. O marcador v4 significa somente categoria token ativa;
@@ -63,14 +70,14 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - receipt v5 e as oito fases eram prospectivos naquele checkpoint: não refinavam nem reclassificavam o receipt v4 do sétimo, o v3 do sexto ou qualquer receipt anterior. Naquele momento nenhum oitavo live estava autorizado; a seção acima registra a autorização e o resultado posteriores. `not_counted`, `evidence_authentication=not_implemented`, `authority=none` e `release_authorized=false` permanecem;
 - a crítica mutable fresca devolveu P0=0/P1=0/P2=0 nos pins pré-documentação `scripts/windows_appcontainer_helper/Program.cs=363240e8ea65da8f49fc86b387be0c94e6a6b8acf1015675584b7b408014fd33`, `scripts/run_windows_appcontainer_spike.py=0305d31bda3ab9b44ef882e38657a2633a516f004066805873bed1759f9ccb6d`, `tests/portability/test_windows_appcontainer_helper_authority.py=e58a99eb1609dceb72c6941e8de757b91ee4e479687fc6cc3475723aa46a14ae` e `tests/portability/test_windows_appcontainer_spike.py=0e6bc82f2c2c1ec2eaeec4582e02191665d4cb76d03bbe1bc9076997420b4b93`. Authority passou 5/5; quatro mutantes novos de ordem foram 4/4 alterados, compilados e mortos com RC1 nomeado; a matriz anterior de dez permaneceu verde, 14 no total; wrapper behavioral passou 2/2 e quatro mutantes de source morreram; a tupla Python e o array C# foram iguais, ordenados e 88/88 únicos; o v4 histórico foi rejeitado pelo decoder prospectivo. IL registrou `ValidateFacts` 36 < bind 40 < `GetProcessId` 43 < proof ctor 66 < `RequireComplete` 69 e begin 330 < observe 337 no mesmo local 33. Essa crítica é somente source/compile/reflection/IL/fakes: não é live v5, conclusão, PASS, authority, portabilidade ou release.
 
-## 🗓️ 2026-08-12 — Sprint 4: sexto RC1 e receipt de rede prospectivo v4
+## 🗓️ 2026-08-12: Sprint 4, sexto RC1 e receipt de rede prospectivo v4
 
 - registrado o sexto live autorizado, executado uma única vez no freeze integral `a5559191aee153b542895ff4251cf5097649cdbc4b5efd023bd7058cdd79aeef` (`finplanbr.source-freeze.v1`, 212 entradas, 30.784 bytes canônicos): RC1 `not_observed` com receipt v3 exato `network_differential/stage_entry/not_observed`, sem raw, summary, bindings, dimensões, A-B-B-A ou crédito;
 - preservada a leitura estrita da evidência capturada: endpoint, profile e TEMP foram limpos, o pós-inventário ficou sem resíduos e o freeze permaneceu estável. Como o stage v3 era reutilizado em duas regiões e `stage_entry` não as distinguia, não se atribui o RC1 a uma região, operação ou causa do throw;
 - migrados somente os contratos prospectivos para wrapper v21, helper v15 e `finplanbr.windows-appcontainer-helper-failure-receipt.v4`; request v15, input binding v14, input in-memory v8, raw v8, expected/summary v10 e profile prelaunch/receipt v4 permanecem. O v4 fecha exatamente 53 substages de `network_differential`, todos marcadores de categoria entrada/ativa, nunca conclusão, detalhe ou crédito. O v4 não refina retroativamente o receipt v3 do sexto live;
 - preservadas a identidade atômica de `OwnedProfileBinding` e as provas intrínsecas de token/profile/launch. Comprometimento arbitrário do Python candidato continua fora da claim. Naquele checkpoint anterior, a execução seguinte ainda não havia sido autorizada e havia seis RC1; a seção acima registra o sétimo resultado posterior. Todos permanecem históricos, self-issued, `not_counted`, sem authority e sem release.
 
-## 🗓️ 2026-08-11 — Sprint 4: contexto SID ligado após o quinto RC1
+## 🗓️ 2026-08-11: Sprint 4, contexto SID ligado após o quinto RC1
 
 - registrado o quinto live único, no freeze integral `e2c6d919b283afbd54433e186c37e78a5079d8587d73db7e7e566adb0af052ea`: RC1 com receipt v2 exato `profile_binding/profile_sid_compare/internal_invariant_failure`, sem raw, dimensões ou crédito A-B-B-A. Listener/processo/porta/watchdog/launcher ficaram ausentes, WSL permaneceu estável, profile v4 completou delete/recreate mesmo SID/delete final/folder ausente com identidade revalidada, TEMP ficou verificado sem artifacts e dois rehashes pós-run conservaram o freeze;
 - executado diagnóstico estritamente read-only de 32 monikers. Python e pwsh7 empacotados observaram 12 subauthorities, Windows PowerShell não empacotado observou 8, e as três derivações foram pairwise distintas por moniker. Isso falsificou a premissa de rederive ordinal cross-context; o resultado é apenas compatível com escopo pelo caller e não reivindica mecanismo Windows não documentado;
@@ -78,7 +85,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - substituídos os proofs antigos por `ValidatedTokenFacts`, `ValidatedProfileIdentity` e `LaunchAuthorizationProof`, todos selados, issuer/owner-bound e com construtores `internal` somente pela acessibilidade C# de tipos aninhados; emissão e callsites ficam confinados ao `BoundAppContainerIdentity`. Token liga role/process/PID/arm e seus serializers consomem a prova; profile liga leituras frescas initial/network-before/network-after/final com checkpoint/ordem; launch não expõe `Pointer`/`Apply` e mantém lifetime lock entre aplicar `SECURITY_CAPABILITIES` e `CreateProcessW` para root/rede;
 - naquele fechamento, failure receipt v3 ainda era prospectivo e não reescrevia o receipt v2 do quinto live. O primeiro crítico mutable marcou HOLD P0=0/P1=5, sendo quatro gaps de gate e um gap estrutural de lifetime. A remediação fechou o foco integrado em 112=110+2 skips live, authority 3/3, quatro mutantes C# coerentes compilados e mortos pelas assertions funcionais pretendidas, e ataques Python limitados de overwrite/rebaseline/tautologia/reconcile-order mortos. Os gates então correntes retornaram RC0, incluindo portabilidade 175=173+2 skips live. O crítico mutable fresco registrou `READY_FOR_FREEZE` P0/P1/P2=0 nos hashes pré-documentação `Program.cs=866c48ef…d53d2d2`, `windows_appcontainer_profile.py=e2ffc8a5…69318281`, `run_windows_appcontainer_spike.py=6fd79823…c732c61` e `test_windows_appcontainer_helper_authority.py=1e5b2ddf…899a05c`. Esse registro histórico não é PASS, authority ou release e é sucedido pela seção de 2026-08-12.
 
-## 🗓️ 2026-08-11 — Sprint 4 até o quarto RC1: boundary Windows e failure receipt v2
+## 🗓️ 2026-08-11: Sprint 4 até o quarto RC1, boundary Windows e failure receipt v2
 
 - ampliado o spike R11 para uma boundary de OS com CPython 3.13 real `-I -B`, runtime/source externos ao profile, filesystem A/B para read e dez mutações, fingerprints/ACL/owner, `SECURITY_CAPABILITIES` + `HANDLE_LIST` + `JOB_LIST`, decoy handle, job tree/breakaway/kill-on-close e child/grandchild;
 - adicionada rede diferencial preregistrada preflight-zero → control0 → A-B-B-A → control5 contra listener BusyBox efêmero em guest NAT WSL2 já running. Endpoint lease fecha boot/IP/netns/PID-starttime/socket inode/FD owner/marker/watchdog/launcher e cleanup exato, sem pull, internet, firewall, exemption, portproxy ou Docker object;
@@ -103,7 +110,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 
 - o freeze técnico `f7d3b12a…bb65` fechou os ataques de artifacts com P0=0/P1=0, mas foi invalidado antes de qualquer live por P2 documental: `104/507` não era reexecutável sem o filtro histórico. A medição current-tree reproduzível agora documentada é guard-off 103 aceites/421 recusas entre 524 strings, guard-on 524/524 recusas e matriz exaustiva 2.306/2.306;
 
-## 🗓️ 2026-08-11 — Sprint 3 R11: binding byte-exato dos frames AppContainer
+## 🗓️ 2026-08-11: Sprint 3 R11, binding byte-exato dos frames AppContainer
 
 - invalidado o freeze R10 `50c4ad6b…`: `JsonDocument` aceitava whitespace e key order alternativos no outer, enquanto o report repetia somente o hash do produtor. Um runner privado prefixou um espaço ASCII, o AppContainer real executou e retornou RC0/`observed_pass`, embora os bytes consumidos tivessem outro SHA-256. O inner preservava a mesma simetria lexical e um self-hash recalculável;
 - migrados wrapper/request para v5, input binding para v3 e bootstrap input/in-memory input/driver output para v2; helper permanece v2. Os frames adotam `fpbr-json-ascii-fixed-order-lf.v1`, com roster/ordem fixos, JSON compacto, valores ASCII/base64/hash fechados e exatamente um LF. Paths viram bytes UTF-8 em Base64 canônico;
@@ -112,7 +119,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - validação builder pós-docs: recorte AppContainer 30 testes (28 ok + 2 opt-in skips), portabilidade completa 82 (80 ok + os mesmos 2 skips), opt-in real 2/2 e CLI real RC0 + `observed_pass`, com igualdade produtor/child nos dois frames. `py_compile`, Ruff, doc-gardener e Structure em Windows PowerShell 5.1/PowerShell 7 retornaram RC0; Structure contou 34 Markdown/5 CSV. Esses verdes são locais e não substituem crítica independente;
 - esta é remediação builder pendente de freeze novo e crítico independente. O spike continua `not_counted`, `evidence_authentication=not_implemented`, `authority=none`, demais dimensões `not_evaluated` e `release_authorized=false`; não há declaração de PASS e matemática, packaging e release não mudaram.
 
-## 🗓️ 2026-08-11 — Sprint 3 R10: bootstrap command-free e binding do PE executado (freeze invalidado)
+## 🗓️ 2026-08-11: Sprint 3 R10, bootstrap command-free e binding do PE executado (freeze invalidado)
 
 - invalidado o freeze `db5c12cd…`: o driver R9 chamava `ConvertFrom-Json` antes de fechar autoload. Um `Microsoft.PowerShell.Utility` CurrentUser/TEMP-first substituiu o stdin legítimo por C# forjado e emitiu o helper canônico; RC0, stderr vazio e TEMP final limpo foram insuficientes para distinguir o ataque;
 - substituído o driver nominal por duas camadas in-memory com zero `CommandAst`. A bootstrap curta cabe em `-EncodedCommand`, valida hash/Base64/UTF-8 do driver e request recebidos em um frame stdin e só então cria o `ScriptBlock`. Bootstrap e driver desabilitam autoload na primeira instrução, exigem `FullLanguage` + lockdown `None`, esvaziam `PSModulePath` no processo e não usam cmdlet, função, alias ou import;
@@ -121,7 +128,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - TEMP continua recusando qualquer leftover além de `work/` vazio, mas a evidência agora é honestamente `absent_at_final_inventory` + `final_inventory_only_transient_activity_not_observed`. Watcher live observou o engine criar/apagar `__PSScriptPolicyTest_*.ps1/.psm1`; isso não é output do wrapper/helper/compiler e nunca vira whitelist;
 - regressões live incluem controle positivo do módulo malicioso, candidata exata sem marker, funções/aliases qualificados e tipo `Program` conflitante no mesmo runspace, AST zero-command e CLM fail-closed. O recorte AppContainer executou 28 testes (27 ok + 1 opt-in skip), a portabilidade completa 80 (79 ok + o mesmo skip), py_compile/Ruff retornaram RC0, Structure contou 34 Markdown/5 CSV e retornou RC0. O opt-in real 1/1 e a CLI real retornaram RC0 + `observed_pass`; o `-EncodedCommand` da bootstrap tem 13.168 caracteres e a linha representativa 13.285 com terminador, abaixo de 32.767. Não há declaração de PASS: o freeze final ainda será ligado por manifesto/hashes e entregue a crítico fresco.
 
-## 🗓️ 2026-08-11 — Sprint 3 R9: pipeline AppContainer in-memory e observação externa (freeze invalidado)
+## 🗓️ 2026-08-11: Sprint 3 R9, pipeline AppContainer in-memory e observação externa (freeze invalidado)
 
 - invalidado o freeze R8 `153e…`: um watcher same-token trocava, após cada cópia/compile, `Program.cs`, `TokenProbe.cs`, os três drivers, a DLL ou o EXE; hosts Microsoft legítimos então consumiam o payload forjado e retornavam RC0/`observed_pass`, enquanto o report preservava o hash legítimo do checkout. Relock ou hash posterior do output não provaria derivação;
 - eliminado todo intermediário de código. `Program.cs` é o único source runtime e permanece aberto no checkout por handle share-read-only; bytes, SHA-256 e `FILE_ID_INFO` 128-bit vêm do mesmo handle, revalidado antes/depois do consumidor. Um driver constante ligado por hash recebe esses bytes por stdin canônico e usa `Add-Type -TypeDefinition` sem output, gerando somente assembly in-memory;
@@ -130,7 +137,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - host identities também migraram para `FILE_ID_INFO` 128-bit + volume serial 64-bit. A string de política explicita WinVerifyTrust cache-only sem revogação: não há acesso de rede nem claim de freshness/revocation atual;
 - validação builder antes da atualização documental: focused host+spike executou 33 testes (32 ok + 1 opt-in skip esperado), portabilidade completa executou 74 (73 ok + o mesmo skip), py_compile e Ruff focados RC0. O real opt-in estrito foi executado separadamente e exigiu RC0 + `observed_pass`; `DuplicateTokenEx`/impersonation, AAP SHA, no-AAP erro 5, profile cleanup e TEMP vazio foram observados. Ainda não há PASS: o novo freeze aguarda crítico fresco e preserva `not_counted`, autenticação `not_implemented`, authority `none`, release falsa e demais dimensões `not_evaluated`.
 
-## 🗓️ 2026-08-11 — Sprint 3 R8: host-trust externo do spike AppContainer
+## 🗓️ 2026-08-11: Sprint 3 R8, host-trust externo do spike AppContainer
 
 - invalidado o freeze `b590…`: um EXE arbitrário fornecido por `--pwsh`/`--windows-powershell` podia ignorar os drivers, fabricar os dois outputs `MZ` e emitir o JSON esperado, obtendo RC0/`observed_pass` sem executar nenhuma API AppContainer. O verde anterior era apenas coerência com um host controlado pelo atacante;
 - removidos os dois overrides da CLI e da API pública, além de runner/platform/nonce públicos. A injeção de host lease e runner ficou somente na função interna exercitada por testes. Host falso agora recebe RC2 `invalid_usage` antes de pasta temporária, compilação ou artifact;
@@ -139,7 +146,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - o request/report passou a v2 e incorpora as identidades completas dos dois hosts. O `.csproj`, que não era consumido, saiu do roster, snapshots e request; apenas `Program.cs` e `TokenProbe.cs` continuam inputs. Reasons de falha são fechados/redigidos;
 - regressões pré-freeze passaram 20/20 no wrapper e 11/11 nas primitivas; portabilidade completa passou 72 testes com um opt-in esperado; py_compile/Ruff focados retornaram RC0. O opt-in real, agora estrito, exigiu e observou RC0 + `observed_pass`; RC1 deixou de ser aceito. Isso ainda aguarda crítica fresca no novo freeze e continua diagnóstico `not_counted`, self-issued, sem authority/autenticação/release e sem ampliar token/profile/classic behavior.
 
-## 🗓️ 2026-08-11 — Sprint 3 R7: admissão byte-canônica do sdist bruto
+## 🗓️ 2026-08-11: Sprint 3 R7, admissão byte-canônica do sdist bruto
 
 - invalidado o freeze R6 `a034…`: a crítica demonstrou que `canonicalize_sdist()` aceitava e apagava GNU base-256 em mode/uid/gid/mtime, inclusive `mtime=-1`, bytes não zero depois de NUL e uname/gname arbitrários, embora o artifact final permanecesse canônico;
 - o parser de entrada agora exige a sequência exata PAX/logical do setuptools, um PAX `mtime` canônico por membro ligado por `round(float(...))` ao campo USTAR, e valida byte a byte name/prefix, mode, uid/gid, size, mtime, checksum, type, link, magic/version, uname/gname, devices, reserved, padding e EOF/record. A visão raw estruturada é reconciliada integralmente com `tarfile` numa segunda guard;
@@ -147,7 +154,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - a crítica fresca encontrou ainda um comprimento PAX autoconsistente com zero à esquerda (`0NN`); o parser passou a exigir a representação decimal mínima do comprimento. No recheck independente, os 21 mutantes anteriores, essa variante e mais 13 gramáticas PAX malformadas foram rejeitados; o segundo guard semântico recusou divergências de mode, owner e type. Ele não é um segundo parser byte-cru: envelope PAX, checksum, slash, padding e EOF permanecem fechados pelo primeiro parser;
 - regressões focadas passaram 22/22, a suíte completa de portabilidade 41/41 e Ruff/Structure retornaram RC0. As quatro células Linux oficiais no mesmo freeze passaram sob Docker sem rede/read-only e preservaram sdist `fde397d54134091a0dd4c65e0bf3e27fef145c4e53757be1bfbb5a5c29bb96c9`, wheel `598a31b7889399dcdf47b8b14726ef8fde3708f43f623804e5a042140f307704` e paridade `635b266fcf4de04a8199209fd4301dbe880c90ca87d7ff748b59bdf9ce3a9132`. Diagnósticos Windows 3.11/3.14 convergiram, mas as quatro células oficiais permanecem `not_observed` sem runner elevado/firewall; o agregado fecha RC1 por essas células e por autenticação externa ausente. Authority, licença, publicação e release não mudaram.
 
-## 🗓️ 2026-08-11 — Sprint 3 R6: USTAR integral canônico
+## 🗓️ 2026-08-11: Sprint 3 R6, USTAR integral canônico
 
 - invalidado o freeze `f370…`: a crítica preservou membros, payloads e atributos lógicos, mas obteve sdists raw diferentes por ordem (`cb37…`), quantidade de EOF/padding (`5733…`/`ee35…`), spacing octal (`f10d…`), checksum equivalente (`c853…`) e divisão alternativa name/prefix (`06b5…`); CRLF em metadata gerada (`d509…`) e LF terminal em `SOURCES.txt` também eram aceitos pela renormalização final;
 - substituído o writer `tarfile` por um serializer USTAR próprio sobre roster/payloads exatos. Ele fixa ordem, name integral/prefix vazio, campos octais, checksum, type, atributos, padding por membro, dois EOF e record de 10.240 bytes. O inspector preserva parser raw + reconciliação com `tarfile`, reserializa os payloads extraídos e exige igualdade integral do TAR antes do binding;
@@ -155,7 +162,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - o serializer manual reproduz o golden R5 `fde397d54134091a0dd4c65e0bf3e27fef145c4e53757be1bfbb5a5c29bb96c9`, abre em `tarfile`, alimenta `pip wheel` e mantém o wheel canônico `598a31b7889399dcdf47b8b14726ef8fde3708f43f623804e5a042140f307704`; por isso as policies de sdist v1, wheel v2 e binding v2 permanecem honestamente inalteradas;
 - evidência builder pré-freeze: regressões focadas 18/18 e portabilidade completa 37/37, incluindo todas as mutações acima, ausência de delegação do writer, boundaries de nome/tamanho/roster e preservação/rejeição de bytes authored; Ruff focado e Structure (33 Markdown/5 CSV) retornaram RC0. Diagnósticos Windows CPython 3.11.15 e 3.14.6 reconstruíram sdist/wheel byte-idênticos com os goldens preservados, mas os wrappers oficiais retornaram `not_observed` por ausência de elevação/firewall e não recebem crédito de célula. Matriz no freeze final e crítica fresca ainda são necessárias. O agregador permanece RC1 por origem não autenticada; matemática, trust, authority, licença, publicação e release não mudaram.
 
-## 🗓️ 2026-08-11 — Sprint 3 R5: sdist gzip canônico e binding raw
+## 🗓️ 2026-08-11: Sprint 3 R5, sdist gzip canônico e binding raw
 
 - invalidado o freeze R4 `6305c401…` depois de a crítica reproduzir o mesmo TAR canônico `75354032…` com gzip raw diferente no Windows Python 3.11/zlib (`d934abce…`) e 3.14/zlib-ng (`b1caf3a8…`), além do SHA Linux alegado `c4c80363…`; oito reports com oito hashes sdist distintos ainda mantinham `all_cells_consistent=true` porque o agregador só vinculava o SHA raw do wheel;
 - criado o perfil `finplanbr-sdist-gzip-ustar-stored-canonical.v1`: header RFC 1952 fixo, DEFLATE `STORED` serializado pelo próprio harness em blocos de 65.535 bytes e trailer CRC32/ISIZE. O writer não chama `zlib.compress`; o parser exige header, LEN/NLEN, boundaries, trailer e re-encode byte-exato, recusando outra codificação semanticamente válida;
@@ -164,7 +171,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - regressões cobrem zlib levels 1/6/9, CRLF gerado, header/OS/XFL, DEFLATE alternativo, boundaries STORED e tamanhos 0/65.535/65.536/131.070. O recorte focado passou 28/28, a suíte de portabilidade 33/33 e Ruff focado retornou RC0. Em diagnóstico independente Windows, CPython 3.11.15/3.12.10/3.13.14/3.14.6 convergiu ao sdist de 307.243 bytes e SHA `fde397d54134091a0dd4c65e0bf3e27fef145c4e53757be1bfbb5a5c29bb96c9`; o wheel permaneceu `598a31b7889399dcdf47b8b14726ef8fde3708f43f623804e5a042140f307704`;
 - isso fecha uma hipótese técnica local, não a matriz nem authority. Linux no freeze final, Windows sob firewall/ACL, receipt externo e crítica fresca continuam necessários; o agregador permanece RC1 por `EVIDENCE_ORIGIN_UNAUTHENTICATED`. Matemática, trust, packs, API pública, licença, publicação e release não mudaram.
 
-## 🗓️ 2026-08-10 — Sprint 3 R4: metadata gerada source-bound
+## 🗓️ 2026-08-10: Sprint 3 R4, metadata gerada source-bound
 
 - invalidado o freeze `af7d6568…` depois de a crítica construir no Windows 3.13.14 os mesmos artifacts observados no Linux: os quatro Linux convergiam ao wheel SHA `598a31b7…`, mas `METADATA` tinha 203 CRLF no Windows e o writer R3 os preservava, produzindo SHA `b8b34dc4…` embora digests lógicos e instalação passassem;
 - elevado o perfil para `finplanbr-wheel-zip32-stored-canonical.v2` e a política de metadata para v2. `canonicalize_wheel` agora exige o source freeze/cópia verificada, valida a metadata bruta contra a política fechada e substitui `METADATA`, `WHEEL`, `entry_points.txt` e `top_level.txt` por bytes LF exatos antes de regenerar `RECORD` e o ZIP;
@@ -172,7 +179,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - a regressão converte os quatro membros gerados e o `RECORD` do backend para CRLF e exige convergência integral ao SHA Linux `598a31b7889399dcdf47b8b14726ef8fde3708f43f623804e5a042140f307704`; controles adicionais recusam source README divergente e demonstram que newline alterado em package authored sobrevive à canonicalização e morre no inspector;
 - o recorte focado passou 10/10, a suíte de portabilidade 27/27 e Ruff retornou RC0. Um diagnóstico real Windows 3.13.14, executado com tool-venv pinada e sem crédito de isolamento, construiu/instalou direct e sdist-wheel com SHA exato `598a31b7…`, zero CR nos cinco membros gerados canônicos e parity `635b266f…`; o primeiro ambiente Store com toolchain apenas no user-site falhou fechado sob `-P -s` e não foi relaxado. Quatro células Linux no freeze final, matriz e crítica fresca ainda são necessários; Windows sob firewall/ACL e autenticação externa continuam ausentes, de modo que o estado global permanece FAIL/RC1. Matemática, trust, authority, licença, publicação e release não mudaram.
 
-## 🗓️ 2026-08-10 — Sprint 3 R3: wheel ZIP32 canônico e binding raw
+## 🗓️ 2026-08-10: Sprint 3 R3, wheel ZIP32 canônico e binding raw
 
 - invalidado o freeze R2 depois de a crítica mudar apenas os timestamps DOS local/central dos 23 membros: payloads e `RECORD` continuaram iguais, o SHA raw mudou, o digest lógico permaneceu igual e o inspector aceitou; ordem de membros/`RECORD`, flags, versões/attrs e codificação comprimida eram canais adjacentes;
 - criado um canonicalizador de wheel com serializer próprio, independente do compressor do backend: ordem normativa, timestamp DOS `1980-01-01 00:00:00`, nomes ASCII/flags zero, `STORED`, versões 20, creator Unix, `internal_attr=0`, regular 0644 e ausência de extra/comment/disk/descriptor/ZIP64;
@@ -181,7 +188,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - regressões full-inspector cobrem timestamps, UTF-8 flag em nome ASCII, `version-needed`, creator/mode, ordem de membros, ordem de `RECORD` e DEFLATE levels 1/9; cada mutação é recusada como artifact final e canonicaliza para bytes idênticos. A suíte de portabilidade passou 25/25, Ruff focado retornou RC0 e uma célula Linux 3.11 preliminar observou os dois wheels com o mesmo hash;
 - estado da fatia: `builder_complete_pending_independent_critic`. O freeze final e a evidência da matriz ficam fora do checkout; o gate global continua FAIL por Windows não observado e `EVIDENCE_ORIGIN_UNAUTHENTICATED`. Nenhuma mudança em matemática, packs, schemas financeiros, authority, licença, publicação ou release.
 
-## 🗓️ 2026-08-10 — Sprint 3 R2: binding fechado de package e artifacts
+## 🗓️ 2026-08-10: Sprint 3 R2, binding fechado de package e artifacts
 
 - invalidado o freeze R1 depois de a crítica demonstrar dois falsos verdes: oito células com `parity_sha256` distintos podiam agregar, e `unexpected_payload.py` podia ser embarcado em wheel/sdist sem alterar as rotas black-box;
 - adicionado roster canônico único de 18 arquivos do package, 23 membros do wheel e 28 arquivos + quatro diretórios do sdist, com `RECORD`, metadata, attrs e bytes reconciliados pelo parser raw; README/pyproject ligam source↔sdist e METADATA fecha headers, extras/dependências e corpo README;
@@ -192,7 +199,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - a suíte de portabilidade passou a 22 testes, incluindo fields ausentes/divergentes, full-cell canary, segredo, README/pyproject drift, metadata extra com RECORD recalculado, canais ZIP/PAX/gzip e pin móvel. O rerun Linux usa freeze pós-documentação; Windows local continua `not_observed` e a matriz global permanece FAIL;
 - zero runtime deps, `requires-python >=3.11`, packs v1/v2, matemática, schemas financeiros, F0 hard-fail, `dist` ausente, authority, licença, publicação e release permanecem inalterados.
 
-## 🗓️ 2026-08-10 — Sprint 3 R1: portabilidade instalada/offline fail-closed
+## 🗓️ 2026-08-10: Sprint 3 R1, portabilidade instalada/offline fail-closed
 
 - criado um protocolo canônico de evidência para exatamente Windows/Linux × Python 3.11–3.14, ligado ao mesmo source freeze integral e rejeitando célula ausente/extra/duplicada, controle inativo, freeze divergente e qualquer skip/xfail;
 - separados acquisition e execução: build 1.4.0/setuptools 80.10.2 podem ser pré-adquiridos, mas wheel direto, sdist, wheel reconstruído do sdist, duas venvs externas, instalação sem índice/deps/cache e probes do produto precisam rodar sob a boundary offline da célula; zero dependência base de runtime é rechecado no metadata instalado;
@@ -203,7 +210,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - quatro células Linux 3.11–3.14 foram executadas sobre um freeze único, sem skip/xfail. As quatro células Windows permanecem `not_observed`; portanto o agregador global retorna FAIL. O workflow de oito células foi declarado, mas não executado e não conta como evidência;
 - registrado o ADR 0008 e alinhados runbook, arquitetura, progresso e scorecard. `requires-python >=3.11`, zero runtime deps, packs v1/v2, matemática, schemas financeiros, F0, ausência de `dist`, authority, licença, publicação e release foram preservados.
 
-## 🗓️ 2026-08-10 — Sprint 2.1 R4: tipo exato e topologia de schema fail-closed
+## 🗓️ 2026-08-10: Sprint 2.1 R4, tipo exato e topologia de schema fail-closed
 
 - a crítica independente devolveu R3 como `major_revision`: mixin à esquerda ou metaclass customizada podia suprimir `__init_subclass__` e fazer métodos herdados despacharem helpers sobrescritos; `$id`/`$schema` aninhados, tokens percent-escaped e ciclos de `$ref` escapavam da admissão, inclusive como `RecursionError`;
 - ligado o estado opaco à identidade e ao tipo público exato. Factory, sequência, comparação, hash, cópia, propriedade e método/descriptor herdado provam esse binding por guarda não virtual antes de helpers qualificados pela classe pública. Subclass hostil pode existir como classe Python, mas fica não registrada e inerte; método público definido/substituído pelo próprio atacante no processo fica fora da claim;
@@ -214,7 +221,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - evidência builder anterior ao freeze final: focused 15/15, SDK 107/107, Ruff/mypy strict verdes, contracts 10/33/62 e matemática RC0, conformance 7 vetores/71 propriedades/1 gate/23 de 23 mutantes sem survivor/crash/timeout/não viável. Os packs v1/v2 permanecem raw `b3e5c8078a7258d8df521bb5c8843ef371feeaf681fb6710a6cd57a45918c18c` e `b469fafe7c089e02487d9afe57319b47a96f88b9426b4c75e1c29cf00f831955`;
 - crítica independente final: reproduziu o freeze de 175 entradas, repetiu SDK/smoke/gates e reatacou value objects, MRO/metaclass, reutilização de identidades, copy/deepcopy/pickle, topologia/refs/ciclos e source/wheel/sdist-wheel sem finding. Estado da fatia: `local_technical_pass`; isso não estabelece authority, F0, licença, publicação ou release.
 
-## 🗓️ 2026-08-10 — Sprint 2.1 R3: value objects e schemas fail-closed
+## 🗓️ 2026-08-10: Sprint 2.1 R3, value objects e schemas fail-closed
 
 - reproduzidas em source, wheel direto e wheel reconstruído do sdist quatro divergências do snapshot R2: trailing LF aceito pelo schema de validation report mas recusado por `ValidationIssue`; factories de resultado determinístico e report de referência aceitando objeto mínimo fora do schema; e construção por `tuple.__new__` expondo wire forjado;
 - migrados `ValidationIssue`, `ValidationReport`, `DeterministicResult` e `ReferenceAcceptanceReport` de subclasses de `tuple` para fachadas opacas seladas com estado imutável ligado à identidade. Construção base produz somente shell inválido; atributo de payload, subclass comum e pickle são recusados; `copy`/`deepcopy` preservam identidade só depois de validação. Toda propriedade, operação sequencial e emissão reconcilia tipo/arity, canonicalidade, bindings e schema público;
@@ -225,7 +232,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - evidência builder antes do freeze documental: SDK 103/103, Ruff e mypy strict verdes; contracts 10 schemas/33 casos/62 reason codes e matemática retornaram RC0; conformance observou 7 vetores/71 propriedades/1 gate e matou 23/23 mutantes (12 kills semânticos, 11 por assertion), com zero survivor/crash/timeout/não viável; smoke source/wheel/sdist-wheel retornou RC0. O pack v1 conserva SHA-256 raw `b3e5c8078a7258d8df521bb5c8843ef371feeaf681fb6710a6cd57a45918c18c` e o v2 conserva `b469fafe7c089e02487d9afe57319b47a96f88b9426b4c75e1c29cf00f831955`;
 - estado da fatia: `builder_complete_pending_independent_critic`. Os verdes são diagnóstico local do candidato e não estabelecem authority, isolamento same-UID, revisão independente, F0, licença, publicação ou release.
 
-## 🗓️ 2026-08-10 — Sprint 2.1 R2: limites isolados, relatório bounded e entrada totalizável
+## 🗓️ 2026-08-10: Sprint 2.1 R2, limites isolados, relatório bounded e entrada totalizável
 
 - restringida a API Python a `JsonObject` recursivo de tipos built-in exatos (`dict`/`list`/`str`/`int`/`bool`/`None`), com aliases públicos sem `Any`; subclasses, custom `Mapping` e custom containers são recusados antes de protocolos definidos pelo objeto, sem alegação de isolamento de código arbitrário;
 - unificado o contrato lógico SDK/CLI em 1 MiB, 76.814 nós e profundidade 32: a API canonicaliza e faz strict reparse, e somente o snapshot `FPBR-C14N-1` entra no parser de negócio;
@@ -236,7 +243,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - ampliado o diagnóstico para sete vetores, 71 propriedades, um gate do pack e 23 mutantes. Três mutantes compostos possuem roster/cardinalidade e kill cases obrigatórios; a execução observada matou 23/23, incluindo os casos negativos de half-down, fator+taxa 39 e saldo corrente sequencial+pack, sem survivor/crash/timeout/não viável;
 - evidência builder observada antes da crítica fresca: SDK 92/92; o recorte report/CLI/Reference Pack passou 52/52 e o pack 3/3; Ruff, mypy strict, contracts 10/33/62 e Structure 31 Markdown/5 CSV retornaram RC0; self-check matemático manteve 21 vetores/51 propriedades com SUT `not_evaluated`; conformance local retornou RC0 com 7 vetores/71 propriedades/1 gate/23 mutantes; smoke RC0 em source, wheel direto e wheel do sdist, com bytes idênticos do erro bounded e do schema. Esses resultados permanecem diagnósticos locais `draft`, sem authority, F0, licença, publicação ou release.
 
-## 🗓️ 2026-08-09 — Sprint 2: contexto Decimal e boundary pública fechados
+## 🗓️ 2026-08-09: Sprint 2, contexto Decimal e boundary pública fechados
 
 - removidos `DeterministicRequest` e `parse_deterministic_request` do inventário público; `compute_deterministic`/`validate_deterministic_request` agora aceitam Mapping/JSON e toda chamada repassa pelo mesmo parser, rejeitando instância interna, construção manual, `replace()`, objeto forjado e Mapping cuja aquisição falhe;
 - substituído o contexto Decimal herdado por instâncias novas e explícitas com precisão 128, half-even, `Emin/Emax=-127/+127`, `clamp=0`, flags limpas e traps exatos; somente a quantização monetária permite `Inexact`/`Rounded`, e context/traps/flags do chamador são preservados;
@@ -247,7 +254,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - ampliado o diagnóstico local para sete vetores, 58 propriedades em sete famílias e 19 mutantes de fonte real, incluindo precision 97/128, exponent/rounding, contexto herdado após limpeza de flags, quantização monetária, budget 38/39, bypass tipado e posting/reconciliação;
 - evidência pós-bound observada: SDK 78/78, Ruff, mypy strict, contracts, math self-check e Reference Pack 3/3 verdes; conformance RC0 em 18,44 s com nove semantic kills e dez assertion kills, sem survivor/crash/timeout/não viável; smoke de 26,62 s produziu bytes idênticos do roster de 4.096 entre SDK/CLI source, wheel direto e wheel do sdist. Isso continua evidência local de candidato, sem reviewer independente, authority, F0, licença, publicação ou release.
 
-## 🗓️ 2026-08-09 — hardening defensivo do report v2
+## 🗓️ 2026-08-09: hardening defensivo do report v2
 
 - rejeitados lone surrogates escapados em chaves/valores pelo parser comum antes de canonicalização; JSON Pointer limita dígitos de índice antes de `int()`, inclusive sob `PYTHONINTMAXSTRDIGITS=640`;
 - limitada a leitura do recurso empacotado por loop até EOF ou `MAX_INPUT_BYTES+1`, inclusive sob short reads; excesso recebe `REFERENCE_PACK_INPUT_LIMIT`, `pack_sha256=null` e nenhum hash do fragmento; loaders dos três schemas públicos passaram ao mesmo leitor de bytes + JSON estrito;
@@ -257,7 +264,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - o smoke descartável executa `build --wheel` e `build --sdist` separadamente e observa bytes SDK=CLI em source, wheel direto instalado e wheel reconstruído/instalado do sdist, fechando ambos os inventários sem exigir hash global igual dos wheels;
 - evidência local do snapshot: focused 41/41 e SDK 66/66; Ruff, mypy strict, contracts e conformance RC0; smoke real RC0 com report SDK=CLI byte a byte em source, wheel direto e wheel do sdist. Um crítico read-only repetiu 41/41 e uma matriz de 46 mutações sem encontrar report emitido fora do schema. Isso não fornece authority, F0, licença, publicação ou release.
 
-## 🗓️ 2026-08-09 — budgets de JSON e diagnostics v2 do pack
+## 🗓️ 2026-08-09: budgets de JSON e diagnostics v2 do pack
 
 - antecipado um preflight iterativo de profundidade ao decoder JSON, preservando o budget 32 e convertendo `RecursionError` residual em `JsonContractError`; `validate`, `compute deterministic` e `reference run` deixam de expor traceback para JSON válido profundamente aninhado;
 - elevado o envelope do pack a `finplanbr.reference-acceptance-report.v2`, com v1 marcada `superseded_unreleased`; pack `1.0.0-draft.1`, roster, requests, expected outputs e matemática permanecem inalterados;
@@ -266,7 +273,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - ampliados schema, help, runbook, arquitetura, ADR e testes por classe; nenhum estado de authority, independência, proveniência, deployment ou release foi promovido.
 - evidência builder: 36/36 testes focados e 48/48 SDK; CLI/depth 8/8 em Python 3.11 e 8/8 em 3.12, além de 3.13; Ruff e mypy strict verdes; conformance local preservado em 7 vetores/51 propriedades/7 mutantes mortos com SUT integral `not_evaluated`; smoke instalado 3/3 com bytes SDK/CLI idênticos; `Structure` passou com 30 Markdown/5 CSV. Isso não é aprovação independente nem authority de release.
 
-## 🗓️ 2026-08-09 — Reference Acceptance Pack empacotado
+## 🗓️ 2026-08-09: Reference Acceptance Pack empacotado
 
 - adicionado um pack sintético fechado com três casos: PV/`half_even`, replay de transferência+retorno e rejeição de dupla contagem em `total_return`;
 - fixados por caso request, operação, `derivation_id`, expected output canônico completo e SHA-256; runtime também fecha digest do pack, roster, rotas e digests esperados;
@@ -276,7 +283,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - a superfície declara `provenance=repository_local_untrusted`, `reference_independence=not_claimed`, `authority=none`, `deployment_eligibility=not_authorized` e `release_authorized=false`; não é oracle independente, aprovação, F0 ou release.
 - evidência builder: SDK 37/37; Ruff e mypy strict verdes; conformance local com 7 vetores, 51 propriedades e 7/7 mutantes mortos; smoke de wheel instalado com 3/3 casos e paridade SDK/CLI; `Structure` com 30 Markdown/5 CSV. Permanece pendente crítica independente e a barra v1 não foi declarada fechada.
 
-## 🗓️ 2026-08-09 — conformance local do SDK público
+## 🗓️ 2026-08-09: conformance local do SDK público
 
 - criado o ADR 0004 e o manifesto `tests/vectors/sdk/v1/manifest.json`, que particiona os 21 vetores em sete implementados pelo vertical e 14 explicitamente fora do escopo, preservando tópico, status e fingerprint do corpus;
 - implementados adapter fechado e worker `-I -S -B` que executam o package público `financial_planning_sdk_br` em subprocesso; adapter vazio, vetor não suportado, drift de manifesto/fingerprint e matemática adulterada falham o diagnóstico;
@@ -289,7 +296,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - `Structure` direto passou em PS 5.1/7.x com 27 Markdown/5 CSV e os três gates progressivos permaneceram RC1. A matriz completa de 31 gates não concluiu dentro de 9 nem 20 minutos devido ao custo R20 de scan integral; nenhum verde completo foi inferido;
 - tudo permanece local: nenhum workflow de produto, commit, remote, `dist`, licença, authority, release ou alegação SOTA foi criado.
 
-## 🗓️ 2026-08-09 — primeiro SDK/CLI determinístico local
+## 🗓️ 2026-08-09: primeiro SDK/CLI determinístico local
 
 - pausado pelo owner o loop builder–critic após o veredito R19 `major_revision`; nenhum achado foi convertido em PASS e os patches R20 parciais permanecem tooling diagnóstico;
 - criado `pyproject.toml` para a distribuição local provisória `finplanbr` `0.1.0.dev0`, package tipado `financial_planning_sdk_br` e entry point `finplanbr`, sem dependência de runtime e sem licença/publicação;
@@ -303,7 +310,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - validação local observada: SDK/CLI 22/22, contratos adversariais 44/44, artifacts 45/45 e matemática 46/46 com um skip POSIX esperado no Windows; self-check matemático com 21 vetores/51 propriedades e SUT `not_evaluated`; Ruff, mypy strict, compileall, schemas e package smoke verdes;
 - estado `local_draft_validated_locally_loop_standby`; não há regra brasileira, SUT integralmente pinado no conformance, CI de produto, LICENSE, dist autorizado, authority, release ou alegação SOTA.
 
-## 🗓️ 2026-08-09 — R19 integrado e rejeitado pela crítica independente
+## 🗓️ 2026-08-09: R19 integrado e rejeitado pela crítica independente
 
 - separada a identidade de filesystem da gramática lexical do gate: paths absolutos do próprio script são intencionalmente case-insensitive no Windows, enquanto switches, modos e as duas grafias relativas permanecem `Ordinal` exatos; as boundaries R18 de host protegido, árvore sem reparse, RC2 não canônico e RC1 antecipado dos progressivos foram preservadas;
 - normalizados os scans operacionais com Unicode FormKC seguido da remoção de caracteres `Cf`; o arquivo histórico conserva front matter/H1 exatos e um roster fechado de exatamente sete H2, em ordem `Ordinal` R2–R3, R4, R6, R7, R8, R10 e R11;
@@ -314,7 +321,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - compileall de 27 Python e parser dos dois wrappers em PS5/pwsh7 verdes; doc-gardener 0 missing/0 stale; inventário com sete H2, 33 fixtures, 62 bullets e 95 links locais, nenhum ausente;
 - críticos frescos reproduziram falsos verdes em headings/links CommonMark e TOCTOU do Structure; diretório ZIP com payload, atributos/versões ZIP e opções gzip; rosters/catálogo reduzíveis, approval sem review, contexto de JSON Schema e inventário/ADS fora de examples. Estado final R19: `major_revision`; o owner colocou o loop em standby antes de concluir R20.
 
-## 🗓️ 2026-08-09 — R18 integrado, crítico independente pendente
+## 🗓️ 2026-08-09: R18 integrado, crítico independente pendente
 
 - restringido o caminho `Structure` a Windows PowerShell 5.1/PowerShell 7.x instalados nos paths protegidos esperados pelo sistema operacional, com coerência de executável/argv/`PSHOME`/módulos builtin e cadeias sem reparse; host copiado em `%TEMP%`, host desconhecido e Linux/macOS retornam RC2, sem claim contra administrador ou engine comprometidos;
 - antecipado o preflight de toda a árvore do checkout: raiz, ancestrais e cada entrada symlink/junction/reparse falham sem traversal externa; `F0`, `Release00` e `Release01` preservam RC1 com 4/5/6 blockers antes dessa boundary de host;
@@ -325,7 +332,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - evidência observada pós-documentação: gates 28/28; artifacts 36/36; governance composto 69/69; contratos 39/39 e CLI com 10 schemas/33 casos/62 reason codes; matemática 46/46 com um skip POSIX declarado, e self-check Python/PS5/pwsh7 com 21 vetores, 51 property checks e SUT `not_evaluated`; Structure RC0 com 24 Markdown/5 CSV em PS5/pwsh7; F0/00/01 RC1 com 4/5/6 blockers; artifact CLI RC1 diagnóstico e stub RC2 nos estados negativos esperados; compileall/AST de 27 Python e parser dos 2 wrappers em PS5/pwsh7 verdes; doc-gardener 0 missing/0 stale, sete H2, zero ID legado operacional e 90 links locais verdes;
 - estado `builder_complete_pending_independent_critic`; Linux Structure permanece apenas explicitamente unsupported, sem passe fabricado. Não há authority externa, F0, reviewer humano, `LICENSE`, package, `dist`, release, atomicidade same-UID, compatibilidade multiplataforma ou demonstração SOTA.
 
-## 🗓️ 2026-08-09 — R17 integrado, crítico independente pendente
+## 🗓️ 2026-08-09: R17 integrado, crítico independente pendente
 
 - movido o probe `test_only` de execução computada de `examples/valid` para `examples/invalid`, sem alterar seus bytes, versão `0.0.0` ou URNs; manifesto e consumidores de teste passaram a apontar para a classificação correta;
 - tornado executável o vínculo entre diretório e expectativa do conformance pack: 11 casos em `examples/valid` exigem `expected_valid=true`, 22 em `examples/invalid` exigem `expected_valid=false`, e paths não canônicos ou fixtures órfãs são diagnostics;
@@ -337,7 +344,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - evidência observada pós-documentação: governance 52/52; contratos 32/32 e CLI com 10 schemas/33 casos/62 reason codes; matemática 46/46 com um skip POSIX e self-check SUT `not_evaluated`; compileall/parser verdes; Structure RC0 e F0/Release00/Release01 RC1 (4/5/6 blockers) em PS 5.1/7; artifact CLI RC1 e stub RC2 nos estados negativos esperados;
 - estado `builder_complete_pending_independent_critic`; o freeze depende do snapshot final de hashes/mtimes e não declara authority, F0, package, release, atomicidade same-UID, compatibilidade multiplataforma ou SOTA.
 
-## 🗓️ 2026-08-09 — R16 de invocação canônica e paridade estreita
+## 🗓️ 2026-08-09: R16 de invocação canônica e paridade estreita
 
 - substituído o guard suprimível de dot-source por validação inicial do argv `.NET`, host e path do próprio script; somente processo novo `powershell|pwsh -NoProfile -File <gate> -Mode <modo>` com opções fechadas entra no fluxo;
 - movidos os blockers F0/Release00/Release01 para escrita direta por `[Console]::Error.WriteLine` e encerramento antes de state, leitura ou helper resolvido por nome;
@@ -347,13 +354,13 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - `pyproject.toml` e todos os arquivos regulares enumerados sob `src` são consumidos dos bytes capturados e relidos ao final; swap/restore same-UID permanece fora da claim;
 - evidência builder pós-documentação: gates 16/16, artifacts 20/20, composto governance 41/41, contratos 29/29 e matemática 46/46 (um skip POSIX esperado); Structure e hard-fails 4/5/6 foram reproduzidos em PS 5.1/7.x, sem authority, package ou release.
 
-## 🗓️ 2026-08-09 — R15 red team do fechamento R14
+## 🗓️ 2026-08-09: R15 red team do fechamento R14
 
 - invalidado R14 como `major_revision`: alias de `Add-Failure` e dot-source com `-ErrorAction SilentlyContinue` conseguiam produzir a linha canônica PASS;
 - demonstrado que excluir qualquer substring `.dist-info/` ocultava payload RECORD-covered em `financial_planning_sdk_br/shadow.dist-info/payload.py` da paridade;
 - identificado que a claim de source/artifact era ampla demais para metadata e membros de build não modelados.
 
-## 🗓️ 2026-08-09 — R14 de dot-source e diagnóstico de artefatos (histórico, supersedido por R15)
+## 🗓️ 2026-08-09: R14 de dot-source e diagnóstico de artefatos (histórico, supersedido por R15)
 
 - fechado o bypass R13 de dot-sourcing: `validate_docs.ps1` verifica `$MyInvocation.InvocationName -eq '.'` imediatamente após `param`, lança erro antes de inicializar state/ler o checkout e usa `$script:` consistentemente para estado compartilhado;
 - adicionados probes PS 5.1/7.x para chamada direta/aninhada, priming de state e todos os modos F0/Release00/Release01; nenhuma rota imprime a sentinela de sucesso;
@@ -364,7 +371,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 - evidência builder pós-documentação: 16/16 gates, 16/16 artifacts, composto governance 37/37, contratos adversariais 29/29 e matemática 46/46 (um skip POSIX esperado); Structure passou no Windows PowerShell 5.1/7.x, enquanto F0/Release00/Release01 falharam com 4/5/6 blockers;
 - preservados os bloqueios: sem trust consumer, `LICENSE`, `MAINTAINERS.md`, `GOVERNANCE.md`, commits, SDK/CLI/motor, package, `src`, `dist`, atestação ou release.
 
-## 🗓️ 2026-08-09 — R12 decommission de authority candidata (histórico, supersedido por R13)
+## 🗓️ 2026-08-09: R12 decommission de authority candidata (histórico, supersedido por R13)
 
 - reduzido `validate_docs.ps1` a `Structure` e blockers incondicionais para `F0`, `Release00` e `Release01`; foram removidos parâmetros de bootstrap, C#/.NET Ed25519, parser de resultado/attestation, caches autenticados e qualquer caminho de execução de validator candidato;
 - substituído `validate_release_trust.py` por stub sem imports, I/O ou parser: ignora argv, imprime somente `external_authority_not_implemented` com flags não autorizativas e retorna 2;
@@ -379,7 +386,7 @@ _Registro local de mudanças assistidas; não é changelog de release_
 
 As tentativas de trust anteriores ao decommission R12 foram isoladas no [histórico invalidado e não executável](history/trust-r2-r11-superseded.md). Aquele corpus tem `status=superseded`, `executable=false`, `accepted_by_gate=false` e `authority=none`; nenhuma descrição interna dele representa comportamento ou autoridade atual.
 
-## 🗓️ 2026-08-09 — R7 da fronteira corpus/oracle/SUT
+## 🗓️ 2026-08-09: R7 da fronteira corpus/oracle/SUT
 
 - separado `--self-check` local, com SUT `not_evaluated`, de conformance técnica de SUT, que exige pins externos distintos para mutation manifest e oracle bundle;
 - fechado manifesto das rotas em source sets de referência 2, validação 11 e harness 2, com whitelist AST e roots privados disjuntos;
@@ -388,7 +395,7 @@ As tentativas de trust anteriores ao decommission R12 foram isoladas no [histór
 - reportado POSIX como best-effort com escape possível por `setsid`; sandbox/cgroup/namespace externo permanece obrigatório para SUT não confiável, enquanto o Job Object Windows continua ativo;
 - suíte matemática R7 passou 46/46 no Windows, com um skip POSIX esperado; status permanece `builder_complete_pending_independent_critic`.
 
-## 🗓️ 2026-08-09 — R5 do harness matemático
+## 🗓️ 2026-08-09: R5 do harness matemático
 
 - separadas as derivações independentes de anuidade, contribuição, CVaR, portfólio, estados familiares, lotes tributários, ledger e não-antecipatividade, com IDs estáveis e sem importar branches do adapter;
 - vinculados os 15 casos normativos a `topic`, família de propriedade e método permitido, rejeitando troca e duplicidade;
@@ -397,7 +404,7 @@ As tentativas de trust anteriores ao decommission R12 foram isoladas no [histór
 - substituído `taskkill` por Job Object no Windows, mantido `killpg` em POSIX e explicitados `filesystem_isolation=not_enforced` e `network_isolation=not_enforced`;
 - adicionados probes adversariais para base não executável, swap/restore, hardlink, junction ancestor, crash-only, tipos JSON errados, escrita externa e falsa alegação de isolamento.
 
-## 🗓️ 2026-08-08 — fundação e red team
+## 🗓️ 2026-08-08: fundação e red team
 
 ### Adicionado
 

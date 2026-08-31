@@ -19,6 +19,11 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 - CI candidata com Python 3.11/3.13/3.14, cobertura de branches, CodeQL, dependency review e testes estáticos de least privilege.
 - licença Apache-2.0, roster de mantenedor e governança de publicação do source registrados no ADR 0012.
 
+### Corrigido
+
+- pins SHA-256 das rotas matemáticas reconciliados com os bytes publicados, sem alteração das fórmulas ou dos outputs esperados;
+- fixture de launcher passa a pinçar o executável Python regular resolvido, e o teste de cancelamento preserva a injeção primária sem interferir no `wait` de cleanup no POSIX.
+
 ### Limites conhecidos
 
 - nenhuma revisão jurídica independente da licença ou dos direitos sobre recursos de terceiros;

@@ -63,6 +63,7 @@ class MathConformanceTests(unittest.TestCase):
         executable = Path(sys.executable)
         installed_executable = Path(sys.prefix) / executable.name
         if installed_executable.is_file(): executable = installed_executable
+        executable = executable.resolve(strict=True)
         executable_pin = {"path": str(executable.absolute()), "sha256": runner.sha256_file(executable)}
         manifest = {
             "manifest_format": runner.SUT_MUTANTS_FORMAT,
