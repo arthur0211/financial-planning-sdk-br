@@ -2,6 +2,14 @@
 
 _Registro local de mudanças assistidas; não é changelog de release_
 
+## 🗓️ 2026-08-30: hardening da terceira rodada de CI remoto
+
+- o Python 3.14.7 mostrou que `ArgumentParser(color=False)` sozinho não controla o formatter temporário usado pela validação interna do `argparse`. O CLI agora injeta formatters privados sem cor tanto na ajuda padrão quanto na ajuda `RawText`, evitando sondagem de `fileno()` em streams substituídos;
+- o job Ubuntu executava por discovery amplo duas boundaries incompatíveis com o host: fixtures ligadas à identidade Windows e a integração bruta de sdist, cuja admissão Linux oficial exige `uid/gid=65532` e owner nominal vazio. A CI comum agora executa módulos neutros explicitamente no Ubuntu e move backend/diagnósticos Windows para `windows-latest`, sem definir o opt-in do live AppContainer;
+- uma regressão de governança recusa o retorno do discovery amplo, a ausência das suítes explícitas e qualquer variável de opt-in do live nos workflows;
+- o build descartável com `setuptools==84.0.0` convergiu a wheel direto/reconstruído `6147b8ef294681e056abdfba6ad5111c3b44670e8e27c01c8da5a53b5d5764d8` e sdist `79df5ba4396a82e0a61e636233c20250bcad54b3572cfb8899e93d23e5f9b954`. Os dois continuam candidatos self-issued, sem crédito de matriz, authority ou release;
+- os testes locais pós-correção passaram em 112/112 no SDK sob Python 3.14.6, mypy estrito, Ruff, seis controles de workflow, 31 diagnósticos neutros, 23 testes de artifact binding e 143 diagnósticos Windows; os dois testes do live foram os únicos skips. A terceira execução remota ainda é necessária para confirmar Python 3.14.7 e o host Windows do GitHub.
+
 ## 🗓️ 2026-08-30: fechamento da segunda rodada de CI remoto
 
 - o source foi criado e enviado inicialmente como repositório privado em `arthur0211/financial-planning-sdk-br`; nenhuma tag, GitHub Release, package, secret, environment ou deployment foi criado;

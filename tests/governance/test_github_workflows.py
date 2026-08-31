@@ -56,11 +56,31 @@ class GitHubWorkflowSecurityTests(unittest.TestCase):
             "secrets.GITHUB_TOKEN",
             "pypa/gh-action-pypi-publish",
             "gh release create",
+            "FINPLANBR_RUN_WINDOWS_APPCONTAINER_DIAGNOSTIC",
         )
         for name, source in self.workflow_sources().items():
             for marker in forbidden:
                 with self.subTest(workflow=name, marker=marker):
                     self.assertNotIn(marker, source)
+
+    def test_portability_suites_are_bound_to_their_supported_operating_systems(self) -> None:
+        source = self.workflow_sources()["technical-quality.yml"]
+        self.assertNotIn(
+            'discover -s tests/portability -p "test_*.py"',
+            source,
+        )
+        for module in (
+            "tests.portability.test_aggregate_portability_matrix",
+            "tests.portability.test_bounded_runner_adoption",
+            "tests.portability.test_installed_portability_probe",
+            "tests.portability.test_portability_runtime_pins",
+            "tests.portability.test_windows_portability_fail_closed",
+        ):
+            with self.subTest(module=module):
+                self.assertIn(module, source)
+        self.assertIn("Validate the supported Windows backend artifact profile", source)
+        self.assertIn("tests.portability.test_portability_artifact_inventory", source)
+        self.assertIn('discover -s tests/portability -p "test_windows_*.py"', source)
 
     def test_gitleaks_exception_is_exactly_scoped_to_the_synthetic_fixture(self) -> None:
         ignore_path = REPOSITORY_ROOT / ".gitleaksignore"

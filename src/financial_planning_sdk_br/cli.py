@@ -32,10 +32,29 @@ _VALIDATION_REPORT_FALLBACK = (
 _ReportWrite = Literal["report", "fallback", "failed"]
 
 
+class _DeterministicHelpFormatter(argparse.HelpFormatter):
+    """Render stable help without probing the process output stream."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        if sys.version_info >= (3, 14):
+            kwargs["color"] = False
+        super().__init__(*args, **kwargs)
+
+
+class _DeterministicRawTextHelpFormatter(argparse.RawTextHelpFormatter):
+    """Preserve authored line breaks without terminal-dependent color."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        if sys.version_info >= (3, 14):
+            kwargs["color"] = False
+        super().__init__(*args, **kwargs)
+
+
 class _DeterministicArgumentParser(argparse.ArgumentParser):
     """Keep help and parser construction independent of terminal color support."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+        kwargs.setdefault("formatter_class", _DeterministicHelpFormatter)
         if sys.version_info >= (3, 14):
             kwargs["color"] = False
         super().__init__(*args, **kwargs)
@@ -81,7 +100,7 @@ def _parser() -> argparse.ArgumentParser:
             "  inspect_case_output_mismatch\n"
             "This command provides no release, regulatory, or professional authority."
         ),
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=_DeterministicRawTextHelpFormatter,
     )
     return parser
 

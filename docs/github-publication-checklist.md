@@ -45,7 +45,7 @@ Depois da autorização explícita:
 
 Staging privado é preparação colaborativa. Ele não altera `authority=none`, `artifact_status=draft` ou `release_authorized=false`.
 
-Estado observado: os commits iniciais foram enviados para o remoto privado, sem tag, Release, Package, environment, secret ou variável. Dependabot, labels, políticas de merge e token read-only do workflow foram configurados. As primeiras execuções remotas falharam fechado e expuseram diferenças reais de symlink/junction, ADS, path 8.3, metadata ZIP e Python 3.14; a remediação está registrada no changelog e ainda precisa voltar verde antes da conversão pública.
+Estado observado: os commits iniciais foram enviados para o remoto privado, sem tag, Release, Package, environment, secret ou variável. Dependabot, labels, políticas de merge e token read-only do workflow foram configurados. As primeiras execuções remotas falharam fechado e expuseram diferenças reais de symlink/junction, ADS, path 8.3, metadata ZIP e Python 3.14.7. O discovery de portabilidade também misturava fixtures Windows e a admissão Linux oficial `uid/gid=65532` com um runner Ubuntu genérico; a CI agora separa essas boundaries e ainda precisa voltar verde no mesmo commit antes da conversão pública.
 
 ## 4. Configuração obrigatória no GitHub
 
