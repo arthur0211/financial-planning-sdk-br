@@ -1,6 +1,6 @@
 # Mantenedores
 
-_Estado em 30 de agosto de 2026: roster inicial aprovado pelo proprietário para publicação do código-fonte._
+_Estado em 30 de agosto de 2026: roster inicial aprovado pelo proprietário e código-fonte publicado._
 
 ## Roster atual
 

@@ -16,8 +16,9 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 - metadata do projeto com URLs canônicas e atualização semanal de dependências por pull request.
 - README equivalente em PT-BR e inglês, além de checklist fail-closed para staging e publicação.
 - backend de build atualizado para `setuptools==84.0.0`, com política de metadata v5, licença source-bound e goldens candidatos rebaselineados.
-- CI candidata com Python 3.11/3.13/3.14, cobertura de branches, CodeQL, dependency review e testes estáticos de least privilege.
+- CI pública com runtime em Python 3.11–3.14, cobertura de branches, CodeQL, dependency review e testes estáticos de least privilege.
 - licença Apache-2.0, roster de mantenedor e governança de publicação do source registrados no ADR 0012.
+- repositório público com Private Vulnerability Reporting, secret scanning, push protection, Actions restritas e Community Profile completo.
 
 ### Corrigido
 
@@ -27,7 +28,8 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 - fixtures multi-OS removem symlink e junction pelo mecanismo correto, limitam ADS a NTFS e emitem tipos Unix explícitos nos membros ZIP sintéticos;
 - CodeQL recebe somente a permissão adicional `actions: read` exigida para consultar a própria execução;
 - CI separa módulos neutros no Ubuntu, diagnósticos Windows independentes do host e testes que exigem uma cadeia PowerShell protegida; runner mutável recebe somente `not supported`, sem habilitar o live AppContainer;
-- goldens candidatos rebaselineados para wheel `6147b8ef…` e sdist `79df5ba4…`, ainda sem authority ou autorização de release.
+- smoke instalado também é exercitado no job Windows, sem transformar o runner hospedado em célula oficial de portabilidade;
+- goldens candidatos rebaselineados após a documentação pública para wheel `da7a0161…` e sdist `9edd73cc…`, ainda sem authority ou autorização de release.
 
 ### Limites conhecidos
 

@@ -94,6 +94,15 @@ class GitHubWorkflowSecurityTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, source)
 
+    def test_supported_python_matrix_and_windows_smoke_are_explicit(self) -> None:
+        source = self.workflow_sources()["technical-quality.yml"]
+        self.assertIn(
+            'python-version: ["3.11", "3.12", "3.13", "3.14"]',
+            source,
+        )
+        self.assertEqual(1, source.count("Smoke-test the installed package on Windows"))
+        self.assertGreaterEqual(source.count("python scripts/smoke_local_package.py"), 2)
+
     def test_gitleaks_exception_is_exactly_scoped_to_the_synthetic_fixture(self) -> None:
         ignore_path = REPOSITORY_ROOT / ".gitleaksignore"
         active_lines = [

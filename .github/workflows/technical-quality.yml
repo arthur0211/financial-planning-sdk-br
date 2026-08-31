@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.14"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -127,6 +127,8 @@ jobs:
           python -m pip install build==1.4.0 jsonschema==4.26.0 setuptools==84.0.0
       - name: Validate the supported Windows backend artifact profile
         run: python -m unittest tests.portability.test_portability_artifact_inventory -v
+      - name: Smoke-test the installed package on Windows
+        run: python scripts/smoke_local_package.py
       - name: Run host-independent Windows diagnostics without live opt-in
         run: >-
           python -m unittest

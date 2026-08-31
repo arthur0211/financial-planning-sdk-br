@@ -2,6 +2,10 @@
 
 [Português](README.md) | [English](README.en.md)
 
+[![Qualidade técnica](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/technical-quality.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/technical-quality.yml)
+[![CodeQL](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/codeql.yml)
+[![Autoverificação matemática](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/math-conformance.yml/badge.svg?branch=main)](https://github.com/arthur0211/financial-planning-sdk-br/actions/workflows/math-conformance.yml)
+
 SDK e CLI Python locais para validar e reproduzir um ledger determinístico de fluxos de caixa em BRL.
 
 > **Estado do projeto:** pré-release técnico (`0.1.0.dev0`). O corte atual é `draft`, não possui autoridade profissional ou regulatória e não está autorizado para publicação em registry, recomendação financeira ou deployment.
@@ -134,11 +138,13 @@ Evidência local mais recente:
 | conformidade do SDK | 71 propriedades, 23 de 23 mutantes mortos | sete vetores suportados de um corpus de 21 |
 | testes do SDK | 112 testes aprovados | execução local |
 | cobertura do SDK | piso de 80% de branches configurado | subprocessos, C#, PowerShell e lives ficam fora dessa métrica |
-| portabilidade | 195 testes aprovados, 2 lives opt-in ignorados | não autentica execução externa |
+| portabilidade | 195 testes coletados: 193 aprovados e 2 lives opt-in ignorados | não autentica execução externa |
 | matriz instalada Linux | Python 3.11 a 3.14 observados em snapshot anterior | source atual ainda não foi reexecutado na matriz; Windows permanece `not_observed` sem runner elevado |
 | gates de release | `F0`, `Release00` e `Release01` falham | comportamento intencional até existir authority externa |
 
 Um gate verde prova apenas a superfície nomeada. Não prova correção profissional, conformidade regulatória, segurança integral ou autorização para release.
+
+A CI pública exercita o SDK em Python 3.11, 3.12, 3.13 e 3.14. Os badges acima mostram somente o estado técnico da branch `main`; não conferem autoridade profissional nem autorização de package/release.
 
 ## Documentação
 
