@@ -32,8 +32,17 @@ _VALIDATION_REPORT_FALLBACK = (
 _ReportWrite = Literal["report", "fallback", "failed"]
 
 
+class _DeterministicArgumentParser(argparse.ArgumentParser):
+    """Keep help and parser construction independent of terminal color support."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        if sys.version_info >= (3, 14):
+            kwargs["color"] = False
+        super().__init__(*args, **kwargs)
+
+
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
+    parser = _DeterministicArgumentParser(
         prog="finplanbr",
         description="Local deterministic financial-planning arithmetic; no advice or regulatory authority.",
     )

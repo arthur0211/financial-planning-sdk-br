@@ -38,10 +38,10 @@ O rebaseline local da política `finplanbr-setuptools-84.0.0-metadata.v5`, depoi
 
 | Artefato canônico | SHA-256 |
 | --- | --- |
-| wheel direto e reconstruído | `38bf14e6f38042209e149d985d4e08f69a96e94de591ef8650a23b67935abb7f` |
-| sdist | `984c6e70febcefb220a164e3ae5cd2416b667393ff92dd39967132ec62b3eb4f` |
+| wheel direto e reconstruído | `e0beb5a21f3b78fbb1aada8327301bbf3340566f8f979d70c1bb869072ec5194` |
+| sdist | `643af37b9d91ead26753e00bffd63425ef310e90d1847942fd732a9b0d457435` |
 
-Esses hashes continuam locais, self-issued e sem crédito de matriz cross-OS, autenticação externa ou release.
+Esse rebaseline inclui a estabilização explícita da construção do parser no Python 3.14, sem cor dependente do terminal. Os hashes continuam locais, self-issued e sem crédito de matriz cross-OS, autenticação externa ou release.
 
 ## Alternativas rejeitadas
 

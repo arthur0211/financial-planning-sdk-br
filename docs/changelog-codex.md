@@ -2,6 +2,18 @@
 
 _Registro local de mudanças assistidas; não é changelog de release_
 
+## 🗓️ 2026-08-30: fechamento da segunda rodada de CI remoto
+
+- o source foi criado e enviado inicialmente como repositório privado em `arthur0211/financial-planning-sdk-br`; nenhuma tag, GitHub Release, package, secret, environment ou deployment foi criado;
+- a segunda rodada confirmou matemática e wrapper verdes no Windows, além de static analysis e branch coverage verdes. No Linux, três testes limpavam symlink de diretório com `rmdir`; a fixture agora distingue symlink POSIX de junction Windows sem atravessar o alvo;
+- o job Python 3.11 agora ignora no host não Windows o único teste de inserção tardia de ADS, em vez de capturar `SkipTest` dentro da callback candidata. O teste continua obrigatório em NTFS;
+- o Python 3.14 passou a receber um parser privado que desabilita a cor nova do `argparse` em toda a árvore de subparsers. Isso mantém help e parse determinísticos e elimina dependência de `fileno()` em streams substituídos;
+- membros ZIP adversariais anexados após o wheel-base agora fixam explicitamente `create_system=3`, tipo/mode Unix e compressão. Assim, Linux e Windows alcançam a mesma asserção negativa pretendida, em vez de falhar antes por defaults do host;
+- a raiz temporária da suíte de governança é resolvida para o path final antes da cópia. Isso preserva a regra de identidade case-insensitive para paths absolutos e evita que aliases 8.3 do runner sejam confundidos com invocação não canônica;
+- CodeQL analisou 86/86 arquivos Python e 5/5 workflows, mas não conseguiu consultar a própria execução sob as permissões iniciais. Foi adicionada somente `actions: read`; `security-events: write` e as demais permissões mínimas permanecem explícitas;
+- a revalidação local pós-correção registrou matemática 69/69 com um skip POSIX esperado, contratos adversariais 44/44, artefatos 45/45 e os três cenários críticos de governança verdes nos dois hosts PowerShell;
+- a estabilização do CLI alterou os bytes do package. Builds descartáveis convergiram a wheel direto/reconstruído `e0beb5a21f3b78fbb1aada8327301bbf3340566f8f979d70c1bb869072ec5194` e sdist `643af37b9d91ead26753e00bffd63425ef310e90d1847942fd732a9b0d457435`; ambos continuam candidatos self-issued, sem matriz atual, authority ou release.
+
 ## 🗓️ 2026-08-30: correção do primeiro CI remoto
 
 - o primeiro push privado falhou fechado nos dois hosts porque oito arquivos da rota de validação tiveram apenas a linha vazia final removida, mas o manifesto ainda pinava os bytes anteriores. Os oito SHA-256 foram reconciliados; nenhuma fórmula, derivação, fixture ou output esperado mudou;

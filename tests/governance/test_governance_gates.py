@@ -46,7 +46,8 @@ class GovernanceGateMutationTests(unittest.TestCase):
 
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory(prefix="finplanbr-governance-r19-")
-        self.root = Path(self.temp.name) / "candidate"
+        canonical_temp_root = Path(self.temp.name).resolve(strict=True)
+        self.root = canonical_temp_root / "candidate"
         shutil.copytree(
             REPO_ROOT,
             self.root,

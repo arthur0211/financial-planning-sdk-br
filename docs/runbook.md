@@ -450,7 +450,7 @@ Se PII, credencial ou dado não licenciado aparecer no repositório:
 6. avaliar histórico Git, caches, artefatos e mirrors quando existirem;
 7. registrar causa, alcance e controle preventivo no changelog/threat model.
 
-Este workspace já tem repositório Git na branch `main`, porém ainda não possui commits, remotes ou tags. Não há histórico versionado a reescrever nesta data; caches e cópias externas continuam fora dessa afirmação.
+Este workspace possui histórico Git na branch `main` e remoto de staging em `arthur0211/financial-planning-sdk-br`. Não há tag, GitHub Release, Package ou deployment. Mudança de visibilidade, proteção de branch e publicação de package continuam decisões separadas; caches e cópias externas permanecem fora do histórico.
 
 ## ⚠️ Falhas comuns
 
@@ -467,7 +467,7 @@ Este workspace já tem repositório Git na branch `main`, porém ainda não poss
 
 ## 🔄 Recuperação
 
-Antes do primeiro commit, conteúdo untracked não pode ser recuperado por `git restore`; preserve uma cópia ou checkpoint antes de alteração ampla. Depois do staging inicial, trabalhe em branch e checkpoints incrementais. Não use comandos destrutivos para “limpar” divergências. Se a validação falhar, reverta apenas a edição responsável ou corrija o contrato de forma explícita.
+Conteúdo untracked não pode ser recuperado por `git restore`; preserve uma cópia ou checkpoint antes de alteração ampla. Trabalhe em branch e checkpoints incrementais. Não use comandos destrutivos para “limpar” divergências. Se a validação falhar, reverta apenas a edição responsável ou corrija o contrato de forma explícita.
 
 ## 🛣️ Próximo endurecimento do código
 

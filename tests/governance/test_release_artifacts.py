@@ -134,6 +134,35 @@ def write_wheel(
             archive.writestr(info, payload)
 
 
+def append_wheel_file(
+    archive: zipfile.ZipFile,
+    name: str,
+    payload: bytes,
+    *,
+    extra: bytes = b"",
+) -> None:
+    """Append one deterministic Unix regular-file member to a synthetic wheel."""
+
+    info = zipfile.ZipInfo(name)
+    info.create_system = 3
+    info.external_attr = 0o100644 << 16
+    info.compress_type = archive.compression
+    info.extra = extra
+    archive.writestr(info, payload)
+
+
+def append_wheel_directory(archive: zipfile.ZipFile, name: str) -> None:
+    """Append one deterministic Unix directory member to a synthetic wheel."""
+
+    if not name.endswith("/"):
+        raise AssertionError("synthetic directory members must use trailing-slash names")
+    info = zipfile.ZipInfo(name)
+    info.create_system = 3
+    info.external_attr = (0o040755 << 16) | release.ZIP_DOS_DIRECTORY_ATTRIBUTE
+    info.compress_type = zipfile.ZIP_STORED
+    archive.writestr(info, b"")
+
+
 def raw_deflate(payload: bytes) -> bytes:
     compressor = zlib.compressobj(level=9, wbits=-zlib.MAX_WBITS)
     return compressor.compress(payload) + compressor.flush()
@@ -475,7 +504,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a", compression=zipfile.ZIP_DEFLATED) as archive:
-            archive.writestr(f"{PACKAGE}/extra.py", b"VALUE = 2\n")
+            append_wheel_file(archive, f"{PACKAGE}/extra.py", b"VALUE = 2\n")
         failures: list[str] = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
         self.assertTrue(any("RECORD inventory" in failure for failure in failures), failures)
@@ -484,7 +513,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a", compression=zipfile.ZIP_DEFLATED) as archive:
-            archive.writestr("../escape.py", b"VALUE = 3\n")
+            append_wheel_file(archive, "../escape.py", b"VALUE = 3\n")
         wheel_failures: list[str] = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, wheel_failures)
         self.assertTrue(any("unsafe member paths" in failure for failure in wheel_failures), wheel_failures)
@@ -531,8 +560,8 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
                 write_wheel(wheel)
                 with zipfile.ZipFile(wheel, "a", compression=zipfile.ZIP_DEFLATED) as archive:
                     if first != f"{PACKAGE}/core.py":
-                        archive.writestr(first, b"VALUE = 1\n")
-                    archive.writestr(second, b"VALUE = 2\n")
+                        append_wheel_file(archive, first, b"VALUE = 1\n")
+                    append_wheel_file(archive, second, b"VALUE = 2\n")
                 failures: list[str] = []
                 release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
                 self.assertTrue(any("normalized path collision" in failure for failure in failures), failures)
@@ -556,7 +585,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a", compression=zipfile.ZIP_DEFLATED) as archive:
-            archive.writestr(f"{PACKAGE}/core.py/payload.py", b"VALUE = 2\n")
+            append_wheel_file(archive, f"{PACKAGE}/core.py/payload.py", b"VALUE = 2\n")
         wheel_failures: list[str] = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, wheel_failures)
         self.assertTrue(any("is an ancestor" in failure for failure in wheel_failures), wheel_failures)
@@ -689,7 +718,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         write_wheel(wheel)
         write_sdist(sdist)
         with zipfile.ZipFile(wheel, "a") as archive:
-            archive.writestr(f"{PACKAGE}/core.py", b"VALUE = 999\n")
+            append_wheel_file(archive, f"{PACKAGE}/core.py", b"VALUE = 999\n")
         failures: list[str] = []
         rows = release.source_inventory(self.root / "src", self.root, failures)
         release.verify_source_artifact_parity(rows, artifact_blob(wheel), artifact_blob(sdist), PROJECT, VERSION, failures)
@@ -866,7 +895,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
                 wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
                 write_wheel(wheel)
                 with zipfile.ZipFile(wheel, "a") as archive:
-                    archive.writestr(archive_name, b"VALUE = 2\n")
+                    append_wheel_file(archive, archive_name, b"VALUE = 2\n")
                 failures: list[str] = []
                 release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
                 self.assertTrue(any("unsafe member paths" in failure for failure in failures), failures)
@@ -887,7 +916,7 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a") as archive:
-            archive.writestr(f"{PACKAGE}/empty/", b"")
+            append_wheel_directory(archive, f"{PACKAGE}/empty/")
         failures: list[str] = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
         self.assertTrue(any("empty explicit directory" in failure for failure in failures), failures)
@@ -900,8 +929,8 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
         wheel = self.root / "dist" / f"{PACKAGE}-{VERSION}-py3-none-any.whl"
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a") as archive:
-            archive.writestr("foreign/", b"")
-            archive.writestr("foreign/payload.py", b"VALUE = 2\n")
+            append_wheel_directory(archive, "foreign/")
+            append_wheel_file(archive, "foreign/payload.py", b"VALUE = 2\n")
         failures: list[str] = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
         self.assertTrue(any("unmodeled explicit directories" in failure for failure in failures), failures)
@@ -1101,9 +1130,12 @@ class ReleaseArtifactAdversarialTests(unittest.TestCase):
 
         write_wheel(wheel)
         with zipfile.ZipFile(wheel, "a") as archive:
-            info = zipfile.ZipInfo(f"{PACKAGE}/extra-field.py")
-            info.extra = b"\x99\x99\x00\x00"
-            archive.writestr(info, b"")
+            append_wheel_file(
+                archive,
+                f"{PACKAGE}/extra-field.py",
+                b"",
+                extra=b"\x99\x99\x00\x00",
+            )
         failures = []
         release.inspect_wheel(artifact_blob(wheel), PROJECT, VERSION, {PACKAGE}, failures)
         self.assertTrue(any("forbidden extra field" in failure for failure in failures), failures)

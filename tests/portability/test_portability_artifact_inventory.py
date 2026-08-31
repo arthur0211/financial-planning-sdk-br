@@ -53,8 +53,8 @@ from scripts.portability_artifact_inventory import (
 )
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
-CURRENT_CANONICAL_WHEEL_SHA256 = "38bf14e6f38042209e149d985d4e08f69a96e94de591ef8650a23b67935abb7f"
-CURRENT_CANONICAL_SDIST_SHA256 = "984c6e70febcefb220a164e3ae5cd2416b667393ff92dd39967132ec62b3eb4f"
+CURRENT_CANONICAL_WHEEL_SHA256 = "e0beb5a21f3b78fbb1aada8327301bbf3340566f8f979d70c1bb869072ec5194"
+CURRENT_CANONICAL_SDIST_SHA256 = "643af37b9d91ead26753e00bffd63425ef310e90d1847942fd732a9b0d457435"
 
 
 def _run(command: list[str], *, cwd: Path) -> None:

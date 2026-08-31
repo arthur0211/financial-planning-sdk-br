@@ -1,6 +1,6 @@
 # Checklist de publicação no GitHub
 
-_Estado em 30 de agosto de 2026: licença e publicação do source autorizadas pelo proprietário; staging privado e checks remotos pendentes; release/package em `NO-GO`._
+_Estado em 30 de agosto de 2026: licença e publicação do source autorizadas; staging privado ativo em `arthur0211/financial-planning-sdk-br`; checks remotos em remediação multi-OS; conversão pública pendente; release/package em `NO-GO`._
 
 Este checklist separa quatro decisões que não são equivalentes: preparar o checkout, criar um remoto privado, tornar o source público e publicar um package/release. Um resultado verde em qualquer etapa não autoriza a etapa seguinte.
 
@@ -45,15 +45,18 @@ Depois da autorização explícita:
 
 Staging privado é preparação colaborativa. Ele não altera `authority=none`, `artifact_status=draft` ou `release_authorized=false`.
 
+Estado observado: os commits iniciais foram enviados para o remoto privado, sem tag, Release, Package, environment, secret ou variável. Dependabot, labels, políticas de merge e token read-only do workflow foram configurados. As primeiras execuções remotas falharam fechado e expuseram diferenças reais de symlink/junction, ADS, path 8.3, metadata ZIP e Python 3.14; a remediação está registrada no changelog e ainda precisa voltar verde antes da conversão pública.
+
 ## 4. Configuração obrigatória no GitHub
 
 - [ ] imediatamente após tornar o repositório público, habilitar e verificar Private Vulnerability Reporting; reverter para privado se a operação falhar;
-- [ ] habilitar secret scanning, push protection, Dependabot alerts e security updates quando disponíveis;
+- [ ] habilitar secret scanning e push protection quando disponíveis após a conversão pública;
+- [x] habilitar Dependabot alerts e security updates no staging privado;
 - [ ] confirmar execução do CodeQL e dependency review sem permissões extras;
-- [ ] criar os labels usados pelos templates e Dependabot, incluindo `proposal` e `dependencies`;
+- [x] criar os labels usados pelos templates e Dependabot, incluindo `proposal` e `dependencies`;
 - [ ] configurar ruleset de `main`: pull request obrigatório, checks obrigatórios, resolução de conversas, bloqueio de force-push e deleção;
 - [ ] exigir review real quando houver reviewer independente; não configurar uma ficção de independência baseada no mesmo owner;
-- [ ] proteger ambientes e manter ausentes secrets de publicação enquanto release continuar fora do escopo;
+- [x] manter ausentes environments, secrets e variables de publicação enquanto release continuar fora do escopo;
 - [ ] revisar a aba Community Standards e corrigir qualquer arquivo ainda não reconhecido pelo GitHub.
 
 Checks candidatos para o ruleset devem ser escolhidos somente depois de sua primeira execução real, usando os nomes exibidos pelo GitHub. Não adivinhar nomes de checks antes dessa execução.

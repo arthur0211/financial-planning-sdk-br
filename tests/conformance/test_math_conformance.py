@@ -35,6 +35,15 @@ import property_suite  # noqa: E402
 import reference_adapter  # noqa: E402
 
 
+def remove_test_directory_link(path: Path) -> None:
+    """Remove a POSIX symlink or Windows junction without traversing it."""
+
+    if path.is_symlink():
+        path.unlink()
+    elif path.exists():
+        path.rmdir()
+
+
 class MathConformanceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -399,7 +408,7 @@ class MathConformanceTests(unittest.TestCase):
             if not created: self.skipTest("reparse-root creation unavailable")
             try: _, errors = runner.load_vectors(link, False)
             finally:
-                if link.exists(): link.rmdir()
+                remove_test_directory_link(link)
         self.assertTrue(any("reparse" in error or "symlink" in error for error in errors), errors)
 
     def test_reparse_entry_is_rejected_before_recursion(self) -> None:
@@ -413,7 +422,7 @@ class MathConformanceTests(unittest.TestCase):
             if not created: self.skipTest("reparse-entry creation unavailable")
             try: _, errors = runner.load_vectors(root, False)
             finally:
-                if link.exists(): link.rmdir()
+                remove_test_directory_link(link)
         self.assertTrue(any("reparse" in error or "symlink" in error for error in errors), errors)
 
     def test_corpus_rejects_hardlinked_manifest_vector_and_reparse_ancestor(self) -> None:
@@ -446,10 +455,7 @@ class MathConformanceTests(unittest.TestCase):
             try:
                 _, errors = runner.load_vectors(linked_parent / "v1", False)
             finally:
-                if linked_parent.is_symlink():
-                    linked_parent.unlink()
-                elif linked_parent.exists():
-                    linked_parent.rmdir()
+                remove_test_directory_link(linked_parent)
         self.assertTrue(any("ancestor" in error or "reparse" in error or "junction" in error for error in errors), errors)
 
     def test_manifest_path_traversal_and_recursive_orphans_are_rejected(self) -> None:
@@ -735,7 +741,7 @@ class MathConformanceTests(unittest.TestCase):
             try:
                 with self.assertRaisesRegex(runner.ConformanceError, "ancestor|reparse|junction"): runner.load_sut_mutation_manifest(linked / path.name, runner.sha256_file(path))
             finally:
-                if linked.exists(): linked.rmdir()
+                remove_test_directory_link(linked)
 
     def test_mutation_snapshot_detects_swap_restore_and_executes_declared_base(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

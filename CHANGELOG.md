@@ -23,6 +23,10 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 
 - pins SHA-256 das rotas matemáticas reconciliados com os bytes publicados, sem alteração das fórmulas ou dos outputs esperados;
 - fixture de launcher passa a pinçar o executável Python regular resolvido, e o teste de cancelamento preserva a injeção primária sem interferir no `wait` de cleanup no POSIX.
+- parser do CLI mantém ajuda e construção sem cor dependente do terminal no Python 3.14, inclusive sob streams substituídos em testes;
+- fixtures multi-OS removem symlink e junction pelo mecanismo correto, limitam ADS a NTFS e emitem tipos Unix explícitos nos membros ZIP sintéticos;
+- CodeQL recebe somente a permissão adicional `actions: read` exigida para consultar a própria execução;
+- goldens candidatos rebaselineados para wheel `e0beb5a2…` e sdist `643af37b…`, ainda sem authority ou autorização de release.
 
 ### Limites conhecidos
 

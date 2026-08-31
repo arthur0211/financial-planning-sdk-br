@@ -1051,6 +1051,7 @@ class CorruptPackTotalityTests(unittest.TestCase):
                 "missing R19 probe",
             )
 
+    @unittest.skipUnless(os.name == "nt", "NTFS alternate data stream semantics are Windows-only")
     def test_named_stream_inserted_after_snapshot_fails_final_recheck(self) -> None:
         target = (
             self.root
