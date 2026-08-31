@@ -98,7 +98,7 @@ Adicionar ou alterar um schema exige, no mesmo change set:
 
 ## ⚠️ Limites atuais
 
-- Há package Python local `0.1.0.dev0` e workflows candidatos para Python 3.11, 3.13 e 3.14, mas não há lockfile transitivo nem execução remota observada neste checkout. `requires-python >=3.11`, CI declarativa e pins diretos continuam verificações de desenvolvimento, não ambiente hermético ou promessa de release.
+- Há package Python local `0.1.0.dev0` e CI pública observada em Python 3.11, 3.12, 3.13 e 3.14, além de smoke instalado no job Windows 3.13. Ainda não há lockfile transitivo, matriz oficial instalada Windows/Linux sobre o mesmo freeze ou autenticação externa da evidência. `requires-python >=3.11`, CI e pins diretos continuam verificações de desenvolvimento, não ambiente hermético ou promessa de release.
 - O pack executa os validadores semânticos sobre seu corpus e a suíte adversarial. Existe um runtime/CLI local estreito para `deterministic_cashflow_ledger`, mas não há runtime de produto, serviço, release nem garantia de cobertura universal dos scanners heurísticos.
 - Existem 21 vetores matemáticos `draft` e um motor local estreito ligado a sete desses vetores; não existem policy pack aprovado, model card aprovado ou validação humana externa.
 - `artifact_status: approved` e estados computados são recusados pelo Python direto; nenhum contexto externo é consumido por esse processo.
