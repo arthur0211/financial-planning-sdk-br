@@ -34,7 +34,7 @@ Issues = "https://github.com/arthur0211/financial-planning-sdk-br/issues"
 [project.optional-dependencies]
 test = ["jsonschema==4.26.0"]
 dev = [
-  "build==1.4.0",
+  "build==1.6.0",
   "coverage==7.16.0",
   "jsonschema==4.26.0",
   "mypy==1.19.1",
