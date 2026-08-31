@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+  "title": "ExecutionInput",
+  "description": "F0 input envelope. Version 0.0.0 admits only a synthetic contract conformance probe and does not define a financial calculation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "test_only",
+    "request_id",
+    "requested_operation",
+    "regulatory_use_context",
+    "valuation_context",
+    "information_set",
+    "economic_claims",
+    "model_ref",
+    "case"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.0.0"
+    },
+    "test_only": {
+      "const": true
+    },
+    "request_id": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+    },
+    "requested_operation": {
+      "enum": [
+        "validate",
+        "compute"
+      ]
+    },
+    "regulatory_use_context": {
+      "$ref": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0"
+    },
+    "valuation_context": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/valuation_context"
+    },
+    "information_set": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/information_set"
+    },
+    "economic_claims": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/economic_claim"
+      }
+    },
+    "model_ref": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/artifact_reference"
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_type",
+        "probe_id",
+        "synthetic_decimal"
+      ],
+      "properties": {
+        "case_type": {
+          "const": "contract_conformance_probe"
+        },
+        "probe_id": {
+          "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+        },
+        "synthetic_decimal": {
+          "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/decimal_string"
+        }
+      }
+    }
+  },
+  "x-semantic-validators": [
+    "PII_IN_PUBLIC_ARTIFACT",
+    "SECRET_IN_INPUT_OR_LOG",
+    "CONTRACT_INPUT_LIMIT_EXCEEDED",
+    "REGULATED_USE_CLASS_MISMATCH",
+    "DEPLOYMENT_CAPABILITY_FORBIDDEN"
+  ]
+}

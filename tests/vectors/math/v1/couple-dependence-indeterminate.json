@@ -1,0 +1,46 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "couple-dependence-indeterminate",
+  "topic": "household_survival_states_without_dependence_model",
+  "input": {
+    "survival_probability_a": "0.80",
+    "survival_probability_b": "0.60",
+    "conditional_independence_assumed": false,
+    "floor_and_secure_income_by_state": {
+      "both_alive": {
+        "essential_floor": "200.00",
+        "secure_income": "140.00"
+      },
+      "only_a_alive": {
+        "essential_floor": "130.00",
+        "secure_income": "90.00"
+      },
+      "only_b_alive": {
+        "essential_floor": "120.00",
+        "secure_income": "70.00"
+      },
+      "none_alive": {
+        "essential_floor": "0.00",
+        "secure_income": "0.00"
+      }
+    }
+  },
+  "expected_status": "indeterminate",
+  "expected_output": {
+    "reason_code": "dependence_model_required"
+  },
+  "units": {
+    "input.survival_probability_*": "probability",
+    "input.floor_and_secure_income_by_state.*.*": "BRL_at_payment_date"
+  },
+  "tolerance": {
+    "absolute": "0",
+    "relative": "0"
+  },
+  "derivation": "Marginal survival probabilities do not identify joint household states without an independence assumption or dependence model. The computation is indeterminate, not an invalid request.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "d1b4448159774385e822bbfba2818e77c3318e35c2686e088f17f7ba605b5929"
+  }
+}

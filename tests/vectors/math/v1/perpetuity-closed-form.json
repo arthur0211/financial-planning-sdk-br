@@ -1,0 +1,28 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "perpetuity-closed-form",
+  "topic": "perpetuity_mathematical_test_only",
+  "input": {
+    "payment_amount": "12.00",
+    "effective_rate_per_period": "0.06"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "present_value": "200.00"
+  },
+  "units": {
+    "input.payment_amount": "BRL_nominal_at_each_payment_date",
+    "input.effective_rate_per_period": "dimensionless_period_rate",
+    "expected_output.present_value": "BRL_nominal_at_valuation_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Mathematical-only level perpetuity PV is C/i=12/0.06=200; it is not a planning-horizon recommendation.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "99092b7204e31f4ab5043daf7dc9cb0bc6ad5d04ffaecaf6344dcf305262f374"
+  }
+}

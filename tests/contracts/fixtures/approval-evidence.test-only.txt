@@ -1,0 +1,1 @@
+Synthetic test-only evidence for contract approval validation. This is not operational approval, model validation, or release authority.

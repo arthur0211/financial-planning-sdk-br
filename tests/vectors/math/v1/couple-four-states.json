@@ -1,0 +1,65 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "couple-four-states",
+  "topic": "household_survival_states",
+  "input": {
+    "survival_probability_a": "0.80",
+    "survival_probability_b": "0.60",
+    "conditional_independence_assumed": true,
+    "floor_and_secure_income_by_state": {
+      "both_alive": {
+        "essential_floor": "200.00",
+        "secure_income": "140.00"
+      },
+      "only_a_alive": {
+        "essential_floor": "130.00",
+        "secure_income": "90.00"
+      },
+      "only_b_alive": {
+        "essential_floor": "120.00",
+        "secure_income": "70.00"
+      },
+      "none_alive": {
+        "essential_floor": "0.00",
+        "secure_income": "0.00"
+      }
+    }
+  },
+  "expected_output": {
+    "state_probabilities": {
+      "both_alive": "0.48",
+      "only_a_alive": "0.32",
+      "only_b_alive": "0.12",
+      "none_alive": "0.08"
+    },
+    "probability_at_least_one_alive": "0.92",
+    "gap_by_state": {
+      "both_alive": "60.00",
+      "only_a_alive": "40.00",
+      "only_b_alive": "50.00",
+      "none_alive": "0.00"
+    },
+    "probability_weighted_essential_floor": "152.00",
+    "probability_weighted_secure_income": "104.40",
+    "probability_weighted_gap": "47.60"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.survival_probability_*": "probability",
+    "input.floor_and_secure_income_by_state.*.*": "BRL_at_payment_date",
+    "expected_output.state_probabilities.*": "probability",
+    "expected_output.probability_at_least_one_alive": "probability",
+    "expected_output.gap_by_state.*": "BRL_at_payment_date",
+    "expected_output.probability_weighted_*": "BRL_at_payment_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Under the declared conditional-independence assumption, the four probabilities are 0.8*0.6=0.48, 0.8*0.4=0.32, 0.2*0.6=0.12, and 0.2*0.4=0.08. Each state gap is max(0,floor-income); their weighted sum is 0.48*60+0.32*40+0.12*50+0.08*0=47.60.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "0f5c99a324816237eb75ddf5ac93036326ca2ef009dfeb6c8de049c8d36f6216"
+  }
+}

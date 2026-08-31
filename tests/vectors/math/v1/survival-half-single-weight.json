@@ -1,0 +1,48 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "survival-half-single-weight",
+  "topic": "survival_treatment_exclusivity",
+  "input": {
+    "pathwise_scenarios": [
+      {
+        "state": "alive",
+        "probability": "0.30",
+        "indicator_adjusted_gap": "100.00"
+      },
+      {
+        "state": "dead",
+        "probability": "0.70",
+        "indicator_adjusted_gap": "0.00"
+      }
+    ],
+    "analytic_survival_probability": "0.30",
+    "gap_conditional_on_alive": "100.00"
+  },
+  "expected_output": {
+    "pathwise_expected_deficit": "30.00",
+    "analytic_survival_weighted_deficit": "30.00",
+    "equivalence_holds": true
+  },
+  "anti_oracles": {
+    "double_weighted_deficit": "9.00"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.pathwise_scenarios.*.probability": "probability",
+    "input.pathwise_scenarios.*.indicator_adjusted_gap": "BRL_at_payment_date",
+    "input.analytic_survival_probability": "probability",
+    "input.gap_conditional_on_alive": "BRL_at_payment_date_conditional_on_alive",
+    "expected_output.*deficit": "BRL_at_payment_date",
+    "anti_oracles.double_weighted_deficit": "BRL_at_payment_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Pathwise integration gives 0.30*100+0.70*0=30. Analytic integration gives P(alive)*gap_if_alive=0.30*100=30. Multiplying the already pathwise-adjusted expectation by 0.30 again would incorrectly return 9.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "e49950d670784257ad25c13e669b2b390c15b8a55ef02da253a88cec5e94391d"
+  }
+}

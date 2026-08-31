@@ -1,0 +1,87 @@
+{
+  "manifest_format": "finplanbr.sdk-vector-bridge-manifest.v1",
+  "artifact_status": "draft",
+  "sdk_distribution": "finplanbr",
+  "sdk_version": "0.1.0.dev0",
+  "sdk_contract_version": "0.1.0-draft.1",
+  "source_corpus": {
+    "manifest_path": "tests/vectors/math/v1/manifest.json",
+    "manifest_sha256": "11e0cfa00ba65c25f9b71dd929ea39c6baac4a156eb36579b0f9a1878bcec8df",
+    "digest_provenance": "repository_local_untrusted",
+    "digest_authentication": "not_provided"
+  },
+  "supported_vectors": [
+    {
+      "id": "balance-reconciliation",
+      "path": "tests/vectors/math/v1/balance-reconciliation.json",
+      "topic": "cent_exact_balance_reconciliation",
+      "fingerprint": "c71279e93689dcd5f799ce3ba3b9da3033429bef1a590792dd5abf3a8639dae6",
+      "expected_status": "computed",
+      "adapter_route": "balance-reconciliation"
+    },
+    {
+      "id": "finite-annuity-certain",
+      "path": "tests/vectors/math/v1/finite-annuity-certain.json",
+      "topic": "finite_annuity_closed_form",
+      "fingerprint": "4a12fe899b7507a96236be6931f88fc30a25a3868c8a1e40a2ece71940c531a7",
+      "expected_status": "computed",
+      "adapter_route": "finite-annuity-certain"
+    },
+    {
+      "id": "internal-transfer-conservation",
+      "path": "tests/vectors/math/v1/internal-transfer-conservation.json",
+      "topic": "economic_claim_conservation",
+      "fingerprint": "0715e9179c7b38bb2b19a322f4e421ba254dae0107e69bc8d4bd771d4fb65e21",
+      "expected_status": "computed",
+      "adapter_route": "internal-transfer-conservation"
+    },
+    {
+      "id": "pv-unit-cashflow",
+      "path": "tests/vectors/math/v1/pv-unit-cashflow.json",
+      "topic": "deterministic_present_value",
+      "fingerprint": "49f9c8d799c1c7a79aba9ce1bc18bba2f480d913a303981576216471d0dd8419",
+      "expected_status": "computed",
+      "adapter_route": "pv-unit-cashflow"
+    },
+    {
+      "id": "return-basis-distribution",
+      "path": "tests/vectors/math/v1/return-basis-distribution.json",
+      "topic": "price_return_vs_total_return",
+      "fingerprint": "2f1291e1b48234d344cabb88681c1a585e96ba47796e37ae3167d865818eea8c",
+      "expected_status": "computed",
+      "adapter_route": "return-basis-distribution"
+    },
+    {
+      "id": "return-basis-invalid-combination",
+      "path": "tests/vectors/math/v1/return-basis-invalid-combination.json",
+      "topic": "total_return_distribution_double_count_rejection",
+      "fingerprint": "0e083c6e24d965d72a8b03d88236584f7fcb5f91efce00ec37c63bce72caf793",
+      "expected_status": "rejected",
+      "adapter_route": "return-basis-invalid-combination"
+    },
+    {
+      "id": "total-return-positive",
+      "path": "tests/vectors/math/v1/total-return-positive.json",
+      "topic": "total_return_without_separate_distribution",
+      "fingerprint": "2bb67993e7b090c7dc454f3bee1d5693988736e8206f671b488292e7e22c216e",
+      "expected_status": "computed",
+      "adapter_route": "total-return-positive"
+    }
+  ],
+  "out_of_scope_vector_ids": [
+    "constant-contribution-closed-form",
+    "contribution-all-at-r",
+    "couple-dependence-indeterminate",
+    "couple-deterministic-mortality",
+    "couple-four-states",
+    "cvar-discrete-enumerable",
+    "perpetuity-closed-form",
+    "portfolio-two-asset-convex",
+    "reserve-plan-vs-replan",
+    "survival-annuity-small",
+    "survival-half-single-weight",
+    "tax-lot-no-tax",
+    "tax-lot-simple",
+    "two-stage-nonanticipativity"
+  ]
+}

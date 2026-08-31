@@ -1,0 +1,10 @@
+{
+  "fixture_kind": "approved_contract_probe_overlay",
+  "test_only": true,
+  "owner_id": "OWNER-A",
+  "reviewer_id": "Reviewer-Alias",
+  "reviewed_at": "2026-08-08T12:00:00Z",
+  "review_expires_at": "2027-08-08T12:00:00Z",
+  "evaluation_time": "2026-08-09T12:00:00Z",
+  "evidence_summary": "Synthetic contract-only approval evidence; never operational authority."
+}

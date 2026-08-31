@@ -1,0 +1,28 @@
+{
+  "canonicalization": "RFC8785",
+  "input_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+  "manifest_privacy_class": "public_non_personal",
+  "linkability_scope": "single_operator",
+  "input_reference": {
+    "strategy": "operator_local_id",
+    "local_id": "correlatable-case-001"
+  },
+  "software_artifact": {
+    "artifact_id": "contract-validator",
+    "version": "0.0.0",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "contract_schema": {
+    "artifact_id": "contract-schema",
+    "version": "0.0.0",
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "runtime": {
+    "runtime_id": "cpython",
+    "runtime_version": "3.13.0",
+    "platform": "synthetic",
+    "decimal_context": null,
+    "rng": null,
+    "solver": null
+  }
+}

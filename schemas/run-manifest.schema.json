@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:run-manifest:0.0.0",
+  "title": "RunManifest",
+  "description": "Privacy-aware execution identity containing fingerprints only for artifacts actually used.",
+  "x-semantic-validators": ["RUN_MANIFEST_PRIVACY_INVALID", "PII_IN_PUBLIC_ARTIFACT", "SECRET_IN_INPUT_OR_LOG"],
+  "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/run_manifest"
+}

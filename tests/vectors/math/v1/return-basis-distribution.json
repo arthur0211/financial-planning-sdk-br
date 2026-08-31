@@ -1,0 +1,37 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "return-basis-distribution",
+  "topic": "price_return_vs_total_return",
+  "input": {
+    "return_basis": "price_return",
+    "opening_consolidated_wealth": "100.00",
+    "price_return": "0.05",
+    "cash_distribution": "3.00"
+  },
+  "expected_output": {
+    "closing_asset_value": "105.00",
+    "closing_cash_from_distribution": "3.00",
+    "closing_consolidated_wealth": "108.00"
+  },
+  "anti_oracles": {
+    "total_return_plus_distribution": "111.00"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.opening_consolidated_wealth": "BRL_at_period_start",
+    "input.price_return": "dimensionless_period_return",
+    "input.cash_distribution": "BRL_at_period_end",
+    "expected_output.*": "BRL_at_period_end",
+    "anti_oracles.total_return_plus_distribution": "BRL_at_period_end"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "The price-return branch closes the asset at 100*(1+0.05)=105 and posts the separate 3 cash distribution, reconciling consolidated wealth to 108. The total-return branch has its own positive vector.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "2f1291e1b48234d344cabb88681c1a585e96ba47796e37ae3167d865818eea8c"
+  }
+}

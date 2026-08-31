@@ -1,0 +1,903 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:finplanbr:schema:reference-acceptance-report:2.0.0-draft.3",
+  "title": "FinPlanBR bundled local reference-acceptance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_format",
+    "pack_id",
+    "pack_version",
+    "artifact_status",
+    "status",
+    "scope",
+    "provenance",
+    "reference_independence",
+    "pack_sha256",
+    "pack_sha256_basis",
+    "contract_version",
+    "engine_version",
+    "case_count",
+    "passed_count",
+    "failed_count",
+    "diagnostics",
+    "cases",
+    "authority",
+    "deployment_eligibility",
+    "release_authorized",
+    "limitations"
+  ],
+  "properties": {
+    "report_format": {"const": "finplanbr.reference-acceptance-report.v2"},
+    "pack_id": {"const": "deterministic_cashflow_ledger_reference_v2"},
+    "pack_version": {"const": "2.0.0-draft.1"},
+    "artifact_status": {"const": "draft"},
+    "status": {
+      "enum": [
+        "local_technical_acceptance_passed",
+        "local_technical_acceptance_failed",
+        "local_technical_acceptance_invalid_pack"
+      ]
+    },
+    "scope": {"const": "bundled_synthetic_deterministic_cases_only"},
+    "provenance": {"const": "repository_local_untrusted"},
+    "reference_independence": {"const": "not_claimed"},
+    "pack_sha256": {
+      "oneOf": [
+        {"type": "string", "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"},
+        {"type": "null"}
+      ]
+    },
+    "pack_sha256_basis": {"enum": ["raw_input", "fpbr_c14n_1", "not_available"]},
+    "contract_version": {"const": "0.1.0-draft.1"},
+    "engine_version": {"const": "0.1.0.dev0"},
+    "case_count": {"type": "integer", "minimum": 0, "maximum": 3},
+    "passed_count": {"type": "integer", "minimum": 0, "maximum": 3},
+    "failed_count": {"type": "integer", "minimum": 0, "maximum": 3},
+    "diagnostics": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 1,
+      "items": {"$ref": "#/$defs/diagnostic"}
+    },
+    "cases": {
+      "type": "array",
+      "maxItems": 3,
+      "prefixItems": [
+        {
+          "allOf": [
+            {"$ref": "#/$defs/case"},
+            {
+              "properties": {
+                "case_id": {"const": "pv_final_rounding_half_even"},
+                "operation": {"const": "compute"},
+                "derivation_id": {"const": "pv_sum_and_half_even_manual_derivation_v1"},
+                "expected_output_sha256": {
+                  "const": "a9ebee05b11992b63dcfd9d02001dba4ac4c620a3eddbee0fb8e835324d73972"
+                },
+                "assertions": {"$ref": "#/$defs/pvAssertions"}
+              },
+              "if": {"properties": {"status": {"const": "passed"}}},
+              "then": {
+                "properties": {
+                  "observed_output_sha256": {
+                    "const": "a9ebee05b11992b63dcfd9d02001dba4ac4c620a3eddbee0fb8e835324d73972"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/case"},
+            {
+              "properties": {
+                "case_id": {"const": "ledger_transfer_and_return"},
+                "operation": {"const": "compute"},
+                "derivation_id": {"const": "cent_ledger_replay_manual_derivation_v1"},
+                "expected_output_sha256": {
+                  "const": "9623331aae1738c45ba0e2ae0e0233693126c7d483fcd06850e72d5a349a2ec2"
+                },
+                "assertions": {"$ref": "#/$defs/ledgerAssertions"}
+              },
+              "if": {"properties": {"status": {"const": "passed"}}},
+              "then": {
+                "properties": {
+                  "observed_output_sha256": {
+                    "const": "9623331aae1738c45ba0e2ae0e0233693126c7d483fcd06850e72d5a349a2ec2"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/case"},
+            {
+              "properties": {
+                "case_id": {"const": "total_return_double_count_rejection"},
+                "operation": {"const": "validate"},
+                "derivation_id": {"const": "total_return_exclusivity_contract_derivation_v1"},
+                "expected_output_sha256": {
+                  "const": "8ea8fc92906c8598eb31bcd5a46afec1b4bd81af8f2c7eb55a68f3129eb7ae70"
+                },
+                "assertions": {"$ref": "#/$defs/validationAssertions"}
+              },
+              "if": {"properties": {"status": {"const": "passed"}}},
+              "then": {
+                "properties": {
+                  "observed_output_sha256": {
+                    "const": "8ea8fc92906c8598eb31bcd5a46afec1b4bd81af8f2c7eb55a68f3129eb7ae70"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    },
+    "authority": {"const": "none"},
+    "deployment_eligibility": {"const": "not_authorized"},
+    "release_authorized": {"const": false},
+    "limitations": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "BUNDLED_EXPECTATIONS_ARE_REPOSITORY_LOCAL_AND_UNTRUSTED"},
+        {"const": "REFERENCE_INDEPENDENCE_NOT_CLAIMED"},
+        {"const": "SYNTHETIC_CASES_ONLY"},
+        {"const": "NO_REGULATORY_POLICY_OR_RELEASE_AUTHORITY"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "local_technical_acceptance_passed"}}},
+      "then": {
+        "properties": {
+          "case_count": {"const": 3},
+          "passed_count": {"const": 3},
+          "failed_count": {"const": 0},
+          "pack_sha256": {"const": "2ffed5c0a763cec1f2b8aae44f457af59b5827407fa353c47ecf01d9029e71cd"},
+          "pack_sha256_basis": {"const": "fpbr_c14n_1"},
+          "diagnostics": {"maxItems": 0},
+          "cases": {"minItems": 3, "maxItems": 3}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "local_technical_acceptance_failed"}}},
+      "then": {
+        "properties": {
+          "case_count": {"const": 3},
+          "pack_sha256": {"const": "2ffed5c0a763cec1f2b8aae44f457af59b5827407fa353c47ecf01d9029e71cd"},
+          "failed_count": {"minimum": 1},
+          "pack_sha256_basis": {"const": "fpbr_c14n_1"},
+          "diagnostics": {
+            "prefixItems": [
+              {
+                "allOf": [
+                  {"$ref": "#/$defs/diagnostic"},
+                  {"properties": {"code": {"const": "REFERENCE_CASE_FAILED"}}}
+                ]
+              }
+            ],
+            "items": false,
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "cases": {"minItems": 3, "maxItems": 3}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "local_technical_acceptance_invalid_pack"}}},
+      "then": {
+        "properties": {
+          "case_count": {"const": 0},
+          "passed_count": {"const": 0},
+          "failed_count": {"const": 0},
+          "diagnostics": {
+            "prefixItems": [
+              {
+                "allOf": [
+                  {"$ref": "#/$defs/diagnostic"},
+                  {
+                    "properties": {
+                      "code": {
+                        "enum": [
+                          "REFERENCE_PACK_RESOURCE_MISSING",
+                          "REFERENCE_PACK_RESOURCE_UNREADABLE",
+                           "REFERENCE_PACK_JSON_INVALID",
+                           "REFERENCE_PACK_DEPTH_BUDGET",
+                           "REFERENCE_PACK_INPUT_LIMIT",
+                          "REFERENCE_PACK_DIGEST_MISMATCH",
+                          "REFERENCE_PACK_VERSION_MISMATCH",
+                          "REFERENCE_PACK_CONSTANT_MISMATCH",
+                          "REFERENCE_PACK_STRUCTURE_INVALID",
+                          "REFERENCE_PACK_ROSTER_MISMATCH",
+                          "REFERENCE_PACK_ROUTE_MISMATCH",
+                          "REFERENCE_PACK_DERIVATION_MISMATCH",
+                          "REFERENCE_PACK_REQUEST_INVALID",
+                          "REFERENCE_PACK_EXPECTED_OUTPUT_INVALID"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "items": false,
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "cases": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"pack_sha256_basis": {"const": "not_available"}}},
+      "then": {"properties": {"pack_sha256": {"type": "null"}}},
+      "else": {"properties": {"pack_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "diagnostics": {
+            "prefixItems": [
+              {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "REFERENCE_PACK_RESOURCE_MISSING",
+                      "REFERENCE_PACK_RESOURCE_UNREADABLE",
+                      "REFERENCE_PACK_INPUT_LIMIT"
+                    ]
+                  }
+                }
+              }
+            ],
+            "minItems": 1
+          }
+        }
+      },
+      "then": {"properties": {"pack_sha256_basis": {"const": "not_available"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "diagnostics": {
+            "prefixItems": [
+              {
+                "properties": {
+                  "code": {"enum": ["REFERENCE_PACK_JSON_INVALID", "REFERENCE_PACK_DEPTH_BUDGET"]}
+                }
+              }
+            ],
+            "minItems": 1
+          }
+        }
+      },
+      "then": {"properties": {"pack_sha256_basis": {"const": "raw_input"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "diagnostics": {
+            "prefixItems": [
+              {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "REFERENCE_PACK_DIGEST_MISMATCH",
+                      "REFERENCE_PACK_VERSION_MISMATCH",
+                      "REFERENCE_PACK_CONSTANT_MISMATCH",
+                      "REFERENCE_PACK_STRUCTURE_INVALID",
+                      "REFERENCE_PACK_ROSTER_MISMATCH",
+                      "REFERENCE_PACK_ROUTE_MISMATCH",
+                      "REFERENCE_PACK_DERIVATION_MISMATCH",
+                      "REFERENCE_PACK_REQUEST_INVALID",
+                      "REFERENCE_PACK_EXPECTED_OUTPUT_INVALID",
+                      "REFERENCE_CASE_FAILED"
+                    ]
+                  }
+                }
+              }
+            ],
+            "minItems": 1
+          }
+        }
+      },
+      "then": {"properties": {"pack_sha256_basis": {"const": "fpbr_c14n_1"}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "diagnostics": {
+            "prefixItems": [
+              {"properties": {"code": {"const": "REFERENCE_PACK_DIGEST_MISMATCH"}}}
+            ],
+            "minItems": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pack_sha256": {
+            "type": "string",
+            "not": {
+              "const": "2ffed5c0a763cec1f2b8aae44f457af59b5827407fa353c47ecf01d9029e71cd"
+            }
+          }
+        }
+      }
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "case_count": {"const": 0},
+            "passed_count": {"const": 0},
+            "failed_count": {"const": 0},
+            "cases": {"maxItems": 0}
+          }
+        },
+        {
+          "properties": {
+            "case_count": {"const": 3},
+            "passed_count": {"const": 3},
+            "failed_count": {"const": 0},
+            "cases": {
+              "allOf": [
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "passed"}}},
+                  "minContains": 3,
+                  "maxContains": 3
+                },
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "failed"}}},
+                  "minContains": 0,
+                  "maxContains": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "case_count": {"const": 3},
+            "passed_count": {"const": 2},
+            "failed_count": {"const": 1},
+            "cases": {
+              "allOf": [
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "passed"}}},
+                  "minContains": 2,
+                  "maxContains": 2
+                },
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "failed"}}},
+                  "minContains": 1,
+                  "maxContains": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "case_count": {"const": 3},
+            "passed_count": {"const": 1},
+            "failed_count": {"const": 2},
+            "cases": {
+              "allOf": [
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "passed"}}},
+                  "minContains": 1,
+                  "maxContains": 1
+                },
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "failed"}}},
+                  "minContains": 2,
+                  "maxContains": 2
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "case_count": {"const": 3},
+            "passed_count": {"const": 0},
+            "failed_count": {"const": 3},
+            "cases": {
+              "allOf": [
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "passed"}}},
+                  "minContains": 0,
+                  "maxContains": 0
+                },
+                {
+                  "contains": {"type": "object", "properties": {"status": {"const": "failed"}}},
+                  "minContains": 3,
+                  "maxContains": 3
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "location", "scope", "remediation_id"],
+      "properties": {
+        "code": {
+          "enum": [
+            "REFERENCE_PACK_RESOURCE_MISSING",
+            "REFERENCE_PACK_RESOURCE_UNREADABLE",
+            "REFERENCE_PACK_JSON_INVALID",
+            "REFERENCE_PACK_DEPTH_BUDGET",
+            "REFERENCE_PACK_INPUT_LIMIT",
+            "REFERENCE_PACK_DIGEST_MISMATCH",
+            "REFERENCE_PACK_VERSION_MISMATCH",
+            "REFERENCE_PACK_CONSTANT_MISMATCH",
+            "REFERENCE_PACK_STRUCTURE_INVALID",
+            "REFERENCE_PACK_ROSTER_MISMATCH",
+            "REFERENCE_PACK_ROUTE_MISMATCH",
+            "REFERENCE_PACK_DERIVATION_MISMATCH",
+            "REFERENCE_PACK_REQUEST_INVALID",
+            "REFERENCE_PACK_EXPECTED_OUTPUT_INVALID",
+            "REFERENCE_CASE_FAILED"
+          ]
+        },
+        "location": {
+          "oneOf": [
+            {"const": "reference-acceptance-pack.v2.json"},
+            {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^(?:|/(?:[A-Za-z0-9_.~-]+)(?:/[A-Za-z0-9_.~-]+)*)$(?![\\s\\S])"
+            }
+          ]
+        },
+        "scope": {
+          "enum": [
+            "resource",
+            "document",
+            "pack_integrity",
+            "compatibility",
+            "pack_contract",
+            "roster",
+            "case_route",
+            "case_derivation",
+            "case_request",
+            "expected_output",
+            "case_execution"
+          ]
+        },
+        "remediation_id": {
+          "enum": [
+            "reinstall_distribution",
+            "verify_installed_versions",
+            "inspect_bundled_pack_drift",
+            "inspect_case_output_mismatch"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "code": {
+              "enum": ["REFERENCE_PACK_RESOURCE_MISSING", "REFERENCE_PACK_RESOURCE_UNREADABLE"]
+            },
+            "location": {"const": "reference-acceptance-pack.v2.json"},
+            "scope": {"const": "resource"},
+            "remediation_id": {"const": "reinstall_distribution"}
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "enum": [
+                "REFERENCE_PACK_JSON_INVALID",
+                "REFERENCE_PACK_DEPTH_BUDGET",
+                "REFERENCE_PACK_INPUT_LIMIT"
+              ]
+            },
+            "location": {"const": ""},
+            "scope": {"const": "document"},
+            "remediation_id": {"const": "reinstall_distribution"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_DIGEST_MISMATCH"},
+            "location": {"const": ""},
+            "scope": {"const": "pack_integrity"},
+            "remediation_id": {"const": "reinstall_distribution"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_VERSION_MISMATCH"},
+            "location": {
+              "enum": ["/pack_format", "/pack_version", "/contract_version", "/engine_version"]
+            },
+            "scope": {"const": "compatibility"},
+            "remediation_id": {"const": "verify_installed_versions"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_CONSTANT_MISMATCH"},
+            "location": {
+              "enum": [
+                "/pack_id",
+                "/artifact_status",
+                "/provenance",
+                "/reference_independence",
+                "/authority",
+                "/deployment_eligibility"
+              ]
+            },
+            "scope": {"const": "pack_contract"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_STRUCTURE_INVALID"},
+            "location": {"pattern": "^(?:|/cases(?:/[0-9]+)?)$(?![\\s\\S])"},
+            "scope": {"const": "pack_contract"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_ROSTER_MISMATCH"},
+            "location": {
+              "pattern": "^/(?:case_roster(?:/[0-9]+)?|cases(?:/[0-2]/case_id)?)$(?![\\s\\S])"
+            },
+            "scope": {"const": "roster"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_ROUTE_MISMATCH"},
+            "location": {"pattern": "^/cases/[0-2]/operation$(?![\\s\\S])"},
+            "scope": {"const": "case_route"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_DERIVATION_MISMATCH"},
+            "location": {"pattern": "^/cases/[0-2]/derivation_id$(?![\\s\\S])"},
+            "scope": {"const": "case_derivation"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_REQUEST_INVALID"},
+            "location": {"pattern": "^/cases/[0-2]/request(?:/use_context)?$(?![\\s\\S])"},
+            "scope": {"const": "case_request"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_PACK_EXPECTED_OUTPUT_INVALID"},
+            "location": {
+              "pattern": "^/cases/[0-2]/(?:expected_output(?:_sha256)?|assertions(?:/(?:[0-9]|1[0-5])(?:/(?:assertion_id|rule_id|json_pointer|expected))?)?)$(?![\\s\\S])"
+            },
+            "scope": {"const": "expected_output"},
+            "remediation_id": {"const": "inspect_bundled_pack_drift"}
+          }
+        },
+        {
+          "properties": {
+            "code": {"const": "REFERENCE_CASE_FAILED"},
+            "location": {"const": "/cases"},
+            "scope": {"const": "case_execution"},
+            "remediation_id": {"const": "inspect_case_output_mismatch"}
+          }
+        }
+      ]
+    },
+    "scalar": {
+      "anyOf": [
+        {"type": "string", "maxLength": 4096},
+        {"type": "integer", "minimum": -9999999999, "maximum": 9999999999},
+        {"type": "boolean"},
+        {"type": "null"}
+      ]
+    },
+    "assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assertion_id", "rule_id", "json_pointer", "status", "expected", "observed"],
+      "properties": {
+        "assertion_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{0,127}$(?![\\s\\S])"},
+        "rule_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{0,127}$(?![\\s\\S])"},
+        "json_pointer": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^/"},
+        "status": {"enum": ["passed", "failed"]},
+        "expected": {"$ref": "#/$defs/scalar"},
+        "observed": {"$ref": "#/$defs/scalar"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {
+            "oneOf": [
+              {"properties": {"expected": {"type": "string"}, "observed": {"type": "string"}}},
+              {"properties": {"expected": {"type": "integer"}, "observed": {"type": "integer"}}},
+              {"properties": {"expected": {"type": "boolean"}, "observed": {"type": "boolean"}}},
+              {"properties": {"expected": {"type": "null"}, "observed": {"type": "null"}}}
+            ]
+          },
+          "else": {"properties": {"observed": {"type": "null"}}}
+        }
+      ]
+    },
+    "pvAssertions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "exact_discounted_sum"},
+            "rule_id": {"const": "dcl.present_value.exact_sum"},
+            "json_pointer": {"const": "/valuation/present_value_exact"},
+            "expected": {"const": "0.005"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "0.005"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "final_half_even_rounding"},
+            "rule_id": {"const": "dcl.money.final_half_even"},
+            "json_pointer": {"const": "/valuation/present_value"},
+            "expected": {"const": "0.00"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "0.00"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "empty_ledger_reconciles"},
+            "rule_id": {"const": "dcl.ledger.reconciliation"},
+            "json_pointer": {"const": "/ledger/reconciled"},
+            "expected": {"const": true}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": true}}}
+        }
+      ],
+      "items": false
+    },
+    "ledgerAssertions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "discounted_expense"},
+            "rule_id": {"const": "dcl.present_value.exact_sum"},
+            "json_pointer": {"const": "/valuation/present_value"},
+            "expected": {"const": "-1.60"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "-1.60"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "internal_transfer_conservation"},
+            "rule_id": {"const": "dcl.transfer.consolidated_zero"},
+            "json_pointer": {"const": "/ledger/consolidated_transfer_contribution"},
+            "expected": {"const": "0.00"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "0.00"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "transfer_destination_balance"},
+            "rule_id": {"const": "dcl.transfer.double_entry"},
+            "json_pointer": {"const": "/ledger/events/0/postings/1/after_balance"},
+            "expected": {"const": "103.00"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "103.00"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "price_return_gain"},
+            "rule_id": {"const": "dcl.return.price_gain"},
+            "json_pointer": {"const": "/ledger/events/1/gain"},
+            "expected": {"const": "5.15"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "5.15"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "closing_wealth_identity"},
+            "rule_id": {"const": "dcl.ledger.consolidated_identity"},
+            "json_pointer": {"const": "/ledger/closing_consolidated_wealth"},
+            "expected": {"const": "118.15"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "118.15"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "ledger_reconciliation"},
+            "rule_id": {"const": "dcl.ledger.reconciliation"},
+            "json_pointer": {"const": "/ledger/reconciled"},
+            "expected": {"const": true}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": true}}}
+        }
+      ],
+      "items": false
+    },
+    "validationAssertions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "request_is_rejected"},
+            "rule_id": {"const": "dcl.validation.closed_contract"},
+            "json_pointer": {"const": "/valid"},
+            "expected": {"const": false}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": false}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "double_count_reason_code"},
+            "rule_id": {"const": "dcl.return.total_return_exclusivity"},
+            "json_pointer": {"const": "/issues/0/code"},
+            "expected": {"const": "DCL_RETURN_BASIS_DOUBLE_COUNT"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "DCL_RETURN_BASIS_DOUBLE_COUNT"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "double_count_pointer"},
+            "rule_id": {"const": "dcl.validation.json_pointer"},
+            "json_pointer": {"const": "/issues/0/pointer"},
+            "expected": {"const": "/events/0/cash_distribution"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "/events/0/cash_distribution"}}}
+        },
+        {
+          "$ref": "#/$defs/assertion",
+          "properties": {
+            "assertion_id": {"const": "validation_has_no_authority"},
+            "rule_id": {"const": "dcl.boundary.authority_none"},
+            "json_pointer": {"const": "/authority"},
+            "expected": {"const": "none"}
+          },
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {"properties": {"observed": {"const": "none"}}}
+        }
+      ],
+      "items": false
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "operation",
+        "derivation_id",
+        "status",
+        "diagnostic",
+        "expected_output_sha256",
+        "observed_output_sha256",
+        "exact_output_match",
+        "assertions"
+      ],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{0,127}$(?![\\s\\S])"},
+        "operation": {"enum": ["compute", "validate"]},
+        "derivation_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{0,127}$(?![\\s\\S])"},
+        "status": {"enum": ["passed", "failed"]},
+        "diagnostic": {
+          "oneOf": [
+            {"enum": ["REFERENCE_CASE_EXECUTION_FAILED", "REFERENCE_OUTPUT_MISMATCH"]},
+            {"type": "null"}
+          ]
+        },
+        "expected_output_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"},
+        "observed_output_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"},
+        "exact_output_match": {"type": "boolean"},
+        "assertions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {"$ref": "#/$defs/assertion"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "passed"}}},
+          "then": {
+            "properties": {
+              "diagnostic": {"type": "null"},
+              "exact_output_match": {"const": true},
+              "assertions": {"items": {"properties": {"status": {"const": "passed"}}}}
+            }
+          },
+          "else": {
+            "properties": {
+              "diagnostic": {"enum": ["REFERENCE_CASE_EXECUTION_FAILED", "REFERENCE_OUTPUT_MISMATCH"]},
+              "exact_output_match": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"diagnostic": {"type": "null"}}},
+          "then": {"properties": {"status": {"const": "passed"}}},
+          "else": {"properties": {"status": {"const": "failed"}}}
+        },
+        {
+          "if": {"properties": {"exact_output_match": {"const": true}}},
+          "then": {"properties": {"status": {"const": "passed"}}},
+          "else": {"properties": {"status": {"const": "failed"}}}
+        },
+        {
+          "if": {"properties": {"diagnostic": {"const": "REFERENCE_CASE_EXECUTION_FAILED"}}},
+          "then": {
+            "properties": {
+              "observed_output_sha256": {
+                "const": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+              },
+              "assertions": {
+                "items": {
+                  "properties": {
+                    "status": {"const": "failed"},
+                    "observed": {"type": "null"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

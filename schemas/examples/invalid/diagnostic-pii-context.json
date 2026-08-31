@@ -1,0 +1,15 @@
+{
+  "code": "CONTRACT_REQUIRED_FIELD_MISSING",
+  "category": "contract",
+  "severity": "error",
+  "computational_status": "rejected",
+  "message_template_id": "required-field-missing",
+  "json_pointer": "/case",
+  "retryable": false,
+  "remediation_id": "provide-required-field",
+  "authority_refs": [],
+  "model_refs": [],
+  "safe_context": {
+    "subject_id": "52998224725"
+  }
+}

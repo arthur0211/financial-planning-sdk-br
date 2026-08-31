@@ -1,0 +1,47 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "internal-transfer-conservation",
+  "topic": "economic_claim_conservation",
+  "input": {
+    "economic_source_id": "synthetic-transfer-001",
+    "opening_balances": {
+      "account_a": "100.00",
+      "account_b": "10.00"
+    },
+    "transfer": {
+      "from_account": "account_b",
+      "to_account": "account_a",
+      "amount": "3.00"
+    }
+  },
+  "expected_output": {
+    "ledger_deltas": {
+      "account_a": "3.00",
+      "account_b": "-3.00"
+    },
+    "closing_balances": {
+      "account_a": "103.00",
+      "account_b": "7.00"
+    },
+    "opening_consolidated_wealth": "110.00",
+    "closing_consolidated_wealth": "110.00",
+    "consolidated_transfer_contribution": "0.00"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.opening_balances.*": "BRL_at_event_time",
+    "input.transfer.amount": "BRL_at_event_time",
+    "expected_output.*": "BRL_at_event_time",
+    "expected_output.*.*": "BRL_at_event_time"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "The declared account ids control posting: -3 to account_b and +3 to account_a under one economic_source_id. Balances move from 100+10 to 103+7 while consolidated wealth remains 110 and contribution remains zero.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "0715e9179c7b38bb2b19a322f4e421ba254dae0107e69bc8d4bd771d4fb65e21"
+  }
+}

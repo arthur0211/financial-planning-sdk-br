@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:finplanbr:schema:deterministic-cashflow-ledger-result:0.1.0-draft.1",
+  "title": "FinPlanBR deterministic cashflow ledger result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "result_format",
+    "contract_version",
+    "engine_version",
+    "calculation_id",
+    "artifact_status",
+    "computational_status",
+    "authority",
+    "deployment_eligibility",
+    "warnings",
+    "valuation",
+    "ledger"
+  ],
+  "properties": {
+    "result_format": {"const": "finplanbr.deterministic-cashflow-ledger-result.v1"},
+    "contract_version": {"const": "0.1.0-draft.1"},
+    "engine_version": {"const": "0.1.0.dev0"},
+    "calculation_id": {"$ref": "#/$defs/identifier"},
+    "artifact_status": {"const": "draft"},
+    "computational_status": {"const": "computed"},
+    "authority": {"const": "none"},
+    "deployment_eligibility": {"const": "not_authorized"},
+    "warnings": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "LOCAL_DRAFT_NOT_FINANCIAL_ADVICE"},
+        {"const": "NO_REGULATORY_OR_POLICY_AUTHORITY"},
+        {"const": "CALLER_SUPPLIED_DISCOUNT_FACTORS_NOT_VERIFIED"},
+        {"const": "NO_TAX_INFLATION_OR_PRODUCT_ENGINE"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "valuation": {"$ref": "#/$defs/valuation"},
+    "ledger": {"$ref": "#/$defs/ledger"}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$(?![\\s\\S])"},
+    "civilDate": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$(?![\\s\\S])"},
+    "moneyText": {"type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)\\.[0-9]{2}$(?![\\s\\S])", "maxLength": 40, "x-significant-digit-budget": 38},
+    "discountFactorText": {"type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]{1,18})?$(?![\\s\\S])", "maxLength": 40, "x-significant-digit-budget": 38},
+    "returnRateText": {"type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]{1,18})?$(?![\\s\\S])", "maxLength": 40, "x-significant-digit-budget": 38},
+    "exactDecimalText": {"type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]{1,20})?$(?![\\s\\S])", "maxLength": 101},
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currency", "value"],
+      "properties": {"currency": {"const": "BRL"}, "value": {"$ref": "#/$defs/moneyText"}}
+    },
+    "cashflowResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cashflow_id", "claim_id", "event_date", "amount", "discount_factor", "present_value_exact"],
+      "properties": {
+        "cashflow_id": {"$ref": "#/$defs/identifier"},
+        "claim_id": {"$ref": "#/$defs/identifier"},
+        "event_date": {"$ref": "#/$defs/civilDate"},
+        "amount": {"$ref": "#/$defs/money"},
+        "discount_factor": {"$ref": "#/$defs/discountFactorText"},
+        "present_value_exact": {"$ref": "#/$defs/exactDecimalText"}
+      }
+    },
+    "valuation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valuation_date", "currency", "rounding", "present_value", "present_value_exact", "cashflows"],
+      "properties": {
+        "valuation_date": {"$ref": "#/$defs/civilDate"},
+        "currency": {"const": "BRL"},
+        "rounding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "minor_units", "stage"],
+          "properties": {
+            "mode": {"const": "half_even"},
+            "minor_units": {"const": 2},
+            "stage": {"const": "final_money_boundary"}
+          }
+        },
+        "present_value": {"$ref": "#/$defs/moneyText"},
+        "present_value_exact": {"$ref": "#/$defs/exactDecimalText"},
+        "cashflows": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/cashflowResult"}}
+      }
+    },
+    "posting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account_id", "before_balance", "delta", "after_balance"],
+      "properties": {
+        "account_id": {"$ref": "#/$defs/identifier"},
+        "before_balance": {"$ref": "#/$defs/moneyText"},
+        "delta": {"$ref": "#/$defs/moneyText"},
+        "after_balance": {"$ref": "#/$defs/moneyText"}
+      }
+    },
+    "postingEventResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "effective_date", "sequence", "category", "claim_id", "postings"],
+      "properties": {
+        "event_id": {"$ref": "#/$defs/identifier"},
+        "event_type": {"const": "posting"},
+        "effective_date": {"$ref": "#/$defs/civilDate"},
+        "sequence": {"type": "integer", "minimum": 0, "maximum": 2147483647},
+        "category": {"enum": ["contribution", "withdrawal", "income", "gain", "fee", "tax", "adjustment"]},
+        "claim_id": {"$ref": "#/$defs/identifier"},
+        "postings": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/posting"}}
+      }
+    },
+    "transferEventResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "effective_date", "sequence", "economic_source_id", "postings"],
+      "properties": {
+        "event_id": {"$ref": "#/$defs/identifier"},
+        "event_type": {"const": "transfer"},
+        "effective_date": {"$ref": "#/$defs/civilDate"},
+        "sequence": {"type": "integer", "minimum": 0, "maximum": 2147483647},
+        "economic_source_id": {"$ref": "#/$defs/identifier"},
+        "postings": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/posting"}}
+      }
+    },
+    "returnEventResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "effective_date", "sequence", "return_basis", "rate", "gain", "asset_value_after_return", "cash_distribution", "postings"],
+      "properties": {
+        "event_id": {"$ref": "#/$defs/identifier"},
+        "event_type": {"const": "return"},
+        "effective_date": {"$ref": "#/$defs/civilDate"},
+        "sequence": {"type": "integer", "minimum": 0, "maximum": 2147483647},
+        "return_basis": {"enum": ["price_return", "total_return"]},
+        "rate": {"$ref": "#/$defs/returnRateText"},
+        "gain": {"$ref": "#/$defs/moneyText"},
+        "asset_value_after_return": {"$ref": "#/$defs/moneyText"},
+        "cash_distribution": {"$ref": "#/$defs/moneyText"},
+        "postings": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/posting"}}
+      }
+    },
+    "accountResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account_id", "return_basis", "opening_balance", "closing_balance", "net_change"],
+      "properties": {
+        "account_id": {"$ref": "#/$defs/identifier"},
+        "return_basis": {"enum": ["none", "price_return", "total_return"]},
+        "opening_balance": {"$ref": "#/$defs/moneyText"},
+        "closing_balance": {"$ref": "#/$defs/moneyText"},
+        "net_change": {"$ref": "#/$defs/moneyText"}
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["opening_consolidated_wealth", "closing_consolidated_wealth", "posting_net_change", "return_net_change", "consolidated_transfer_contribution", "reconciled", "accounts", "events"],
+      "properties": {
+        "opening_consolidated_wealth": {"$ref": "#/$defs/moneyText"},
+        "closing_consolidated_wealth": {"$ref": "#/$defs/moneyText"},
+        "posting_net_change": {"$ref": "#/$defs/moneyText"},
+        "return_net_change": {"$ref": "#/$defs/moneyText"},
+        "consolidated_transfer_contribution": {"const": "0.00"},
+        "reconciled": {"const": true},
+        "accounts": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/accountResult"}},
+        "events": {
+          "type": "array",
+          "maxItems": 4096,
+          "items": {
+            "oneOf": [
+              {"$ref": "#/$defs/postingEventResult"},
+              {"$ref": "#/$defs/transferEventResult"},
+              {"$ref": "#/$defs/returnEventResult"}
+            ]
+          }
+        }
+      }
+    }
+  }
+}

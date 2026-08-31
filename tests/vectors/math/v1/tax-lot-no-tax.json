@@ -1,0 +1,53 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "tax-lot-no-tax",
+  "topic": "synthetic_single_lot_zero_tax_counterfactual",
+  "input": {
+    "account_id": "synthetic_account_01",
+    "lot": {
+      "quantity": "10",
+      "unit_cost": "8.00"
+    },
+    "sale": {
+      "quantity": "4",
+      "unit_price": "12.00"
+    },
+    "tax_rate_on_positive_gain": "0"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "sold_quantity": "4",
+    "remaining_quantity": "6",
+    "gross_proceeds": "48.00",
+    "allocated_cost_basis": "32.00",
+    "taxable_gain": "16.00",
+    "tax_due": "0",
+    "net_proceeds": "48.00",
+    "remaining_cost_basis": "48.00"
+  },
+  "units": {
+    "input.lot.quantity": "quantity_units",
+    "input.lot.unit_cost": "BRL_per_unit",
+    "input.sale.quantity": "quantity_units",
+    "input.sale.unit_price": "BRL_per_unit",
+    "input.tax_rate_on_positive_gain": "dimensionless_rate",
+    "expected_output.sold_quantity": "quantity_units",
+    "expected_output.remaining_quantity": "quantity_units",
+    "expected_output.gross_proceeds": "BRL_at_sale_date",
+    "expected_output.allocated_cost_basis": "BRL_at_sale_date",
+    "expected_output.taxable_gain": "BRL_at_sale_date",
+    "expected_output.tax_due": "BRL_at_sale_date",
+    "expected_output.net_proceeds": "BRL_at_sale_date",
+    "expected_output.remaining_cost_basis": "BRL_at_sale_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Replay the same synthetic_account_01 lot sale as the taxed case with the rate set to zero. Proceeds, basis, gain, and remaining lot are identical; tax is zero and net proceeds equal gross proceeds.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "165bfd15202b881431cd8616e9b791e11a19f3243c28512c303b694e544c3c02"
+  }
+}

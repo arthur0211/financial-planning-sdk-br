@@ -1,0 +1,443 @@
+{
+  "pack_format": "finplanbr.reference-acceptance-pack.v2",
+  "pack_id": "deterministic_cashflow_ledger_reference_v2",
+  "pack_version": "2.0.0-draft.1",
+  "artifact_status": "draft",
+  "provenance": "repository_local_untrusted",
+  "reference_independence": "not_claimed",
+  "authority": "none",
+  "deployment_eligibility": "not_authorized",
+  "contract_version": "0.1.0-draft.1",
+  "engine_version": "0.1.0.dev0",
+  "case_roster": [
+    "pv_final_rounding_half_even",
+    "ledger_transfer_and_return",
+    "total_return_double_count_rejection"
+  ],
+  "cases": [
+    {
+      "case_id": "pv_final_rounding_half_even",
+      "operation": "compute",
+      "derivation_id": "pv_sum_and_half_even_manual_derivation_v1",
+      "request": {
+        "contract_version": "0.1.0-draft.1",
+        "calculation_id": "acceptance_pv_half_even",
+        "valuation_date": "2026-01-01",
+        "base_currency": "BRL",
+        "use_context": {
+          "purpose": "software_testing",
+          "client_specific": false,
+          "recommendation_enabled": false,
+          "execution_enabled": false
+        },
+        "discount_factors": [
+          {
+            "date": "2027-01-01",
+            "factor": "0.005"
+          }
+        ],
+        "cashflows": [
+          {
+            "cashflow_id": "unit_cashflow",
+            "claim_id": "synthetic_pv_claim",
+            "event_date": "2027-01-01",
+            "amount": {
+              "currency": "BRL",
+              "value": "1.00"
+            }
+          }
+        ],
+        "accounts": [],
+        "events": []
+      },
+      "expected_output_sha256": "a9ebee05b11992b63dcfd9d02001dba4ac4c620a3eddbee0fb8e835324d73972",
+      "expected_output": {
+        "artifact_status": "draft",
+        "authority": "none",
+        "calculation_id": "acceptance_pv_half_even",
+        "computational_status": "computed",
+        "contract_version": "0.1.0-draft.1",
+        "deployment_eligibility": "not_authorized",
+        "engine_version": "0.1.0.dev0",
+        "ledger": {
+          "accounts": [],
+          "closing_consolidated_wealth": "0.00",
+          "consolidated_transfer_contribution": "0.00",
+          "events": [],
+          "opening_consolidated_wealth": "0.00",
+          "posting_net_change": "0.00",
+          "reconciled": true,
+          "return_net_change": "0.00"
+        },
+        "result_format": "finplanbr.deterministic-cashflow-ledger-result.v1",
+        "valuation": {
+          "cashflows": [
+            {
+              "amount": {
+                "currency": "BRL",
+                "value": "1.00"
+              },
+              "cashflow_id": "unit_cashflow",
+              "claim_id": "synthetic_pv_claim",
+              "discount_factor": "0.005",
+              "event_date": "2027-01-01",
+              "present_value_exact": "0.005"
+            }
+          ],
+          "currency": "BRL",
+          "present_value": "0.00",
+          "present_value_exact": "0.005",
+          "rounding": {
+            "minor_units": 2,
+            "mode": "half_even",
+            "stage": "final_money_boundary"
+          },
+          "valuation_date": "2026-01-01"
+        },
+        "warnings": [
+          "LOCAL_DRAFT_NOT_FINANCIAL_ADVICE",
+          "NO_REGULATORY_OR_POLICY_AUTHORITY",
+          "CALLER_SUPPLIED_DISCOUNT_FACTORS_NOT_VERIFIED",
+          "NO_TAX_INFLATION_OR_PRODUCT_ENGINE"
+        ]
+      },
+      "assertions": [
+        {
+          "assertion_id": "exact_discounted_sum",
+          "rule_id": "dcl.present_value.exact_sum",
+          "json_pointer": "/valuation/present_value_exact",
+          "expected": "0.005"
+        },
+        {
+          "assertion_id": "final_half_even_rounding",
+          "rule_id": "dcl.money.final_half_even",
+          "json_pointer": "/valuation/present_value",
+          "expected": "0.00"
+        },
+        {
+          "assertion_id": "empty_ledger_reconciles",
+          "rule_id": "dcl.ledger.reconciliation",
+          "json_pointer": "/ledger/reconciled",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "case_id": "ledger_transfer_and_return",
+      "operation": "compute",
+      "derivation_id": "cent_ledger_replay_manual_derivation_v1",
+      "request": {
+        "contract_version": "0.1.0-draft.1",
+        "calculation_id": "acceptance_ledger_replay",
+        "valuation_date": "2026-01-01",
+        "base_currency": "BRL",
+        "use_context": {
+          "purpose": "software_testing",
+          "client_specific": false,
+          "recommendation_enabled": false,
+          "execution_enabled": false
+        },
+        "discount_factors": [
+          {
+            "date": "2026-01-01",
+            "factor": "1"
+          },
+          {
+            "date": "2027-01-01",
+            "factor": "0.8"
+          }
+        ],
+        "cashflows": [
+          {
+            "cashflow_id": "future_expense",
+            "claim_id": "synthetic_claim_001",
+            "event_date": "2027-01-01",
+            "amount": {
+              "currency": "BRL",
+              "value": "-2.00"
+            }
+          }
+        ],
+        "accounts": [
+          {
+            "account_id": "account_a",
+            "opening_balance": {
+              "currency": "BRL",
+              "value": "100.00"
+            },
+            "return_basis": "price_return"
+          },
+          {
+            "account_id": "account_b",
+            "opening_balance": {
+              "currency": "BRL",
+              "value": "10.00"
+            },
+            "return_basis": "none"
+          }
+        ],
+        "events": [
+          {
+            "event_type": "transfer",
+            "event_id": "move_001",
+            "effective_date": "2026-01-02",
+            "sequence": 1,
+            "from_account_id": "account_b",
+            "to_account_id": "account_a",
+            "economic_source_id": "synthetic_transfer_001",
+            "amount": {
+              "currency": "BRL",
+              "value": "3.00"
+            }
+          },
+          {
+            "event_type": "return",
+            "event_id": "price_return_001",
+            "effective_date": "2026-12-31",
+            "sequence": 2,
+            "account_id": "account_a",
+            "return_basis": "price_return",
+            "rate": "0.05",
+            "cash_distribution": {
+              "currency": "BRL",
+              "value": "3.00"
+            }
+          }
+        ]
+      },
+      "expected_output_sha256": "9623331aae1738c45ba0e2ae0e0233693126c7d483fcd06850e72d5a349a2ec2",
+      "expected_output": {
+        "artifact_status": "draft",
+        "authority": "none",
+        "calculation_id": "acceptance_ledger_replay",
+        "computational_status": "computed",
+        "contract_version": "0.1.0-draft.1",
+        "deployment_eligibility": "not_authorized",
+        "engine_version": "0.1.0.dev0",
+        "ledger": {
+          "accounts": [
+            {
+              "account_id": "account_a",
+              "closing_balance": "111.15",
+              "net_change": "11.15",
+              "opening_balance": "100.00",
+              "return_basis": "price_return"
+            },
+            {
+              "account_id": "account_b",
+              "closing_balance": "7.00",
+              "net_change": "-3.00",
+              "opening_balance": "10.00",
+              "return_basis": "none"
+            }
+          ],
+          "closing_consolidated_wealth": "118.15",
+          "consolidated_transfer_contribution": "0.00",
+          "events": [
+            {
+              "economic_source_id": "synthetic_transfer_001",
+              "effective_date": "2026-01-02",
+              "event_id": "move_001",
+              "event_type": "transfer",
+              "postings": [
+                {
+                  "account_id": "account_b",
+                  "after_balance": "7.00",
+                  "before_balance": "10.00",
+                  "delta": "-3.00"
+                },
+                {
+                  "account_id": "account_a",
+                  "after_balance": "103.00",
+                  "before_balance": "100.00",
+                  "delta": "3.00"
+                }
+              ],
+              "sequence": 1
+            },
+            {
+              "asset_value_after_return": "108.15",
+              "cash_distribution": "3.00",
+              "effective_date": "2026-12-31",
+              "event_id": "price_return_001",
+              "event_type": "return",
+              "gain": "5.15",
+              "postings": [
+                {
+                  "account_id": "account_a",
+                  "after_balance": "111.15",
+                  "before_balance": "103.00",
+                  "delta": "8.15"
+                }
+              ],
+              "rate": "0.05",
+              "return_basis": "price_return",
+              "sequence": 2
+            }
+          ],
+          "opening_consolidated_wealth": "110.00",
+          "posting_net_change": "0.00",
+          "reconciled": true,
+          "return_net_change": "8.15"
+        },
+        "result_format": "finplanbr.deterministic-cashflow-ledger-result.v1",
+        "valuation": {
+          "cashflows": [
+            {
+              "amount": {
+                "currency": "BRL",
+                "value": "-2.00"
+              },
+              "cashflow_id": "future_expense",
+              "claim_id": "synthetic_claim_001",
+              "discount_factor": "0.8",
+              "event_date": "2027-01-01",
+              "present_value_exact": "-1.6"
+            }
+          ],
+          "currency": "BRL",
+          "present_value": "-1.60",
+          "present_value_exact": "-1.6",
+          "rounding": {
+            "minor_units": 2,
+            "mode": "half_even",
+            "stage": "final_money_boundary"
+          },
+          "valuation_date": "2026-01-01"
+        },
+        "warnings": [
+          "LOCAL_DRAFT_NOT_FINANCIAL_ADVICE",
+          "NO_REGULATORY_OR_POLICY_AUTHORITY",
+          "CALLER_SUPPLIED_DISCOUNT_FACTORS_NOT_VERIFIED",
+          "NO_TAX_INFLATION_OR_PRODUCT_ENGINE"
+        ]
+      },
+      "assertions": [
+        {
+          "assertion_id": "discounted_expense",
+          "rule_id": "dcl.present_value.exact_sum",
+          "json_pointer": "/valuation/present_value",
+          "expected": "-1.60"
+        },
+        {
+          "assertion_id": "internal_transfer_conservation",
+          "rule_id": "dcl.transfer.consolidated_zero",
+          "json_pointer": "/ledger/consolidated_transfer_contribution",
+          "expected": "0.00"
+        },
+        {
+          "assertion_id": "transfer_destination_balance",
+          "rule_id": "dcl.transfer.double_entry",
+          "json_pointer": "/ledger/events/0/postings/1/after_balance",
+          "expected": "103.00"
+        },
+        {
+          "assertion_id": "price_return_gain",
+          "rule_id": "dcl.return.price_gain",
+          "json_pointer": "/ledger/events/1/gain",
+          "expected": "5.15"
+        },
+        {
+          "assertion_id": "closing_wealth_identity",
+          "rule_id": "dcl.ledger.consolidated_identity",
+          "json_pointer": "/ledger/closing_consolidated_wealth",
+          "expected": "118.15"
+        },
+        {
+          "assertion_id": "ledger_reconciliation",
+          "rule_id": "dcl.ledger.reconciliation",
+          "json_pointer": "/ledger/reconciled",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "case_id": "total_return_double_count_rejection",
+      "operation": "validate",
+      "derivation_id": "total_return_exclusivity_contract_derivation_v1",
+      "request": {
+        "contract_version": "0.1.0-draft.1",
+        "calculation_id": "acceptance_double_count_rejection",
+        "valuation_date": "2026-01-01",
+        "base_currency": "BRL",
+        "use_context": {
+          "purpose": "software_testing",
+          "client_specific": false,
+          "recommendation_enabled": false,
+          "execution_enabled": false
+        },
+        "discount_factors": [],
+        "cashflows": [],
+        "accounts": [
+          {
+            "account_id": "portfolio",
+            "opening_balance": {
+              "currency": "BRL",
+              "value": "100.00"
+            },
+            "return_basis": "total_return"
+          }
+        ],
+        "events": [
+          {
+            "event_type": "return",
+            "event_id": "invalid_total_return",
+            "effective_date": "2026-12-31",
+            "sequence": 1,
+            "account_id": "portfolio",
+            "return_basis": "total_return",
+            "rate": "0.08",
+            "cash_distribution": {
+              "currency": "BRL",
+              "value": "3.00"
+            }
+          }
+        ]
+      },
+      "expected_output_sha256": "8ea8fc92906c8598eb31bcd5a46afec1b4bd81af8f2c7eb55a68f3129eb7ae70",
+      "expected_output": {
+        "report_format": "finplanbr.validation-report.v2",
+        "contract_version": "0.1.0-draft.1",
+        "valid": false,
+        "issues": [
+          {
+            "code": "DCL_RETURN_BASIS_DOUBLE_COUNT",
+            "pointer": "/events/0/cash_distribution",
+            "message": "total_return requires a zero separate distribution"
+          }
+        ],
+        "truncation": {
+          "status": "complete"
+        },
+        "authority": "none",
+        "deployment_eligibility": "not_authorized"
+      },
+      "assertions": [
+        {
+          "assertion_id": "request_is_rejected",
+          "rule_id": "dcl.validation.closed_contract",
+          "json_pointer": "/valid",
+          "expected": false
+        },
+        {
+          "assertion_id": "double_count_reason_code",
+          "rule_id": "dcl.return.total_return_exclusivity",
+          "json_pointer": "/issues/0/code",
+          "expected": "DCL_RETURN_BASIS_DOUBLE_COUNT"
+        },
+        {
+          "assertion_id": "double_count_pointer",
+          "rule_id": "dcl.validation.json_pointer",
+          "json_pointer": "/issues/0/pointer",
+          "expected": "/events/0/cash_distribution"
+        },
+        {
+          "assertion_id": "validation_has_no_authority",
+          "rule_id": "dcl.boundary.authority_none",
+          "json_pointer": "/authority",
+          "expected": "none"
+        }
+      ]
+    }
+  ]
+}

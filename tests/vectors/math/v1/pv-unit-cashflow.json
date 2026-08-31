@@ -1,0 +1,30 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "pv-unit-cashflow",
+  "topic": "deterministic_present_value",
+  "input": {
+    "cash_flow_amount": "-2.00",
+    "discount_factor": "0.80",
+    "valuation_date": "2026-01-01",
+    "payment_date": "2027-01-01"
+  },
+  "expected_output": {
+    "present_value": "-1.60"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.cash_flow_amount": "BRL_nominal_at_payment_date",
+    "input.discount_factor": "dimensionless_BRL_at_valuation_date_per_BRL_at_payment_date",
+    "expected_output.present_value": "BRL_nominal_at_valuation_date"
+  },
+  "tolerance": {
+    "absolute": "0",
+    "relative": "0.000000000001"
+  },
+  "derivation": "PV_t = C_d * D(t,d) = -2.00 * 0.80 = -1.60 BRL at the valuation date. The negative cash flow preserves sign and kills both abs(C) and implementations that return only the factor.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "49f9c8d799c1c7a79aba9ce1bc18bba2f480d913a303981576216471d0dd8419"
+  }
+}

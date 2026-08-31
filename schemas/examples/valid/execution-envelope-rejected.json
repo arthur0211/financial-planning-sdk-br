@@ -1,0 +1,119 @@
+{
+  "contract_version": "0.0.0",
+  "test_only": true,
+  "execution_id": "synthetic-execution-002",
+  "request_id": "synthetic-request-002",
+  "generated_at": "2026-01-15T12:00:02Z",
+  "computational_status": "rejected",
+  "governance": {
+    "contract_version": "0.0.0",
+    "test_only": true,
+    "artifact_status": "draft",
+    "declared_deployment_class": "D_EXECUTION",
+    "derived_minimum_deployment_class": "D_EXECUTION",
+    "effective_deployment_class": "D_EXECUTION",
+    "disclaimer_version": "2026-08-08",
+    "regulatory_use_context": {
+      "contract_version": "0.0.0",
+      "declared_deployment_class": "D_EXECUTION",
+      "derived_minimum_deployment_class": "D_EXECUTION",
+      "effective_deployment_class": "D_EXECUTION",
+      "operator_legal_entity": "unknown",
+      "operator_jurisdiction": "unknown",
+      "authorization_type": "unknown",
+      "authorization_registry_id": "unknown",
+      "client_specific": false,
+      "instrument_scope": "security",
+      "alternatives_origin": "system_generated",
+      "ranking_enabled": true,
+      "recommendation_language_enabled": true,
+      "execution_enabled": true,
+      "compensation_model": "unknown",
+      "conflict_policy_id": "unknown",
+      "suitability_record_id": "unknown",
+      "human_reviewer_id": "unknown",
+      "counsel_opinion_id": "unknown",
+      "retention_policy_id": "unknown"
+    },
+    "intended_uses": [
+      "contract_validation"
+    ],
+    "prohibited_uses": [
+      "individualized_recommendation",
+      "order_execution",
+      "benefit_guarantee",
+      "tax_or_legal_determination"
+    ],
+    "model_use_status": "blocked",
+    "policy_status": "not_applicable",
+    "data_quality_status": "no_data_required",
+    "data_license_status": "no_external_data",
+    "regulatory_use_status": "forbidden",
+    "reproducibility_class": "exact",
+    "model_card": {
+      "artifact_id": "model-card",
+      "applicability": "not_applicable"
+    },
+    "policy_pack": {
+      "artifact_id": "policy-pack",
+      "applicability": "not_applicable"
+    },
+    "data_snapshot": {
+      "artifact_id": "data-snapshot",
+      "applicability": "not_applicable"
+    },
+    "authority_refs": [],
+    "governance_reason_codes": [
+      "EXECUTION_DISABLED"
+    ],
+    "human_review": {
+      "required": false,
+      "completed": false,
+      "reviewer_id": null,
+      "reviewed_at": null
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "EXECUTION_DISABLED",
+      "category": "deployment",
+      "severity": "fatal",
+      "computational_status": "rejected",
+      "message_template_id": "execution-disabled",
+      "json_pointer": "/governance/regulatory_use_context/execution_enabled",
+      "retryable": false,
+      "remediation_id": "remove-execution-capability",
+      "authority_refs": [],
+      "model_refs": [],
+      "safe_context": {
+        "effective_deployment_class": "D_EXECUTION"
+      }
+    }
+  ],
+  "result": null,
+  "run_manifest": {
+    "canonicalization": "RFC8785",
+    "manifest_privacy_class": "public_non_personal",
+    "linkability_scope": "none",
+    "input_reference": {"strategy": "none"},
+    "software_artifact": {
+      "artifact_id": "runtime-software",
+      "version": "0.0.0",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "contract_schema": {
+      "artifact_id": "execution-envelope-schema",
+      "applicability": "applicable",
+      "version": "0.0.0",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    "runtime": {
+      "runtime_id": "fixture-validator",
+      "runtime_version": "0.0.0",
+      "platform": "synthetic",
+      "decimal_context": null,
+      "rng": null,
+      "solver": null
+    }
+  }
+}

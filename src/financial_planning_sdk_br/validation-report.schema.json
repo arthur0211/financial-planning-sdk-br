@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:finplanbr:schema:validation-report:2.0.0-draft.2",
+  "title": "FinPlanBR bounded deterministic validation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_format",
+    "contract_version",
+    "valid",
+    "issues",
+    "truncation",
+    "authority",
+    "deployment_eligibility"
+  ],
+  "properties": {
+    "report_format": {"const": "finplanbr.validation-report.v2"},
+    "contract_version": {"const": "0.1.0-draft.1"},
+    "valid": {"type": "boolean"},
+    "issues": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/issue"}
+    },
+    "truncation": {
+      "oneOf": [
+        {"$ref": "#/$defs/completeTruncation"},
+        {"$ref": "#/$defs/truncatedTruncation"}
+      ]
+    },
+    "authority": {"const": "none"},
+    "deployment_eligibility": {"const": "not_authorized"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "valid": {"const": true},
+        "issues": {"maxItems": 0},
+        "truncation": {"$ref": "#/$defs/completeTruncation"}
+      }
+    },
+    {
+      "properties": {
+        "valid": {"const": false},
+        "issues": {"minItems": 1, "maxItems": 128},
+        "truncation": {"$ref": "#/$defs/completeTruncation"}
+      }
+    },
+    {
+      "properties": {
+        "valid": {"const": false},
+        "issues": {"minItems": 128, "maxItems": 128},
+        "truncation": {"$ref": "#/$defs/truncatedTruncation"}
+      }
+    }
+  ],
+  "$defs": {
+    "completeTruncation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {"status": {"const": "complete"}}
+    },
+    "truncatedTruncation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "omitted_issue_count"],
+      "properties": {
+        "status": {"const": "truncated"},
+        "omitted_issue_count": {"type": "integer", "minimum": 1, "maximum": 999872}
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "pointer", "message"],
+      "properties": {
+        "code": {
+          "enum": [
+            "DCL_ACCOUNT_NOT_FOUND",
+            "DCL_ARRAY_BUDGET",
+            "DCL_CONTRACT_VERSION",
+            "DCL_CURRENCY_MISMATCH",
+            "DCL_DATE_BEFORE_VALUATION",
+            "DCL_DISCOUNT_FACTOR_MISSING",
+            "DCL_DISTRIBUTION_SIGN",
+            "DCL_DUPLICATE_CLAIM",
+            "DCL_DUPLICATE_DATE",
+            "DCL_DUPLICATE_ID",
+            "DCL_EVENT_ORDER_DUPLICATE",
+            "DCL_EVENT_TYPE",
+            "DCL_INVALID_DATE",
+            "DCL_INVALID_DECIMAL",
+            "DCL_INVALID_DISCOUNT_FACTOR",
+            "DCL_INVALID_IDENTIFIER",
+            "DCL_INVALID_MONEY",
+            "DCL_JSON_INPUT",
+            "DCL_LEDGER_RECONCILIATION_FAILED",
+            "DCL_NEGATIVE_BALANCE",
+            "DCL_NONCANONICAL_ORDER",
+            "DCL_NUMERIC_INVARIANT_FAILED",
+            "DCL_NUMERIC_OVERFLOW",
+            "DCL_OUTPUT_WRITE",
+            "DCL_POSTING_CATEGORY",
+            "DCL_POSTING_SIGN",
+            "DCL_REQUIRED_FIELD",
+            "DCL_RETURN_BASIS",
+            "DCL_RETURN_BASIS_DOUBLE_COUNT",
+            "DCL_SEQUENCE",
+            "DCL_TRANSFER_ACCOUNTS",
+            "DCL_TRANSFER_AMOUNT",
+            "DCL_TYPE_MISMATCH",
+            "DCL_UNKNOWN_FIELD",
+            "DCL_UNSUPPORTED_CURRENCY",
+            "DCL_USE_OUT_OF_SCOPE"
+          ]
+        },
+        "pointer": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^(?:|/(?:[\u0020-\u007D]|~[01])*)$(?![\\s\\S])"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[\u0020-\u007E]+$(?![\\s\\S])"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,373 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:governance-envelope:0.0.0",
+  "title": "GovernanceEnvelope",
+  "description": "Use-scope, model, policy, data, license and review status that must remain attached to an execution result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "artifact_status",
+    "declared_deployment_class",
+    "derived_minimum_deployment_class",
+    "effective_deployment_class",
+    "disclaimer_version",
+    "regulatory_use_context",
+    "intended_uses",
+    "prohibited_uses",
+    "model_use_status",
+    "policy_status",
+    "data_quality_status",
+    "data_license_status",
+    "regulatory_use_status",
+    "reproducibility_class",
+    "model_card",
+    "policy_pack",
+    "data_snapshot",
+    "authority_refs",
+    "governance_reason_codes",
+    "human_review"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.0.0"
+    },
+    "artifact_status": {
+      "enum": [
+        "draft",
+        "approved"
+      ]
+    },
+    "test_only": {
+      "type": "boolean"
+    },
+    "declared_deployment_class": {
+      "$ref": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0#/$defs/deployment_class"
+    },
+    "derived_minimum_deployment_class": {
+      "$ref": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0#/$defs/deployment_class"
+    },
+    "effective_deployment_class": {
+      "$ref": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0#/$defs/deployment_class"
+    },
+    "disclaimer_version": {
+      "const": "2026-08-08"
+    },
+    "regulatory_use_context": {
+      "$ref": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0"
+    },
+    "intended_uses": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "contract_validation",
+          "local_research",
+          "education",
+          "professional_assist"
+        ]
+      }
+    },
+    "prohibited_uses": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "individualized_recommendation",
+          "order_execution",
+          "benefit_guarantee",
+          "tax_or_legal_determination",
+          "suitability_certification",
+          "causal_claim_without_identification"
+        ]
+      },
+      "allOf": [
+        {"contains": {"const": "individualized_recommendation"}},
+        {"contains": {"const": "order_execution"}},
+        {"contains": {"const": "benefit_guarantee"}},
+        {"contains": {"const": "tax_or_legal_determination"}}
+      ]
+    },
+    "model_use_status": {
+      "enum": [
+        "research_only",
+        "reviewed_non_production",
+        "approved_for_declared_use",
+        "blocked"
+      ]
+    },
+    "policy_status": {
+      "enum": [
+        "not_applicable",
+        "current",
+        "provisional",
+        "contested",
+        "unknown",
+        "expired",
+        "rejected"
+      ]
+    },
+    "data_quality_status": {
+      "enum": [
+        "no_data_required",
+        "synthetic_only",
+        "passed",
+        "warning",
+        "unknown",
+        "failed"
+      ]
+    },
+    "data_license_status": {
+      "enum": [
+        "no_external_data",
+        "allowed",
+        "restricted",
+        "contract_required",
+        "unknown",
+        "prohibited"
+      ]
+    },
+    "regulatory_use_status": {
+      "enum": [
+        "eligible",
+        "reviews_required",
+        "indeterminate",
+        "forbidden"
+      ]
+    },
+    "reproducibility_class": {
+      "enum": [
+        "exact",
+        "numeric_tolerance",
+        "statistical",
+        "solver_dependent"
+      ]
+    },
+    "model_card": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/artifact_reference"
+    },
+    "policy_pack": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/artifact_reference"
+    },
+    "data_snapshot": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/artifact_reference"
+    },
+    "authority_refs": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+      }
+    },
+    "governance_reason_codes": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:financial-planning-sdk-br:schema:reason-code:0.0.0"
+      }
+    },
+    "human_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "completed", "reviewer_id", "reviewed_at"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "completed": {"type": "boolean"},
+        "owner_id": {
+          "oneOf": [
+            {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"},
+            {"type": "null"}
+          ]
+        },
+        "reviewer_id": {
+          "oneOf": [
+            {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"},
+            {"type": "null"}
+          ]
+        },
+        "reviewed_at": {
+          "oneOf": [
+            {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/rfc3339_date_time"},
+            {"type": "null"}
+          ]
+        },
+        "review_expires_at": {
+          "oneOf": [
+            {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/rfc3339_date_time"},
+            {"type": "null"}
+          ]
+        },
+        "approval_attestation": {
+          "oneOf": [
+            {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/approval_attestation"},
+            {"type": "null"}
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["evidence_id", "status", "artifact_ref", "artifact_path", "evaluated_at", "evidence_summary"],
+            "properties": {
+              "evidence_id": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"},
+              "status": {"enum": ["passed", "failed"]},
+              "artifact_ref": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/artifact_fingerprint"},
+              "artifact_path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]{1,256}$"},
+              "evaluated_at": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/rfc3339_date_time"},
+              "evidence_summary": {"type": "string", "minLength": 1, "maxLength": 1024}
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"completed": {"const": true}}, "required": ["completed"]},
+          "then": {
+            "properties": {
+              "reviewer_id": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"},
+              "reviewed_at": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/rfc3339_date_time"}
+            }
+          },
+          "else": {"properties": {"reviewer_id": {"type": "null"}, "reviewed_at": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"required": {"const": false}}, "required": ["required"]},
+          "then": {"properties": {"completed": {"const": false}}}
+        }
+      ]
+    }
+  },
+  "x-semantic-validators": [
+    "GOVERNANCE_DEPLOYMENT_CLASS_PARITY",
+    "GOVERNANCE_ARTIFACT_APPROVAL_REVIEW",
+    "GOVERNANCE_APPROVAL_BLOCKED"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "regulatory_use_context": {
+            "properties": {
+              "effective_deployment_class": {
+                "const": "D_EXECUTION"
+              }
+            },
+            "required": [
+              "effective_deployment_class"
+            ]
+          }
+        },
+        "required": [
+          "regulatory_use_context"
+        ]
+      },
+      "then": {
+        "properties": {
+          "regulatory_use_status": {
+            "const": "forbidden"
+          },
+          "governance_reason_codes": {
+            "contains": {
+              "const": "EXECUTION_DISABLED"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_status": {
+            "const": "approved"
+          }
+        },
+        "required": [
+          "artifact_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "model_use_status": {"const": "approved_for_declared_use"},
+          "policy_status": {"enum": ["not_applicable", "current"]},
+          "data_quality_status": {"enum": ["no_data_required", "synthetic_only", "passed"]},
+          "data_license_status": {"enum": ["no_external_data", "allowed"]},
+          "regulatory_use_status": {"const": "eligible"},
+          "human_review": {
+            "required": ["required", "completed", "owner_id", "reviewer_id", "reviewed_at", "review_expires_at", "approval_attestation", "evidence"],
+            "properties": {
+              "required": {
+                "const": true
+              },
+              "completed": {
+                "const": true
+              },
+              "owner_id": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"},
+              "review_expires_at": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/rfc3339_date_time"},
+              "approval_attestation": {"$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/approval_attestation"},
+              "evidence": {"minItems": 1, "items": {"properties": {"status": {"const": "passed"}}}}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "model_use_status": {
+            "const": "approved_for_declared_use"
+          }
+        },
+        "required": [
+          "model_use_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "artifact_status": {
+            "const": "approved"
+          },
+          "human_review": {
+            "properties": {
+              "required": {
+                "const": true
+              },
+              "completed": {
+                "const": true
+              }
+            },
+            "required": [
+              "required",
+              "completed"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"test_only": {"const": true}},
+        "required": ["test_only"]
+      },
+      "then": {
+        "properties": {
+          "artifact_status": {"const": "draft"},
+          "model_use_status": {"enum": ["research_only", "blocked"]},
+          "human_review": {
+            "properties": {
+              "completed": {"const": false},
+              "approval_attestation": {"type": "null"}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

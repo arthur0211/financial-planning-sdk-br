@@ -1,0 +1,80 @@
+{
+  "contract_version": "0.0.0",
+  "model_id": "synthetic-contract-probe",
+  "specification_version": "0.0.0",
+  "artifact_status": "approved",
+  "lifecycle_status": "beta",
+  "model_use_status": "approved_for_declared_use",
+  "owner": "contracts-team",
+  "independent_reviewer": null,
+  "intended_purpose": [
+    "Validate the F0 envelope shape with synthetic values"
+  ],
+  "prohibited_uses": [
+    "Any financial, legal, actuarial, tax or investment decision"
+  ],
+  "supported_population_and_cases": [
+    "Synthetic contract conformance probes only"
+  ],
+  "equations_and_units": [],
+  "valuation_context": {
+    "valuation_date": "2026-01-15",
+    "reporting_currency": "BRL",
+    "price_basis": "nominal",
+    "price_basis_date": "2026-01-15",
+    "probability_measure": "deterministic",
+    "discounting_basis": "none",
+    "purpose": "contract_validation",
+    "survival_treatment": "not_applicable"
+  },
+  "information_set_requirements": [
+    "synthetic-probe-value"
+  ],
+  "data_and_parameter_versions": [],
+  "policy_dependencies": [],
+  "assumptions": [
+    {
+      "assumption_id": "synthetic-only",
+      "statement": "The fixture contains no real person, account, product or external dataset.",
+      "epistemic_status": "decision"
+    }
+  ],
+  "known_limitations": [
+    "This card describes a schema probe, not a financial model."
+  ],
+  "validation_evidence": [
+    {
+      "evidence_id": "external-model-review",
+      "status": "not_performed",
+      "artifact_ref": null
+    }
+  ],
+  "benchmark_protocol": {
+    "protocol_id": "not-defined-for-contract-probe",
+    "status": "not_defined",
+    "preregistered_artifact": null
+  },
+  "uncertainty_decomposition": [
+    "path_randomness",
+    "monte_carlo_sampling_error",
+    "parameter_uncertainty",
+    "model_specification_uncertainty",
+    "legal_policy_uncertainty",
+    "data_quality_and_revision_uncertainty",
+    "behavioral_and_preference_uncertainty"
+  ],
+  "failure_modes": [
+    {
+      "failure_mode_id": "schema-probe-misrepresented-as-model",
+      "detection": "A consumer presents the fixture as a validated financial calculation.",
+      "result_status": "rejected"
+    }
+  ],
+  "fallback": {
+    "fallback_id": "no-fallback",
+    "enabled": false,
+    "effect": "Reject unsupported use; do not substitute a financial result."
+  },
+  "approved_at": "2026-01-15T12:00:00Z",
+  "review_expires_at": "2027-01-15T12:00:00Z"
+}

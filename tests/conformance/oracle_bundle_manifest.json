@@ -1,0 +1,84 @@
+{
+  "manifest_format": "financial-planning-sdk-br.math-validation-route-bundle.v1",
+  "claim": "validation_route_static_boundary_not_proof_of_independence",
+  "reference_entrypoint": "reference_adapter:compute",
+  "validation_entrypoint": "independent_oracle:compute",
+  "validation_import_roots": [
+    "__future__",
+    "dataclasses",
+    "datetime",
+    "decimal",
+    "fractions",
+    "itertools",
+    "oracle_methods",
+    "typing"
+  ],
+  "source_sets": {
+    "reference": [
+      {
+        "path": "reference_adapter.py",
+        "sha256": "582c89400d657d558fda97168de21389a5143ae89085634c395f297c4094a3ed"
+      },
+      {
+        "path": "math_mutants.py",
+        "sha256": "33b502e3b4d69d74f2d6ed1731df23248d46fe1c1bd0382184db921abff17f27"
+      }
+    ],
+    "validation": [
+      {
+        "path": "independent_oracle.py",
+        "sha256": "d29840a5ba1e9ab4aa8831f7c78dba41d1a4dd361a4e87fa6f35275fef0e9ae6"
+      },
+      {
+        "path": "oracle_methods/__init__.py",
+        "sha256": "ec2329659df5329e58d2738aaad6a78eae67f2b404e451efee8bb77d2c6ca277"
+      },
+      {
+        "path": "oracle_methods/annuity_explicit.py",
+        "sha256": "e5c894c207a4310f833bb958f8a9875e701fb30a0536dfce9e6517f48285a824"
+      },
+      {
+        "path": "oracle_methods/common.py",
+        "sha256": "c828d6280b954ab8cb0edd601f35fa8c598755e7227ed236e1367ed1855155e8"
+      },
+      {
+        "path": "oracle_methods/contribution_root.py",
+        "sha256": "ed13f504e1cdafabb2bffc39fbbd382bb7ca465c75fe25dd3e0e9b5d23a38376"
+      },
+      {
+        "path": "oracle_methods/cvar_eta.py",
+        "sha256": "578ac60b86ff58e8c8e439b8f5d354bdd56b43c88da8084e232c86b6a0a9707a"
+      },
+      {
+        "path": "oracle_methods/household_sample_space.py",
+        "sha256": "5738c21756e391a242468578a42917bc22920c2ccae0a8e918878468dc9fdceb"
+      },
+      {
+        "path": "oracle_methods/ledger_replay.py",
+        "sha256": "d0d75b82bfac05035e81bc3e37eee38727b6c20f99cfd1509288a61a9092ecf2"
+      },
+      {
+        "path": "oracle_methods/nonanticipative_candidates.py",
+        "sha256": "1fa03cbb5465a54b219d29eac1345bd94067139458338d3c9ab810a1d5e79969"
+      },
+      {
+        "path": "oracle_methods/portfolio_symbolic.py",
+        "sha256": "cff7cfc5fdd34696f70b42e80c4c1c8514634b6ba8ae49011476426beb46c146"
+      },
+      {
+        "path": "oracle_methods/tax_state_machine.py",
+        "sha256": "cc1a6cc8f8a5eef5d1ce27590bc54c7055e9b7f7a392423279feaa2efc6bcdb5"
+      }
+    ],
+    "harness": [
+      {
+        "path": "module_worker.py",
+        "sha256": "d78c241fcb26d2699df6e32efb1b227f1e24fe2393068559f1de451878f2a6d1"
+      },
+      {
+        "path": "property_suite.py",
+        "sha256": "af43e8f529ad3d691b42d1a9359f2cecb796bd84d9885af03740ff24241c7356"
+      }
+    ]
+  }
+}

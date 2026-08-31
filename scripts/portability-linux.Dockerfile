@@ -1,0 +1,16 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+ARG BUILD_VERSION=1.4.0
+ARG SETUPTOOLS_VERSION=84.0.0
+RUN python -m pip install --no-cache-dir \
+    "build==${BUILD_VERSION}" \
+    "setuptools==${SETUPTOOLS_VERSION}"
+
+ENV HOME=/work/home \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONNOUSERSITE=1 \
+    XDG_CACHE_HOME=/work/cache

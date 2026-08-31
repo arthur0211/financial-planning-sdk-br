@@ -1,0 +1,41 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "survival-annuity-small",
+  "topic": "survival_weighted_annuity_closed_form",
+  "input": {
+    "payments": [
+      {
+        "payment_date": "2027-01-01",
+        "survival_probability": "0.90",
+        "discount_factor": "0.95",
+        "amount_if_alive": "100.00"
+      },
+      {
+        "payment_date": "2028-01-01",
+        "survival_probability": "0.80",
+        "discount_factor": "0.90",
+        "amount_if_alive": "100.00"
+      }
+    ]
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "present_value": "157.50"
+  },
+  "units": {
+    "input.payments.*.survival_probability": "probability",
+    "input.payments.*.discount_factor": "dimensionless_BRL_at_valuation_date_per_BRL_at_payment_date",
+    "input.payments.*.amount_if_alive": "BRL_nominal_at_payment_date",
+    "expected_output.present_value": "BRL_nominal_at_valuation_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Single-weight analytical EPV is 0.90*0.95*100 + 0.80*0.90*100 = 85.50+72.00=157.50.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "4dc7c92f3510787d8f239402b77393a510508b7f8ae542f30a75a67dc1ccfbf6"
+  }
+}

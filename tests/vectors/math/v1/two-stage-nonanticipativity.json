@@ -1,0 +1,54 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "two-stage-nonanticipativity",
+  "topic": "scenario_tree_information_filtration",
+  "input": {
+    "objective": "minimize_expected_squared_deviation",
+    "stage_0_information_set": "root_history_only",
+    "stage_1_scenarios": {
+      "low": {
+        "probability": "0.25",
+        "target_revealed_at_stage_1": "0.00"
+      },
+      "high": {
+        "probability": "0.75",
+        "target_revealed_at_stage_1": "100.00"
+      }
+    },
+    "stage_0_action_domain": "continuous_real"
+  },
+  "expected_output": {
+    "implementable_policy": {
+      "stage_0_action_low_path": "75.00",
+      "stage_0_action_high_path": "75.00",
+      "scenario_loss_low": "5625.00",
+      "scenario_loss_high": "625.00",
+      "expected_loss": "1875.00",
+      "nonanticipativity_satisfied": true
+    },
+    "perfect_information_diagnostic": {
+      "stage_0_action_low_path": "0.00",
+      "stage_0_action_high_path": "100.00",
+      "expected_loss": "0.00",
+      "implementable_at_stage_0": false,
+      "bound_for_minimization": "lower"
+    }
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.stage_1_scenarios.*.probability": "probability",
+    "input.stage_1_scenarios.*.target_revealed_at_stage_1": "BRL_in_common_stage_0_valuation_units_revealed_at_stage_1",
+    "expected_output.*.stage_0_action_*": "BRL_in_common_stage_0_valuation_units_committed_at_stage_0",
+    "expected_output.*.*loss*": "BRL_squared"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Before the branch is observed, both paths share one root action. Minimizing 0.25*(x-0)^2+0.75*(x-100)^2 gives x=75 and expected loss 1875. Wait-and-see actions 0 and 100 give loss zero but differ at the same stage-0 history, so they are only a lower bound for this minimization problem.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "9c1f301eac4c561a695dc7b91fcf857032ef95726b6fa08d42a0fe9fbce9d52a"
+  }
+}

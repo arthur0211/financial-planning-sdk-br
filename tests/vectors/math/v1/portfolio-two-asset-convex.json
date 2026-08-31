@@ -1,0 +1,34 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "portfolio-two-asset-convex",
+  "topic": "two_asset_minimum_variance_closed_form",
+  "input": {
+    "variance_a": "0.04",
+    "variance_b": "0.09",
+    "covariance_ab": "0.01"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "weight_a": "0.727272727272727272727272727273",
+    "weight_b": "0.272727272727272727272727272727",
+    "portfolio_variance": "0.0318181818181818181818181818182"
+  },
+  "units": {
+    "input.variance_a": "return_squared",
+    "input.variance_b": "return_squared",
+    "input.covariance_ab": "return_squared",
+    "expected_output.weight_a": "dimensionless_portfolio_weight",
+    "expected_output.weight_b": "dimensionless_portfolio_weight",
+    "expected_output.portfolio_variance": "return_squared"
+  },
+  "tolerance": {
+    "absolute": "0.000000000000000000000000000001",
+    "relative": "0"
+  },
+  "derivation": "For two fully invested assets, w_a=(variance_b-covariance)/(variance_a+variance_b-2*covariance)=0.08/0.11=8/11; w_b=3/11 and variance=0.03181818... .",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "4c61bcb2019b97042a64e5e8e18529912e2b6b00200ae391ac8bdda34047b5d9"
+  }
+}

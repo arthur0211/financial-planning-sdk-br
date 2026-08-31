@@ -1,0 +1,62 @@
+name: Bug
+description: Relate um comportamento reproduzível no SDK, CLI, schema ou harness.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Não inclua PII, credenciais ou dados de clientes. Para vulnerabilidades, use a aba Security.
+  - type: textarea
+    id: observed
+    attributes:
+      label: Comportamento observado
+      description: Inclua status, reason code e RC quando existirem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: Cite o contrato, schema ou documento que sustenta a expectativa.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reprodução mínima
+      description: Use somente dados sintéticos e remova paths ou valores privados.
+      render: powershell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versão ou commit
+      placeholder: 0.1.0.dev0 ou SHA do commit
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Superfície
+      options:
+        - SDK
+        - CLI
+        - Schema ou contrato
+        - Matemática
+        - Portabilidade ou subprocesso
+        - Documentação
+        - Governança
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmações
+      options:
+        - label: A reprodução usa apenas dados sintéticos e não contém segredos.
+          required: true
+        - label: Este relato não solicita recomendação financeira individualizada.
+          required: true

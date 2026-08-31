@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:diagnostic:0.0.0",
+  "title": "Diagnostic",
+  "description": "Structured diagnostic with a closed reason code and non-PII safe context.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "code",
+    "category",
+    "severity",
+    "computational_status",
+    "message_template_id",
+    "json_pointer",
+    "retryable",
+    "remediation_id",
+    "authority_refs",
+    "model_refs",
+    "safe_context"
+  ],
+  "properties": {
+    "code": {
+      "$ref": "urn:financial-planning-sdk-br:schema:reason-code:0.0.0"
+    },
+    "category": {
+      "enum": [
+        "contract",
+        "unit",
+        "valuation",
+        "policy",
+        "data",
+        "model",
+        "solver",
+        "privacy",
+        "deployment"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "fatal"
+      ]
+    },
+    "computational_status": {
+      "enum": [
+        "computed",
+        "computed_with_warnings",
+        "indeterminate",
+        "rejected"
+      ]
+    },
+    "message_template_id": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+    },
+    "json_pointer": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^(?:/(?:[^~/]|~0|~1)*)*$"
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "remediation_id": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+    },
+    "authority_refs": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+      }
+    },
+    "model_refs": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+      }
+    },
+    "safe_context": {
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]{0,63}$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  },
+  "x-semantic-validators": ["PII_IN_PUBLIC_ARTIFACT", "SECRET_IN_INPUT_OR_LOG", "CONTRACT_INPUT_LIMIT_EXCEEDED", "DIAGNOSTIC_CATALOG_MISMATCH"]
+}

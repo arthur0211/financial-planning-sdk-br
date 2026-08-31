@@ -1,0 +1,45 @@
+name: Proposta técnica
+description: Proponha uma mudança de contrato, arquitetura ou capacidade.
+title: "proposal: "
+labels:
+  - proposal
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Defina o problema sem pressupor a solução.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo e não escopo
+      description: Liste superfícies afetadas e o que ficará deliberadamente de fora.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidência
+      description: Cite contratos, vetores, fontes primárias ou reproduções locais.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Riscos e gates
+      description: Considere matemática, regulação, privacidade, licença, custo e deployment.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Fronteiras
+      options:
+        - label: A proposta não introduz PII real ou credenciais.
+          required: true
+        - label: Uma mudança de contrato público incluirá ADR, testes e documentação.
+          required: true
+        - label: A proposta não presume authority, release ou recomendação.
+          required: true

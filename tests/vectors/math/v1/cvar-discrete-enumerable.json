@@ -1,0 +1,48 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "cvar-discrete-enumerable",
+  "topic": "enumerable_tail_expected_shortfall",
+  "input": {
+    "alpha": "0.80",
+    "scenarios": [
+      {
+        "probability": "0.50",
+        "loss": "0.00"
+      },
+      {
+        "probability": "0.30",
+        "loss": "10.00"
+      },
+      {
+        "probability": "0.10",
+        "loss": "20.00"
+      },
+      {
+        "probability": "0.10",
+        "loss": "100.00"
+      }
+    ]
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "var": "10.00",
+    "tail_expected_shortfall": "60.00"
+  },
+  "units": {
+    "input.alpha": "probability",
+    "input.scenarios.*.probability": "probability",
+    "input.scenarios.*.loss": "BRL_loss_at_horizon",
+    "expected_output.var": "BRL_loss_at_horizon",
+    "expected_output.tail_expected_shortfall": "BRL_loss_at_horizon"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "At the exact 0.80 boundary for masses 0.50/0.30/0.10/0.10, the lower alpha-quantile is 10. The worst 20% is the complete 0.10 mass at 100 plus the complete 0.10 mass at 20, so TailExpectedShortfall=(10+2)/0.20=60.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "11b9c1cbcf08e4bb1f324197ca5637f2dbd6f74700aad822cc287112843215e6"
+  }
+}

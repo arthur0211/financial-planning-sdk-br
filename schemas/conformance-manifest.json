@@ -1,0 +1,260 @@
+{
+  "pack_version": "0.0.0",
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "schema_files": [
+    "common.schema.json",
+    "conformance-manifest.schema.json",
+    "diagnostic.schema.json",
+    "execution-envelope.schema.json",
+    "governance-envelope.schema.json",
+    "input.schema.json",
+    "model-card.schema.json",
+    "reason-codes.schema.json",
+    "regulatory-use-context.schema.json",
+    "run-manifest.schema.json"
+  ],
+  "cases": [
+    {
+      "case_id": "valid-regulatory-class-a",
+      "instance_path": "examples/valid/regulatory-use-context-class-a.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "valid-input-contract-probe",
+      "instance_path": "examples/valid/input-contract-probe.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "valid-governance-research",
+      "instance_path": "examples/valid/governance-envelope-research.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:governance-envelope:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "valid-diagnostic-execution-disabled",
+      "instance_path": "examples/valid/diagnostic-execution-disabled.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:diagnostic:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "valid-model-card-research",
+      "instance_path": "examples/valid/model-card-research.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:model-card:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "valid-execution-rejected",
+      "instance_path": "examples/valid/execution-envelope-rejected.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-envelope:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "invalid-regulatory-class-a-ranking",
+      "instance_path": "examples/invalid/regulatory-use-context-class-a-ranking.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "const",
+      "expected_instance_pointer": "/ranking_enabled"
+    },
+    {
+      "case_id": "invalid-regulatory-null-material-field",
+      "instance_path": "examples/invalid/regulatory-use-context-null-material-field.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "anyOf",
+      "expected_instance_pointer": "/operator_legal_entity"
+    },
+    {
+      "case_id": "invalid-regulatory-effective-downgrade",
+      "instance_path": "examples/invalid/regulatory-use-context-effective-downgrade.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "const",
+      "expected_instance_pointer": "/effective_deployment_class"
+    },
+    {
+      "case_id": "invalid-unknown-reason-code",
+      "instance_path": "examples/invalid/diagnostic-unknown-reason-code.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:diagnostic:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "enum",
+      "expected_instance_pointer": "/code"
+    },
+    {
+      "case_id": "invalid-input-duplicate-key",
+      "instance_path": "examples/invalid/input-duplicate-key.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "duplicateKey",
+      "expected_instance_pointer": ""
+    },
+    {
+      "case_id": "invalid-input-missing-regulatory-context",
+      "instance_path": "examples/invalid/input-missing-regulatory-context.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "required",
+      "expected_instance_pointer": ""
+    },
+    {
+      "case_id": "invalid-governance-missing-prohibited-use",
+      "instance_path": "examples/invalid/governance-envelope-missing-prohibited-use.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:governance-envelope:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "contains",
+      "expected_instance_pointer": "/prohibited_uses"
+    },
+    {
+      "case_id": "invalid-governance-class-mismatch",
+      "instance_path": "examples/invalid/governance-envelope-class-mismatch.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:governance-envelope:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:GOVERNANCE_DEPLOYMENT_CLASS_PARITY",
+      "expected_instance_pointer": "/effective_deployment_class"
+    },
+    {
+      "case_id": "invalid-model-card-approved-without-reviewer",
+      "instance_path": "examples/invalid/model-card-approved-without-reviewer.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:model-card:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "type",
+      "expected_instance_pointer": "/independent_reviewer"
+    },
+    {
+      "case_id": "invalid-execution-computed-with-null-result",
+      "instance_path": "examples/invalid/execution-envelope-computed-with-null-result.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-envelope:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "type",
+      "expected_instance_pointer": "/result"
+    },
+    {
+      "case_id": "valid-common-identifier",
+      "instance_path": "examples/valid/common-identifier.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:common:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "invalid-common-identifier",
+      "instance_path": "examples/invalid/common-invalid-identifier.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:common:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "pattern",
+      "expected_instance_pointer": "/value"
+    },
+    {
+      "case_id": "valid-conformance-manifest",
+      "instance_path": "examples/valid/conformance-manifest-minimal.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:conformance-manifest:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "invalid-conformance-manifest-duplicate-schema",
+      "instance_path": "examples/invalid/conformance-manifest-duplicate-schema.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:conformance-manifest:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "uniqueItems",
+      "expected_instance_pointer": "/schema_files"
+    },
+    {
+      "case_id": "valid-reason-code-rounding",
+      "instance_path": "examples/valid/reason-code-rounding.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:reason-code:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "invalid-reason-code-direct",
+      "instance_path": "examples/invalid/reason-code-unknown.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:reason-code:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "enum",
+      "expected_instance_pointer": ""
+    },
+    {
+      "case_id": "valid-run-manifest-private",
+      "instance_path": "examples/valid/run-manifest-private.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:run-manifest:0.0.0",
+      "expected_valid": true
+    },
+    {
+      "case_id": "invalid-run-manifest-public-linkable",
+      "instance_path": "examples/invalid/run-manifest-public-linkable.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:run-manifest:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "const",
+      "expected_instance_pointer": "/linkability_scope"
+    },
+    {
+      "case_id": "invalid-regulatory-derived-overstated",
+      "instance_path": "examples/invalid/regulatory-use-context-derived-overstated.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:REGULATED_USE_CLASS_MISMATCH",
+      "expected_instance_pointer": "/derived_minimum_deployment_class"
+    },
+    {
+      "case_id": "invalid-input-sensitive-and-decimal",
+      "instance_path": "examples/invalid/input-adversarial-sensitive-and-decimal.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:PII_IN_PUBLIC_ARTIFACT",
+      "expected_instance_pointer": "/request_id"
+    },
+    {
+      "case_id": "invalid-input-non-rfc3339",
+      "instance_path": "examples/invalid/input-non-rfc3339-date-time.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-input:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "pattern",
+      "expected_instance_pointer": "/information_set/known_at"
+    },
+    {
+      "case_id": "invalid-diagnostic-pii-context",
+      "instance_path": "examples/invalid/diagnostic-pii-context.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:diagnostic:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:PII_IN_PUBLIC_ARTIFACT",
+      "expected_instance_pointer": "/safe_context/subject_id"
+    },
+    {
+      "case_id": "invalid-model-card-approval-bypasses",
+      "instance_path": "examples/invalid/model-card-approval-bypasses.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:model-card:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:MODEL_APPROVAL_INTEGRITY_FAILED",
+      "expected_instance_pointer": "/independent_reviewer"
+    },
+    {
+      "case_id": "invalid-model-card-draft-approved-status",
+      "instance_path": "examples/invalid/model-card-draft-approved-status.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:model-card:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:MODEL_APPROVAL_INTEGRITY_FAILED",
+      "expected_instance_pointer": "/model_use_status"
+    },
+    {
+      "case_id": "invalid-governance-approved-blockers",
+      "instance_path": "examples/invalid/governance-envelope-approved-blockers.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:governance-envelope:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "semantic:GOVERNANCE_APPROVAL_BLOCKED",
+      "expected_instance_pointer": "/model_use_status"
+    },
+    {
+      "case_id": "invalid-test-only-execution-computed-with-warnings",
+      "instance_path": "examples/invalid/execution-envelope-computed-with-warnings.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-envelope:0.0.0",
+      "expected_valid": false,
+      "expected_keyword": "enum",
+      "expected_instance_pointer": "/computational_status"
+    },
+    {
+      "case_id": "valid-execution-indeterminate",
+      "instance_path": "examples/valid/execution-envelope-indeterminate.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:execution-envelope:0.0.0",
+      "expected_valid": true
+    }
+  ]
+}

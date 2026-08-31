@@ -1,0 +1,22 @@
+{
+  "contract_version": "0.0.0",
+  "declared_deployment_class": "B_PROFESSIONAL_ASSIST",
+  "derived_minimum_deployment_class": "B_PROFESSIONAL_ASSIST",
+  "effective_deployment_class": "B_PROFESSIONAL_ASSIST",
+  "operator_legal_entity": "synthetic-operator",
+  "operator_jurisdiction": "BR",
+  "authorization_type": "not_applicable",
+  "authorization_registry_id": "not_applicable",
+  "client_specific": false,
+  "instrument_scope": "cashflow_only",
+  "alternatives_origin": "professional_supplied",
+  "ranking_enabled": false,
+  "recommendation_language_enabled": false,
+  "execution_enabled": false,
+  "compensation_model": "none",
+  "conflict_policy_id": "not_applicable",
+  "suitability_record_id": "not_applicable",
+  "human_reviewer_id": "synthetic-reviewer",
+  "counsel_opinion_id": "not_applicable",
+  "retention_policy_id": "synthetic-retention"
+}

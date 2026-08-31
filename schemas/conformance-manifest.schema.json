@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:conformance-manifest:0.0.0",
+  "title": "F0 conformance manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pack_version",
+    "dialect",
+    "schema_files",
+    "cases"
+  ],
+  "properties": {
+    "pack_version": {
+      "const": "0.0.0"
+    },
+    "dialect": {
+      "const": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "schema_files": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "common.schema.json",
+          "conformance-manifest.schema.json",
+          "diagnostic.schema.json",
+          "execution-envelope.schema.json",
+          "governance-envelope.schema.json",
+          "input.schema.json",
+          "model-card.schema.json",
+          "reason-codes.schema.json",
+          "regulatory-use-context.schema.json",
+          "run-manifest.schema.json"
+        ]
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "instance_path",
+          "schema_id",
+          "expected_valid"
+        ],
+        "properties": {
+          "case_id": {
+            "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+          },
+          "instance_path": {
+            "type": "string",
+            "pattern": "^examples/(valid|invalid)/[a-z0-9-]+\\.json$"
+          },
+          "schema_id": {
+            "type": "string",
+            "pattern": "^urn:financial-planning-sdk-br:schema:[a-z0-9-]+:0\\.0\\.0$"
+          },
+          "expected_valid": {
+            "type": "boolean"
+          },
+          "expected_keyword": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "expected_instance_pointer": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^(?:/(?:[^~/]|~0|~1)*)*$"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "expected_valid": {
+                  "const": false
+                }
+              },
+              "required": [
+                "expected_valid"
+              ]
+            },
+            "then": {
+              "required": [
+                "expected_keyword",
+                "expected_instance_pointer"
+              ]
+            },
+            "else": {
+              "not": {
+                "anyOf": [
+                  {"required": ["expected_keyword"]},
+                  {"required": ["expected_instance_pointer"]}
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "total-return-positive",
+  "topic": "total_return_without_separate_distribution",
+  "input": {
+    "return_basis": "total_return",
+    "opening_consolidated_wealth": "100.00",
+    "total_return": "0.08",
+    "separate_distribution_event": "0.00"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "closing_account_value": "108.00",
+    "separate_distribution_event": "0.00",
+    "closing_consolidated_wealth": "108.00"
+  },
+  "anti_oracles": {
+    "double_counted_closing_wealth": "111.00"
+  },
+  "units": {
+    "input.opening_consolidated_wealth": "BRL_at_period_start",
+    "input.total_return": "dimensionless_period_return",
+    "input.separate_distribution_event": "BRL_at_period_end",
+    "expected_output.*": "BRL_at_period_end",
+    "anti_oracles.double_counted_closing_wealth": "BRL_at_period_end"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "A total return of 8% closes 100 at 108. The separate distribution event is exactly zero because it is already included in total return.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "2bb67993e7b090c7dc454f3bee1d5693988736e8206f671b488292e7e22c216e"
+  }
+}

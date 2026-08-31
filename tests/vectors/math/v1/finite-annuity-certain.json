@@ -1,0 +1,35 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "finite-annuity-certain",
+  "topic": "finite_annuity_closed_form",
+  "input": {
+    "valuation_date": "2026-01-01",
+    "first_payment_date": "2027-01-01",
+    "last_payment_date": "2029-01-01",
+    "payment_amount": "100.00",
+    "discount_factors": [
+      "0.90",
+      "0.81",
+      "0.729"
+    ]
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "present_value": "243.90"
+  },
+  "units": {
+    "input.payment_amount": "BRL_nominal_at_each_payment_date",
+    "input.discount_factors.*": "dimensionless_BRL_at_valuation_date_per_BRL_at_payment_date",
+    "expected_output.present_value": "BRL_nominal_at_valuation_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Three certain end-period payments have PV 100*(0.90+0.81+0.729)=243.90.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "4a12fe899b7507a96236be6931f88fc30a25a3868c8a1e40a2ece71940c531a7"
+  }
+}

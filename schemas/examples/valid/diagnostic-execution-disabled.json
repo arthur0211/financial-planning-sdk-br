@@ -1,0 +1,15 @@
+{
+  "code": "EXECUTION_DISABLED",
+  "category": "deployment",
+  "severity": "fatal",
+  "computational_status": "rejected",
+  "message_template_id": "execution-disabled",
+  "json_pointer": "/regulatory_use_context/execution_enabled",
+  "retryable": false,
+  "remediation_id": "remove-execution-capability",
+  "authority_refs": [],
+  "model_refs": [],
+  "safe_context": {
+    "effective_deployment_class": "D_EXECUTION"
+  }
+}

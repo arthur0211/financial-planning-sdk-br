@@ -1,0 +1,62 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "contribution-all-at-r",
+  "topic": "dimensional_reconciliation_at_retirement",
+  "input": {
+    "valuation_date_t0": "2026-01-01",
+    "retirement_date_r": "2028-01-01",
+    "terminal_date_omega": "2029-01-01",
+    "financial_assets_at_t0": "100.00",
+    "accumulation_factor_t0_to_r": "1.21",
+    "constant_contribution_schedule": [
+      {
+        "date": "2027-01-01",
+        "accumulation_factor_to_r": "1.10"
+      },
+      {
+        "date": "2028-01-01",
+        "accumulation_factor_to_r": "1.00"
+      }
+    ],
+    "planned_reserve_at_r": "150.00",
+    "planned_terminal_reserve_at_omega": "20.00",
+    "discount_factor_r_to_omega": "0.75"
+  },
+  "expected_output": {
+    "accumulated_initial_assets_at_r": "121.00",
+    "discounted_terminal_reserve_at_r": "15.00",
+    "sum_contribution_accumulation_factors": "2.10",
+    "constant_contribution_at_each_schedule_date": "20.952380952380952380952380952",
+    "accumulated_contributions_at_r": "44.00",
+    "planned_surplus_at_r": "0.00"
+  },
+  "anti_oracles": {
+    "mixed_date_surplus": "-5.00"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.financial_assets_at_t0": "BRL_nominal_at_t0",
+    "input.accumulation_factor_t0_to_r": "dimensionless_BRL_at_r_per_BRL_at_t0",
+    "input.constant_contribution_schedule.*.accumulation_factor_to_r": "dimensionless_BRL_at_r_per_BRL_at_contribution_date",
+    "input.planned_reserve_at_r": "BRL_nominal_at_r",
+    "input.planned_terminal_reserve_at_omega": "BRL_nominal_at_omega",
+    "input.discount_factor_r_to_omega": "dimensionless_BRL_at_r_per_BRL_at_omega",
+    "expected_output.accumulated_initial_assets_at_r": "BRL_nominal_at_r",
+    "expected_output.discounted_terminal_reserve_at_r": "BRL_nominal_at_r",
+    "expected_output.sum_contribution_accumulation_factors": "dimensionless",
+    "expected_output.constant_contribution_at_each_schedule_date": "BRL_nominal_at_each_contribution_date",
+    "expected_output.accumulated_contributions_at_r": "BRL_nominal_at_r",
+    "expected_output.planned_surplus_at_r": "BRL_nominal_at_r",
+    "anti_oracles.mixed_date_surplus": "BRL_nominal_at_r"
+  },
+  "tolerance": {
+    "absolute": "0.000000000000000000000001",
+    "relative": "0"
+  },
+  "derivation": "At r, initial assets are 100*1.21=121 and the terminal reserve is 20*0.75=15. Two equal contributions accumulate by 1.10a+1.00a=2.10a, so a=(150+15-121)/2.10=44/2.10. This makes 121+44-150-15=0 at r; subtracting the undiscounted omega amount would be the invalid mixed-date result -5.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "8adca5eb4f998cb1b3b90a36909b81c32b29248c23d9dd38824ee47fcaa3cfb4"
+  }
+}

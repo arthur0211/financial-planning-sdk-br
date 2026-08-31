@@ -1,0 +1,375 @@
+{
+  "manifest_format": "financial-planning-sdk-br.math-vector-manifest.v1",
+  "corpus_version": "1",
+  "artifact_status": "draft",
+  "spec_case_mapping": [
+    {
+      "case_id": "1",
+      "vector_bindings": [
+        {"vector_id":"pv-unit-cashflow","topic":"deterministic_present_value","property_family_id":"pv-unit-cashflow","derivation_method_id":"discounted_cashflow_defining_identity"}
+      ]
+    },
+    {
+      "case_id": "2",
+      "vector_bindings": [
+        {"vector_id":"finite-annuity-certain","topic":"finite_annuity_closed_form","property_family_id":"finite-annuity-certain","derivation_method_id":"cashflow_by_cashflow_explicit_sum"}
+      ]
+    },
+    {
+      "case_id": "3",
+      "vector_bindings": [
+        {"vector_id":"perpetuity-closed-form","topic":"perpetuity_mathematical_test_only","property_family_id":"perpetuity-closed-form","derivation_method_id":"perpetuity_fixed_point_identity"}
+      ]
+    },
+    {
+      "case_id": "4",
+      "vector_bindings": [
+        {"vector_id":"survival-annuity-small","topic":"survival_weighted_annuity_closed_form","property_family_id":"survival-annuity-small","derivation_method_id":"alive_payment_state_explicit_sum"}
+      ]
+    },
+    {
+      "case_id": "5",
+      "vector_bindings": [
+        {"vector_id":"constant-contribution-closed-form","topic":"constant_contribution_future_value_closed_form","property_family_id":"constant-contribution-closed-form","derivation_method_id":"future_value_explicit_cashflow_sum"}
+      ]
+    },
+    {
+      "case_id": "6",
+      "vector_bindings": [
+        {"vector_id":"portfolio-two-asset-convex","topic":"two_asset_minimum_variance_closed_form","property_family_id":"portfolio-two-asset-convex","derivation_method_id":"symbolic_objective_candidate_enumeration"}
+      ]
+    },
+    {
+      "case_id": "7",
+      "vector_bindings": [
+        {"vector_id":"cvar-discrete-enumerable","topic":"enumerable_tail_expected_shortfall","property_family_id":"cvar-discrete-enumerable","derivation_method_id":"eta_lp_vertex_enumeration"}
+      ]
+    },
+    {
+      "case_id": "8",
+      "vector_bindings": [
+        {"vector_id":"couple-deterministic-mortality","topic":"deterministic_household_mortality_state","property_family_id":"couple-deterministic-mortality","derivation_method_id":"civil_date_sample_space_classifier"}
+      ]
+    },
+    {
+      "case_id": "9",
+      "vector_bindings": [
+        {"vector_id":"tax-lot-no-tax","topic":"synthetic_single_lot_zero_tax_counterfactual","property_family_id":"tax-lot-no-tax","derivation_method_id":"zero_tax_state_machine_counterfactual"},
+        {"vector_id":"tax-lot-simple","topic":"synthetic_single_tax_lot_identity","property_family_id":"tax-lot-simple","derivation_method_id":"tax_lot_state_machine_replay"}
+      ]
+    },
+    {
+      "case_id": "10",
+      "vector_bindings": [
+        {"vector_id":"balance-reconciliation","topic":"cent_exact_balance_reconciliation","property_family_id":"balance-reconciliation","derivation_method_id":"ordered_balance_event_replay"}
+      ]
+    },
+    {
+      "case_id": "11",
+      "vector_bindings": [
+        {"vector_id":"return-basis-distribution","topic":"price_return_vs_total_return","property_family_id":"return-basis-distribution","derivation_method_id":"stock_cash_ledger_reconciliation"},
+        {"vector_id":"total-return-positive","topic":"total_return_without_separate_distribution","property_family_id":"total-return-positive","derivation_method_id":"total_return_terminal_identity"},
+        {"vector_id":"return-basis-invalid-combination","topic":"total_return_distribution_double_count_rejection","property_family_id":"return-basis-invalid-combination","derivation_method_id":"return_basis_exclusivity_predicate"}
+      ]
+    },
+    {
+      "case_id": "12",
+      "vector_bindings": [
+        {"vector_id":"internal-transfer-conservation","topic":"economic_claim_conservation","property_family_id":"internal-transfer-conservation","derivation_method_id":"double_entry_event_replay"}
+      ]
+    },
+    {
+      "case_id": "13",
+      "vector_bindings": [
+        {"vector_id":"two-stage-nonanticipativity","topic":"scenario_tree_information_filtration","property_family_id":"two-stage-nonanticipativity","derivation_method_id":"exhaustive_critical_candidate_minimization"}
+      ]
+    },
+    {
+      "case_id": "14",
+      "vector_bindings": [
+        {"vector_id":"survival-half-single-weight","topic":"survival_treatment_exclusivity","property_family_id":"survival-half-single-weight","derivation_method_id":"pathwise_vs_analytic_identity"}
+      ]
+    },
+    {
+      "case_id": "15",
+      "vector_bindings": [
+        {"vector_id":"contribution-all-at-r","topic":"dimensional_reconciliation_at_retirement","property_family_id":"contribution-all-at-r","derivation_method_id":"numerical_secant_balance_root"}
+      ]
+    }
+  ],
+  "vectors": [
+    {
+      "id": "balance-reconciliation",
+      "path": "balance-reconciliation.json",
+      "fingerprint": "c71279e93689dcd5f799ce3ba3b9da3033429bef1a590792dd5abf3a8639dae6",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "10",
+      "derivation_method_id": "ordered_balance_event_replay",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"ordered_balance_event_replay","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "constant-contribution-closed-form",
+      "path": "constant-contribution-closed-form.json",
+      "fingerprint": "a6b9f17c9125423898b0fb47b1da372b9888fc262957854a81312ea4d632caef",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "5",
+      "derivation_method_id": "future_value_explicit_cashflow_sum",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"future_value_explicit_cashflow_sum","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "contribution-all-at-r",
+      "path": "contribution-all-at-r.json",
+      "fingerprint": "8adca5eb4f998cb1b3b90a36909b81c32b29248c23d9dd38824ee47fcaa3cfb4",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "15",
+      "derivation_method_id": "numerical_secant_balance_root",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"numerical_secant_balance_root","validation_type":"independent_algorithm"}
+      ]
+    },
+    {
+      "id": "couple-dependence-indeterminate",
+      "path": "couple-dependence-indeterminate.json",
+      "fingerprint": "d1b4448159774385e822bbfba2818e77c3318e35c2686e088f17f7ba605b5929",
+      "category": "negative_contract",
+      "expected_status": "indeterminate",
+      "spec_case_id": null,
+      "derivation_method_id": "partial_identification_check",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"partial_identification_check","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "couple-deterministic-mortality",
+      "path": "couple-deterministic-mortality.json",
+      "fingerprint": "c4d723778c16c7d45ac9b350d552f0308ba63f2d09487e1a1e7376f781506ff1",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "8",
+      "derivation_method_id": "civil_date_sample_space_classifier",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"civil_date_sample_space_classifier","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "couple-four-states",
+      "path": "couple-four-states.json",
+      "fingerprint": "0f5c99a324816237eb75ddf5ac93036326ca2ef009dfeb6c8de049c8d36f6216",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": null,
+      "derivation_method_id": "bernoulli_sample_space_enumeration",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"bernoulli_sample_space_enumeration","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "cvar-discrete-enumerable",
+      "path": "cvar-discrete-enumerable.json",
+      "fingerprint": "11b9c1cbcf08e4bb1f324197ca5637f2dbd6f74700aad822cc287112843215e6",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "7",
+      "derivation_method_id": "eta_lp_vertex_enumeration",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"eta_lp_vertex_enumeration","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "finite-annuity-certain",
+      "path": "finite-annuity-certain.json",
+      "fingerprint": "4a12fe899b7507a96236be6931f88fc30a25a3868c8a1e40a2ece71940c531a7",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "2",
+      "derivation_method_id": "cashflow_by_cashflow_explicit_sum",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"cashflow_by_cashflow_explicit_sum","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "internal-transfer-conservation",
+      "path": "internal-transfer-conservation.json",
+      "fingerprint": "0715e9179c7b38bb2b19a322f4e421ba254dae0107e69bc8d4bd771d4fb65e21",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "12",
+      "derivation_method_id": "double_entry_event_replay",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"double_entry_event_replay","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "perpetuity-closed-form",
+      "path": "perpetuity-closed-form.json",
+      "fingerprint": "99092b7204e31f4ab5043daf7dc9cb0bc6ad5d04ffaecaf6344dcf305262f374",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "3",
+      "derivation_method_id": "perpetuity_fixed_point_identity",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"perpetuity_fixed_point_identity","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "portfolio-two-asset-convex",
+      "path": "portfolio-two-asset-convex.json",
+      "fingerprint": "4c61bcb2019b97042a64e5e8e18529912e2b6b00200ae391ac8bdda34047b5d9",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "6",
+      "derivation_method_id": "symbolic_objective_candidate_enumeration",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"symbolic_objective_candidate_enumeration","validation_type":"independent_algorithm"}
+      ]
+    },
+    {
+      "id": "pv-unit-cashflow",
+      "path": "pv-unit-cashflow.json",
+      "fingerprint": "49f9c8d799c1c7a79aba9ce1bc18bba2f480d913a303981576216471d0dd8419",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "1",
+      "derivation_method_id": "discounted_cashflow_defining_identity",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"discounted_cashflow_defining_identity","validation_type":"independent_numeric_representation"}
+      ]
+    },
+    {
+      "id": "reserve-plan-vs-replan",
+      "path": "reserve-plan-vs-replan.json",
+      "fingerprint": "58fe5da65355c243b12160e394213432c84a653f0a1a77c78f8c761f3843601c",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": null,
+      "derivation_method_id": "information_set_state_enumeration",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"information_set_state_enumeration","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "return-basis-distribution",
+      "path": "return-basis-distribution.json",
+      "fingerprint": "2f1291e1b48234d344cabb88681c1a585e96ba47796e37ae3167d865818eea8c",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "11",
+      "derivation_method_id": "stock_cash_ledger_reconciliation",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"stock_cash_ledger_reconciliation","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "return-basis-invalid-combination",
+      "path": "return-basis-invalid-combination.json",
+      "fingerprint": "0e083c6e24d965d72a8b03d88236584f7fcb5f91efce00ec37c63bce72caf793",
+      "category": "negative_contract",
+      "expected_status": "rejected",
+      "spec_case_id": "11",
+      "derivation_method_id": "return_basis_exclusivity_predicate",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"return_basis_exclusivity_predicate","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "survival-annuity-small",
+      "path": "survival-annuity-small.json",
+      "fingerprint": "4dc7c92f3510787d8f239402b77393a510508b7f8ae542f30a75a67dc1ccfbf6",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "4",
+      "derivation_method_id": "alive_payment_state_explicit_sum",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"alive_payment_state_explicit_sum","validation_type":"independent_enumeration"}
+      ]
+    },
+    {
+      "id": "survival-half-single-weight",
+      "path": "survival-half-single-weight.json",
+      "fingerprint": "e49950d670784257ad25c13e669b2b390c15b8a55ef02da253a88cec5e94391d",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "14",
+      "derivation_method_id": "pathwise_vs_analytic_identity",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"pathwise_vs_analytic_identity","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "tax-lot-no-tax",
+      "path": "tax-lot-no-tax.json",
+      "fingerprint": "165bfd15202b881431cd8616e9b791e11a19f3243c28512c303b694e544c3c02",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "9",
+      "derivation_method_id": "zero_tax_state_machine_counterfactual",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"zero_tax_state_machine_counterfactual","validation_type":"independent_algorithm"}
+      ]
+    },
+    {
+      "id": "tax-lot-simple",
+      "path": "tax-lot-simple.json",
+      "fingerprint": "22eff9cd0dd57827e52edd43802da3cdb3356cf52cbe61a0f880a53cab7cc52c",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "9",
+      "derivation_method_id": "tax_lot_state_machine_replay",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"tax_lot_state_machine_replay","validation_type":"independent_algorithm"}
+      ]
+    },
+    {
+      "id": "total-return-positive",
+      "path": "total-return-positive.json",
+      "fingerprint": "2bb67993e7b090c7dc454f3bee1d5693988736e8206f671b488292e7e22c216e",
+      "category": "accounting_identity",
+      "expected_status": "computed",
+      "spec_case_id": "11",
+      "derivation_method_id": "total_return_terminal_identity",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"total_return_terminal_identity","validation_type":"exact_identity_reconciliation"}
+      ]
+    },
+    {
+      "id": "two-stage-nonanticipativity",
+      "path": "two-stage-nonanticipativity.json",
+      "fingerprint": "9c1f301eac4c561a695dc7b91fcf857032ef95726b6fa08d42a0fe9fbce9d52a",
+      "category": "closed_form",
+      "expected_status": "computed",
+      "spec_case_id": "13",
+      "derivation_method_id": "exhaustive_critical_candidate_minimization",
+      "validation_methods": [
+        {"method_id":"reference_decimal_test_only","validation_type":"independent_numeric_representation"},
+        {"method_id":"exhaustive_critical_candidate_minimization","validation_type":"independent_enumeration"}
+      ]
+    }
+  ]
+}

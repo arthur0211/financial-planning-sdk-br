@@ -1,0 +1,372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:common:0.0.0",
+  "title": "Financial Planning SDK Brasil common contract definitions",
+  "description": "Shared, non-executable primitives for the F0 contract pack.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["primitive_name", "value"],
+  "properties": {
+    "primitive_name": {"const": "identifier"},
+    "value": {"$ref": "#/$defs/identifier"}
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z][0-9A-Za-z.+_-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[a-f0-9]{64}$"
+    },
+    "decimal_string": {
+      "type": "string",
+      "maxLength": 66,
+      "pattern": "^(?:(0|[1-9][0-9]*)(\\.[0-9]+)?|-(0\\.[0-9]*[1-9][0-9]*|[1-9][0-9]*(\\.[0-9]+)?))$"
+    },
+    "approval_attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bootstrap_result_sha256", "trust_policy_sha256", "signer_key_fingerprint"],
+      "properties": {
+        "bootstrap_result_sha256": {"$ref": "#/$defs/sha256"},
+        "trust_policy_sha256": {"$ref": "#/$defs/sha256"},
+        "signer_key_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:(?!0{64}$)[a-f0-9]{64}$"
+        }
+      }
+    },
+    "rfc3339_date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,9})?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])$"
+    },
+    "artifact_fingerprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "applicability": {
+          "const": "applicable"
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "artifact_reference": {
+      "oneOf": [
+        {
+          "allOf": [
+            {"$ref": "#/$defs/artifact_fingerprint"},
+            {
+              "type": "object",
+              "required": ["applicability"],
+              "properties": {"applicability": {"const": "applicable"}}
+            }
+          ],
+          "unevaluatedProperties": false
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_id", "applicability"],
+          "properties": {
+            "artifact_id": {"$ref": "#/$defs/identifier"},
+            "applicability": {"enum": ["not_applicable", "unknown"]}
+          }
+        }
+      ]
+    },
+    "valuation_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valuation_date",
+        "reporting_currency",
+        "price_basis",
+        "price_basis_date",
+        "probability_measure",
+        "discounting_basis",
+        "purpose",
+        "survival_treatment"
+      ],
+      "properties": {
+        "valuation_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reporting_currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "price_basis": {
+          "enum": [
+            "nominal",
+            "real"
+          ]
+        },
+        "price_basis_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "probability_measure": {
+          "enum": [
+            "deterministic",
+            "physical",
+            "risk_neutral",
+            "subjective"
+          ]
+        },
+        "discounting_basis": {
+          "enum": [
+            "none",
+            "user_supplied_curve",
+            "pricing_kernel"
+          ]
+        },
+        "purpose": {
+          "enum": [
+            "contract_validation",
+            "economic_projection",
+            "research_comparison",
+            "reporting"
+          ]
+        },
+        "survival_treatment": {
+          "enum": [
+            "not_applicable",
+            "pathwise_simulation",
+            "analytic_state_weighting"
+          ]
+        }
+      }
+    },
+    "information_set": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "known_at",
+        "observable_ids",
+        "future_information_allowed"
+      ],
+      "properties": {
+        "known_at": {
+          "$ref": "#/$defs/rfc3339_date_time"
+        },
+        "observable_ids": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "future_information_allowed": {
+          "const": false
+        }
+      }
+    },
+    "economic_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "economic_source_id",
+        "account_id",
+        "claim_nature",
+        "gross_net_basis",
+        "valuation_component"
+      ],
+      "properties": {
+        "claim_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "economic_source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "account_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "claim_nature": {
+          "enum": [
+            "stock",
+            "flow"
+          ]
+        },
+        "gross_net_basis": {
+          "enum": [
+            "gross",
+            "net"
+          ]
+        },
+        "valuation_component": {
+          "enum": [
+            "market_net_worth",
+            "human_capital",
+            "contractual_benefit",
+            "external_income",
+            "liability",
+            "consumption"
+          ]
+        }
+      }
+    },
+    "run_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonicalization",
+        "manifest_privacy_class",
+        "linkability_scope",
+        "input_reference",
+        "software_artifact",
+        "contract_schema",
+        "runtime"
+      ],
+      "properties": {
+        "canonicalization": {
+          "const": "RFC8785"
+        },
+        "manifest_privacy_class": {
+          "enum": ["public_non_personal", "restricted_pseudonymous"]
+        },
+        "linkability_scope": {
+          "enum": ["none", "single_case", "single_operator"]
+        },
+        "input_reference": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["strategy"],
+              "properties": {"strategy": {"const": "none"}}
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["strategy", "local_id"],
+              "properties": {
+                "strategy": {"const": "operator_local_id"},
+                "local_id": {"$ref": "#/$defs/identifier"}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["strategy", "key_id", "hmac_sha256"],
+              "properties": {
+                "strategy": {"const": "keyed_hmac_sha256"},
+                "key_id": {"$ref": "#/$defs/identifier"},
+                "hmac_sha256": {"$ref": "#/$defs/sha256"}
+              }
+            }
+          ]
+        },
+        "software_artifact": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "contract_schema": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "model_specification": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "calibration_parameters": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "policy_pack": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "data_snapshot": {
+          "$ref": "#/$defs/artifact_fingerprint"
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "runtime_id",
+            "runtime_version",
+            "platform",
+            "decimal_context",
+            "rng",
+            "solver"
+          ],
+          "properties": {
+            "runtime_id": {
+              "$ref": "#/$defs/identifier"
+            },
+            "runtime_version": {
+              "$ref": "#/$defs/version"
+            },
+            "platform": {
+              "$ref": "#/$defs/identifier"
+            },
+            "decimal_context": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 128
+            },
+            "rng": {
+              "type": "null"
+            },
+            "solver": {
+              "type": "null"
+            }
+          }
+        }
+      }
+      ,
+      "allOf": [
+        {
+          "if": {"properties": {"manifest_privacy_class": {"const": "public_non_personal"}}, "required": ["manifest_privacy_class"]},
+          "then": {
+            "properties": {
+              "linkability_scope": {"const": "none"},
+              "input_reference": {
+                "type": "object",
+                "properties": {"strategy": {"const": "none"}},
+                "required": ["strategy"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"input_reference": {"properties": {"strategy": {"enum": ["operator_local_id", "keyed_hmac_sha256"]}}, "required": ["strategy"]}},
+            "required": ["input_reference"]
+          },
+          "then": {"properties": {"linkability_scope": {"enum": ["single_case", "single_operator"]}}}
+        },
+        {
+          "if": {
+            "properties": {"input_reference": {"properties": {"strategy": {"const": "none"}}, "required": ["strategy"]}},
+            "required": ["input_reference"]
+          },
+          "then": {"properties": {"linkability_scope": {"const": "none"}}}
+        }
+      ]
+    }
+  }
+}

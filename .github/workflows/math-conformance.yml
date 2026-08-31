@@ -1,0 +1,56 @@
+name: Math corpus/reference self-check
+
+on:
+  pull_request:
+    paths:
+      - "tests/vectors/math/**"
+      - "tests/conformance/**"
+      - "scripts/validate_math_vectors.*"
+      - "scripts/bounded_subprocess.py"
+      - "docs/specification/mathematical-engine.md"
+      - ".github/workflows/math-conformance.yml"
+  push:
+    paths:
+      - "tests/vectors/math/**"
+      - "tests/conformance/**"
+      - "scripts/validate_math_vectors.*"
+      - "scripts/bounded_subprocess.py"
+      - "docs/specification/mathematical-engine.md"
+      - ".github/workflows/math-conformance.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  corpus-reference-self-check:
+    # Scope: deterministic stdlib fixtures, two bounded local validation routes,
+    # module/command protocol and fixture sensitivity only. This job is a
+    # corpus/reference self-check, never a SUT-conformance or release claim.
+    # Processes receive an isolated cwd
+    # and reduced environment, but filesystem_isolation and network_isolation
+    # are honestly not_enforced. This job does not enforce either boundary and does not validate
+    # real-world calibration, Brazilian policy, external comparators, or a SUT
+    # mutation score. A separate technical SUT run requires strict mutation
+    # pins plus an external SHA-256 pin supplied by the caller for the validation
+    # route. Manifest association is never treated as proven ownership; neither
+    # digest proves independence, authentication, or release authority.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Run Python harness tests
+        run: python -m unittest discover -s tests/conformance -p "test_*.py" -v
+      - name: Run corpus and test-only reference self-check
+        run: python scripts/validate_math_vectors.py --self-check --output-format json
+      - name: Verify PowerShell wrapper
+        shell: pwsh
+        run: ./scripts/validate_math_vectors.ps1 -SelfCheck -SkipReferenceSensitivity -OutputFormat json

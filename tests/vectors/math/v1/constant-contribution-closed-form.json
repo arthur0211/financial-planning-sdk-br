@@ -1,0 +1,47 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "constant-contribution-closed-form",
+  "topic": "constant_contribution_future_value_closed_form",
+  "input": {
+    "valuation_date": "2026-01-01",
+    "horizon_date": "2028-01-01",
+    "initial_assets": "100.00",
+    "accumulation_factor_initial_to_horizon": "1.21",
+    "constant_contribution": "10.00",
+    "contribution_schedule": [
+      {
+        "date": "2027-01-01",
+        "accumulation_factor_to_horizon": "1.10"
+      },
+      {
+        "date": "2028-01-01",
+        "accumulation_factor_to_horizon": "1.00"
+      }
+    ]
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "accumulated_initial_assets": "121.00",
+    "accumulated_contributions": "21.00",
+    "future_value": "142.00"
+  },
+  "units": {
+    "input.initial_assets": "BRL_nominal_at_t0",
+    "input.accumulation_factor_initial_to_horizon": "dimensionless_BRL_at_r_per_BRL_at_t0",
+    "input.constant_contribution": "BRL_nominal_at_each_contribution_date",
+    "input.contribution_schedule.*.accumulation_factor_to_horizon": "dimensionless_BRL_at_r_per_BRL_at_contribution_date",
+    "expected_output.accumulated_initial_assets": "BRL_nominal_at_r",
+    "expected_output.accumulated_contributions": "BRL_nominal_at_r",
+    "expected_output.future_value": "BRL_nominal_at_r"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Enumerate the two contribution cash flows at the horizon: 100*1.21 + 10*1.10 + 10*1.00 = 142. This is the closed constant-contribution case, separate from the retirement-date dimensional reserve equation.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "a6b9f17c9125423898b0fb47b1da372b9888fc262957854a81312ea4d632caef"
+  }
+}

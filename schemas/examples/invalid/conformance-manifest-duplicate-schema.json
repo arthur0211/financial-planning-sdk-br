@@ -1,0 +1,24 @@
+{
+  "pack_version": "0.0.0",
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "schema_files": [
+    "common.schema.json",
+    "common.schema.json",
+    "diagnostic.schema.json",
+    "execution-envelope.schema.json",
+    "governance-envelope.schema.json",
+    "input.schema.json",
+    "model-card.schema.json",
+    "reason-codes.schema.json",
+    "regulatory-use-context.schema.json",
+    "run-manifest.schema.json"
+  ],
+  "cases": [
+    {
+      "case_id": "synthetic-case",
+      "instance_path": "examples/valid/common-identifier.json",
+      "schema_id": "urn:financial-planning-sdk-br:schema:common:0.0.0",
+      "expected_valid": true
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "tax-lot-simple",
+  "topic": "synthetic_single_tax_lot_identity",
+  "input": {
+    "account_id": "synthetic_account_01",
+    "lot": {
+      "quantity": "10",
+      "unit_cost": "8.00"
+    },
+    "sale": {
+      "quantity": "4",
+      "unit_price": "12.00"
+    },
+    "tax_rate_on_positive_gain": "0.15"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "sold_quantity": "4",
+    "remaining_quantity": "6",
+    "gross_proceeds": "48.00",
+    "allocated_cost_basis": "32.00",
+    "taxable_gain": "16.00",
+    "tax_due": "2.40",
+    "net_proceeds": "45.60",
+    "remaining_cost_basis": "48.00"
+  },
+  "units": {
+    "input.lot.quantity": "quantity_units",
+    "input.lot.unit_cost": "BRL_per_unit",
+    "input.sale.quantity": "quantity_units",
+    "input.sale.unit_price": "BRL_per_unit",
+    "input.tax_rate_on_positive_gain": "dimensionless_rate",
+    "expected_output.sold_quantity": "quantity_units",
+    "expected_output.remaining_quantity": "quantity_units",
+    "expected_output.gross_proceeds": "BRL_at_sale_date",
+    "expected_output.allocated_cost_basis": "BRL_at_sale_date",
+    "expected_output.taxable_gain": "BRL_at_sale_date",
+    "expected_output.tax_due": "BRL_at_sale_date",
+    "expected_output.net_proceeds": "BRL_at_sale_date",
+    "expected_output.remaining_cost_basis": "BRL_at_sale_date"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "Synthetic arithmetic only: 4*12=48 proceeds, 4*8=32 basis, gain=16, tax=16*0.15=2.40, net=45.60, and remaining basis=6*8=48. No Brazilian tax policy is asserted.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "22eff9cd0dd57827e52edd43802da3cdb3356cf52cbe61a0f880a53cab7cc52c"
+  }
+}

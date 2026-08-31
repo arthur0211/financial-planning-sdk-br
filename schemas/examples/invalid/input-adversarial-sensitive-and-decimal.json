@@ -1,0 +1,53 @@
+{
+  "contract_version": "0.0.0",
+  "test_only": true,
+  "request_id": "52998224725",
+  "requested_operation": "validate",
+  "regulatory_use_context": {
+    "contract_version": "0.0.0",
+    "declared_deployment_class": "A_RESEARCH_CORE",
+    "derived_minimum_deployment_class": "A_RESEARCH_CORE",
+    "effective_deployment_class": "A_RESEARCH_CORE",
+    "operator_legal_entity": "not_applicable",
+    "operator_jurisdiction": "not_applicable",
+    "authorization_type": "not_applicable",
+    "authorization_registry_id": "not_applicable",
+    "client_specific": false,
+    "instrument_scope": "cashflow_only",
+    "alternatives_origin": "user_supplied",
+    "ranking_enabled": false,
+    "recommendation_language_enabled": false,
+    "execution_enabled": false,
+    "compensation_model": "none",
+    "conflict_policy_id": "not_applicable",
+    "suitability_record_id": "not_applicable",
+    "human_reviewer_id": "not_applicable",
+    "counsel_opinion_id": "not_applicable",
+    "retention_policy_id": "not_applicable"
+  },
+  "valuation_context": {
+    "valuation_date": "2026-01-15",
+    "reporting_currency": "BRL",
+    "price_basis": "nominal",
+    "price_basis_date": "2026-01-15",
+    "probability_measure": "deterministic",
+    "discounting_basis": "none",
+    "purpose": "contract_validation",
+    "survival_treatment": "not_applicable"
+  },
+  "information_set": {
+    "known_at": "2026-01-15T12:00:00Z",
+    "observable_ids": ["sk_live_abcdefghijklmnop"],
+    "future_information_allowed": false
+  },
+  "economic_claims": [],
+  "model_ref": {
+    "artifact_id": "financial-model",
+    "applicability": "not_applicable"
+  },
+  "case": {
+    "case_type": "contract_conformance_probe",
+    "probe_id": "probe-adversarial",
+    "synthetic_decimal": "12345678901234567890123456789012345678901234567890123456789012345"
+  }
+}

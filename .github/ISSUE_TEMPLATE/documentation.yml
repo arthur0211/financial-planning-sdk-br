@@ -1,0 +1,34 @@
+name: Documentação
+description: Relate informação ausente, contraditória ou difícil de operar.
+title: "docs: "
+labels:
+  - documentation
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Documento ou seção
+      placeholder: README.md, docs/runbook.md ou URL
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Explique a contradição, ambiguidade ou passo que não pode ser reproduzido.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidência ou proposta
+      description: Inclua comando, RC ou texto sugerido quando disponível.
+    validations:
+      required: false
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Confirmação
+      options:
+        - label: A proposta preserva os limites de authority, release e uso profissional.
+          required: true

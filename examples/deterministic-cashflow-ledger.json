@@ -1,0 +1,58 @@
+{
+  "contract_version": "0.1.0-draft.1",
+  "calculation_id": "synthetic_demo_001",
+  "valuation_date": "2026-01-01",
+  "base_currency": "BRL",
+  "use_context": {
+    "purpose": "education",
+    "client_specific": false,
+    "recommendation_enabled": false,
+    "execution_enabled": false
+  },
+  "discount_factors": [
+    {"date": "2026-01-01", "factor": "1"},
+    {"date": "2027-01-01", "factor": "0.8"}
+  ],
+  "cashflows": [
+    {
+      "cashflow_id": "future_expense",
+      "claim_id": "synthetic_claim_001",
+      "event_date": "2027-01-01",
+      "amount": {"currency": "BRL", "value": "-2.00"}
+    }
+  ],
+  "accounts": [
+    {
+      "account_id": "account_a",
+      "opening_balance": {"currency": "BRL", "value": "100.00"},
+      "return_basis": "price_return"
+    },
+    {
+      "account_id": "account_b",
+      "opening_balance": {"currency": "BRL", "value": "10.00"},
+      "return_basis": "none"
+    }
+  ],
+  "events": [
+    {
+      "event_type": "transfer",
+      "event_id": "move_001",
+      "effective_date": "2026-01-02",
+      "sequence": 1,
+      "from_account_id": "account_b",
+      "to_account_id": "account_a",
+      "economic_source_id": "synthetic_transfer_001",
+      "amount": {"currency": "BRL", "value": "3.00"}
+    },
+    {
+      "event_type": "return",
+      "event_id": "price_return_001",
+      "effective_date": "2026-12-31",
+      "sequence": 2,
+      "account_id": "account_a",
+      "return_basis": "price_return",
+      "rate": "0.05",
+      "cash_distribution": {"currency": "BRL", "value": "3.00"}
+    }
+  ]
+}

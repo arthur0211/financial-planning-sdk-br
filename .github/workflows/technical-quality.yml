@@ -1,0 +1,121 @@
+name: Local technical quality
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_INPUT: "1"
+
+jobs:
+  sdk-runtime:
+    name: SDK runtime / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pinned runtime-test tools
+        run: >-
+          python -m pip install build==1.4.0 jsonschema==4.26.0 setuptools==84.0.0
+      - name: Validate contracts
+        run: python scripts/validate_contracts.py
+      - name: Validate SDK conformance
+        run: python scripts/validate_sdk_conformance.py --output-format json
+      - name: Run SDK tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests/sdk -p "test_*.py" -v
+      - name: Run adversarial contract tests
+        run: python -m unittest discover -s tests/contracts -p "test_*.py" -v
+      - name: Smoke-test local package
+        run: python scripts/smoke_local_package.py
+
+  static-quality:
+    name: Static analysis and coverage / Python 3.13
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Install pinned analysis tools
+        run: >-
+          python -m pip install coverage==7.16.0 jsonschema==4.26.0
+          mypy==1.19.1 ruff==0.14.14
+      - name: Enforce branch coverage floor
+        env:
+          COVERAGE_FILE: ${{ runner.temp }}/finplanbr.coverage
+          PYTHONPATH: src
+        run: |
+          python -m coverage erase
+          python -m coverage run -m unittest \
+            tests.sdk.test_cli \
+            tests.sdk.test_decimal_context_and_api \
+            tests.sdk.test_deterministic \
+            tests.sdk.test_math_vector_bridge \
+            tests.sdk.test_reference_acceptance \
+            tests.sdk.test_schema_validation \
+            tests.sdk.test_validation_report \
+            tests.sdk.test_value_object_hardening
+          python -m coverage report
+      - name: Lint and type-check
+        env:
+          MYPY_CACHE_DIR: ${{ runner.temp }}/finplanbr-mypy-cache
+          RUFF_CACHE_DIR: ${{ runner.temp }}/finplanbr-ruff-cache
+        run: |
+          python -m ruff check src tests/sdk
+          python -m mypy --strict src/financial_planning_sdk_br
+
+  artifact-and-portability:
+    name: Artifact and portability diagnostics / Python 3.13
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Install pinned artifact-test tools
+        run: >-
+          python -m pip install build==1.4.0 jsonschema==4.26.0 setuptools==84.0.0
+      - name: Run release-diagnostic unit tests
+        run: |
+          python -m unittest tests.governance.test_release_artifacts -v
+          python -m unittest tests.governance.test_release_trust -v
+      - name: Run portability unit tests without opt-in live execution
+        run: python -m unittest discover -s tests/portability -p "test_*.py" -v
+
+  governance-windows:
+    name: Documentation and fail-closed governance / Windows
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate supported Structure boundary
+        shell: pwsh
+        run: >-
+          powershell -NoProfile -ExecutionPolicy Bypass
+          -File .\scripts\validate_docs.ps1 -Mode Structure
+      - name: Run governance mutation tests
+        run: python -m unittest discover -s tests/governance -p "test_*.py" -v

@@ -1,0 +1,2 @@
+# Synthetic negative fixture: this exact line is required to exercise SECRET_IN_INPUT_OR_LOG.
+schemas/examples/invalid/input-adversarial-sensitive-and-decimal.json:stripe-access-token:40

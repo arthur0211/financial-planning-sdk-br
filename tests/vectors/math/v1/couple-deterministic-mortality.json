@@ -1,0 +1,33 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "couple-deterministic-mortality",
+  "topic": "deterministic_household_mortality_state",
+  "input": {
+    "valuation_date": "2026-01-01",
+    "horizon_date": "2030-01-01",
+    "age_a_at_valuation": "60.0",
+    "age_b_at_valuation": "58.0",
+    "death_date_a": "2032-01-01",
+    "death_date_b": "2029-01-01"
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "household_state": "only_a_alive",
+    "active_person_count": "1"
+  },
+  "units": {
+    "input.age_a_at_valuation": "years_exact",
+    "input.age_b_at_valuation": "years_exact",
+    "expected_output.active_person_count": "persons_count"
+  },
+  "tolerance": {
+    "absolute": "0",
+    "relative": "0"
+  },
+  "derivation": "At the 2030-01-01 horizon, A's deterministic death date remains future and B's is past, so the enumerated household state is only_a_alive with one active person.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "c4d723778c16c7d45ac9b350d552f0308ba63f2d09487e1a1e7376f781506ff1"
+  }
+}

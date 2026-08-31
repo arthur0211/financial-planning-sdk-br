@@ -1,0 +1,13 @@
+{
+  "code": "UNKNOWN_CODE_MUST_FAIL",
+  "category": "contract",
+  "severity": "error",
+  "computational_status": "rejected",
+  "message_template_id": "unknown-code",
+  "json_pointer": "",
+  "retryable": false,
+  "remediation_id": "select-supported-schema",
+  "authority_refs": [],
+  "model_refs": [],
+  "safe_context": {}
+}

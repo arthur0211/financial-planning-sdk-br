@@ -1,0 +1,43 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "balance-reconciliation",
+  "topic": "cent_exact_balance_reconciliation",
+  "input": {
+    "opening_balance": "100.00",
+    "events": [
+      {
+        "date": "2026-01-02",
+        "amount": "20.00"
+      },
+      {
+        "date": "2026-01-03",
+        "amount": "-3.33"
+      },
+      {
+        "date": "2026-01-04",
+        "amount": "-7.67"
+      }
+    ]
+  },
+  "expected_status": "computed",
+  "expected_output": {
+    "net_change": "9.00",
+    "closing_balance": "109.00"
+  },
+  "units": {
+    "input.opening_balance": "BRL_at_open",
+    "input.events.*.amount": "BRL_at_event_time",
+    "expected_output.net_change": "BRL_at_close",
+    "expected_output.closing_balance": "BRL_at_close"
+  },
+  "tolerance": {
+    "absolute": "0",
+    "relative": "0"
+  },
+  "derivation": "Cent-exact ledger identity: 100.00+20.00-3.33-7.67=109.00, with net change 9.00 and strictly ordered event dates.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "c71279e93689dcd5f799ce3ba3b9da3033429bef1a590792dd5abf3a8639dae6"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "return-basis-invalid-combination",
+  "topic": "total_return_distribution_double_count_rejection",
+  "input": {
+    "opening_consolidated_wealth": "100.00",
+    "return_basis": "total_return",
+    "period_return": "0.08",
+    "separate_distribution_event": "3.00"
+  },
+  "expected_status": "rejected",
+  "expected_output": {
+    "reason_code": "distribution_double_count"
+  },
+  "units": {
+    "input.opening_consolidated_wealth": "BRL_at_period_start",
+    "input.period_return": "dimensionless_period_return",
+    "input.separate_distribution_event": "BRL_at_period_end"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0.000000000001"
+  },
+  "derivation": "A total-return branch already includes the distribution in account growth. Supplying the same non-zero distribution as a separate event is inconsistent and must be rejected rather than producing 111.00.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "0e083c6e24d965d72a8b03d88236584f7fcb5f91efce00ec37c63bce72caf793"
+  }
+}

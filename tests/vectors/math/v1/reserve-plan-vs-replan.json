@@ -1,0 +1,56 @@
+{
+  "vector_format": "financial-planning-sdk-br.math-vector.v1",
+  "id": "reserve-plan-vs-replan",
+  "topic": "information_sets_and_reserve_replanning",
+  "input": {
+    "valuation_date_t0": "2026-01-01",
+    "retirement_date_r": "2036-01-01",
+    "payment_date": "2037-01-01",
+    "plan_information_at_t0": {
+      "discount_factor_r_to_payment": "0.90",
+      "state_probabilities": {
+        "low_need": "0.25",
+        "high_need": "0.75"
+      },
+      "gap_at_payment_by_state": {
+        "low_need": "100.00",
+        "high_need": "200.00"
+      }
+    },
+    "replan_information_at_r": {
+      "observed_state": "high_need",
+      "discount_factor_r_to_payment": "0.95",
+      "gap_at_payment": "200.00"
+    }
+  },
+  "expected_output": {
+    "planned_reserve_at_r_using_I_t0": "157.50",
+    "replanned_reserve_at_r_using_I_r": "190.00",
+    "replanning_difference": "32.50",
+    "planned_decision_must_use": "planned_reserve_at_r_using_I_t0"
+  },
+  "anti_oracles": {
+    "planned_reserve_with_look_ahead": "180.00"
+  },
+  "expected_status": "computed",
+  "units": {
+    "input.plan_information_at_t0.discount_factor_r_to_payment": "dimensionless_BRL_at_r_per_BRL_at_payment_date",
+    "input.plan_information_at_t0.state_probabilities.*": "probability",
+    "input.plan_information_at_t0.gap_at_payment_by_state.*": "BRL_nominal_at_payment_date",
+    "input.replan_information_at_r.discount_factor_r_to_payment": "dimensionless_BRL_at_r_per_BRL_at_payment_date",
+    "input.replan_information_at_r.gap_at_payment": "BRL_nominal_at_payment_date",
+    "expected_output.*reserve*": "BRL_nominal_at_r",
+    "expected_output.replanning_difference": "BRL_nominal_at_r",
+    "anti_oracles.planned_reserve_with_look_ahead": "BRL_nominal_at_r"
+  },
+  "tolerance": {
+    "absolute": "0.000000000001",
+    "relative": "0"
+  },
+  "derivation": "At t0, K_plan(r)=0.90*(0.25*100+0.75*200)=157.50. At r, after high_need is observed and only then, K_replan(r)=0.95*200=190. Substituting the later state into the earlier decision would produce the forbidden look-ahead value 0.90*200=180.",
+  "fingerprint": {
+    "algorithm": "sha256",
+    "canonicalization": "sorted-key-json-utf8-excluding-fingerprint",
+    "value": "58fe5da65355c243b12160e394213432c84a653f0a1a77c78f8c761f3843601c"
+  }
+}

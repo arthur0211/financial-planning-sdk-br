@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:financial-planning-sdk-br:schema:regulatory-use-context:0.0.0",
+  "title": "RegulatoryUseContext",
+  "description": "Conservative deployment classification context. Schema validity is not legal approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "declared_deployment_class",
+    "derived_minimum_deployment_class",
+    "effective_deployment_class",
+    "operator_legal_entity",
+    "operator_jurisdiction",
+    "authorization_type",
+    "authorization_registry_id",
+    "client_specific",
+    "instrument_scope",
+    "alternatives_origin",
+    "ranking_enabled",
+    "recommendation_language_enabled",
+    "execution_enabled",
+    "compensation_model",
+    "conflict_policy_id",
+    "suitability_record_id",
+    "human_reviewer_id",
+    "counsel_opinion_id",
+    "retention_policy_id"
+  ],
+  "$defs": {
+    "deployment_class": {
+      "enum": [
+        "A_RESEARCH_CORE",
+        "B_PROFESSIONAL_ASSIST",
+        "C_REGULATED_ADVICE",
+        "D_EXECUTION"
+      ]
+    },
+    "explicit_identifier": {
+      "anyOf": [
+        {
+          "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier"
+        },
+        {
+          "enum": [
+            "not_applicable",
+            "unknown"
+          ]
+        }
+      ]
+    },
+    "material_identifier": {
+      "$ref": "urn:financial-planning-sdk-br:schema:common:0.0.0#/$defs/identifier",
+      "not": {
+        "enum": [
+          "not_applicable",
+          "unknown"
+        ]
+      }
+    },
+    "explicit_jurisdiction": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Z]{2}(-[A-Z0-9]{1,3})?$"
+        },
+        {
+          "enum": [
+            "not_applicable",
+            "unknown"
+          ]
+        }
+      ]
+    },
+    "material_jurisdiction": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}(-[A-Z0-9]{1,3})?$"
+    }
+  },
+  "properties": {
+    "contract_version": {
+      "const": "0.0.0"
+    },
+    "declared_deployment_class": {
+      "$ref": "#/$defs/deployment_class"
+    },
+    "derived_minimum_deployment_class": {
+      "$ref": "#/$defs/deployment_class"
+    },
+    "effective_deployment_class": {
+      "$ref": "#/$defs/deployment_class"
+    },
+    "operator_legal_entity": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "operator_jurisdiction": {
+      "$ref": "#/$defs/explicit_jurisdiction"
+    },
+    "authorization_type": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "authorization_registry_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "client_specific": {
+      "type": "boolean"
+    },
+    "instrument_scope": {
+      "enum": [
+        "cashflow_only",
+        "generic_asset_class",
+        "security",
+        "insurance",
+        "pension_product"
+      ]
+    },
+    "alternatives_origin": {
+      "enum": [
+        "user_supplied",
+        "professional_supplied",
+        "system_generated"
+      ]
+    },
+    "ranking_enabled": {
+      "type": "boolean"
+    },
+    "recommendation_language_enabled": {
+      "type": "boolean"
+    },
+    "execution_enabled": {
+      "type": "boolean"
+    },
+    "compensation_model": {
+      "enum": [
+        "none",
+        "fee_only",
+        "commission",
+        "spread",
+        "mixed",
+        "unknown"
+      ]
+    },
+    "conflict_policy_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "suitability_record_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "human_reviewer_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "counsel_opinion_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    },
+    "retention_policy_id": {
+      "$ref": "#/$defs/explicit_identifier"
+    }
+  },
+  "x-semantic-validators": ["REGULATED_USE_CLASS_MISMATCH"],
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {"properties": {"declared_deployment_class": {"const": "D_EXECUTION"}}, "required": ["declared_deployment_class"]},
+          {"properties": {"derived_minimum_deployment_class": {"const": "D_EXECUTION"}}, "required": ["derived_minimum_deployment_class"]}
+        ]
+      },
+      "then": {
+        "properties": {
+          "effective_deployment_class": {"const": "D_EXECUTION"}
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {"properties": {"ranking_enabled": {"const": true}}, "required": ["ranking_enabled"]},
+          {"properties": {"client_specific": {"const": true}}, "required": ["client_specific"]},
+          {"properties": {"alternatives_origin": {"const": "system_generated"}}, "required": ["alternatives_origin"]},
+          {"properties": {"instrument_scope": {"enum": ["security", "insurance", "pension_product"]}}, "required": ["instrument_scope"]}
+        ]
+      },
+      "then": {
+        "properties": {
+          "derived_minimum_deployment_class": {
+            "enum": ["B_PROFESSIONAL_ASSIST", "C_REGULATED_ADVICE", "D_EXECUTION"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {"properties": {"declared_deployment_class": {"enum": ["A_RESEARCH_CORE", "B_PROFESSIONAL_ASSIST", "C_REGULATED_ADVICE"]}}, "required": ["declared_deployment_class"]},
+          {"properties": {"derived_minimum_deployment_class": {"enum": ["A_RESEARCH_CORE", "B_PROFESSIONAL_ASSIST", "C_REGULATED_ADVICE"]}}, "required": ["derived_minimum_deployment_class"]},
+          {
+            "anyOf": [
+              {"properties": {"declared_deployment_class": {"const": "C_REGULATED_ADVICE"}}},
+              {"properties": {"derived_minimum_deployment_class": {"const": "C_REGULATED_ADVICE"}}}
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "effective_deployment_class": {"const": "C_REGULATED_ADVICE"}
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {"properties": {"declared_deployment_class": {"enum": ["A_RESEARCH_CORE", "B_PROFESSIONAL_ASSIST"]}}, "required": ["declared_deployment_class"]},
+          {"properties": {"derived_minimum_deployment_class": {"enum": ["A_RESEARCH_CORE", "B_PROFESSIONAL_ASSIST"]}}, "required": ["derived_minimum_deployment_class"]},
+          {
+            "anyOf": [
+              {"properties": {"declared_deployment_class": {"const": "B_PROFESSIONAL_ASSIST"}}},
+              {"properties": {"derived_minimum_deployment_class": {"const": "B_PROFESSIONAL_ASSIST"}}}
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "effective_deployment_class": {"const": "B_PROFESSIONAL_ASSIST"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "declared_deployment_class": {"const": "A_RESEARCH_CORE"},
+          "derived_minimum_deployment_class": {"const": "A_RESEARCH_CORE"}
+        },
+        "required": ["declared_deployment_class", "derived_minimum_deployment_class"]
+      },
+      "then": {
+        "properties": {
+          "effective_deployment_class": {"const": "A_RESEARCH_CORE"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"execution_enabled": {"const": true}},
+        "required": ["execution_enabled"]
+      },
+      "then": {
+        "properties": {
+          "derived_minimum_deployment_class": {"const": "D_EXECUTION"}
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {"properties": {"recommendation_language_enabled": {"const": true}}, "required": ["recommendation_language_enabled"]},
+          {
+            "properties": {
+              "client_specific": {"const": true},
+              "ranking_enabled": {"const": true}
+            },
+            "required": ["client_specific", "ranking_enabled"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "derived_minimum_deployment_class": {
+            "enum": ["C_REGULATED_ADVICE", "D_EXECUTION"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"effective_deployment_class": {"const": "A_RESEARCH_CORE"}},
+        "required": ["effective_deployment_class"]
+      },
+      "then": {
+        "properties": {
+          "operator_legal_entity": {"const": "not_applicable"},
+          "operator_jurisdiction": {"const": "not_applicable"},
+          "authorization_type": {"const": "not_applicable"},
+          "authorization_registry_id": {"const": "not_applicable"},
+          "client_specific": {"const": false},
+          "instrument_scope": {"enum": ["cashflow_only", "generic_asset_class"]},
+          "alternatives_origin": {"enum": ["user_supplied", "professional_supplied"]},
+          "ranking_enabled": {"const": false},
+          "recommendation_language_enabled": {"const": false},
+          "execution_enabled": {"const": false},
+          "compensation_model": {"const": "none"},
+          "conflict_policy_id": {"const": "not_applicable"},
+          "suitability_record_id": {"const": "not_applicable"},
+          "human_reviewer_id": {"const": "not_applicable"},
+          "counsel_opinion_id": {"const": "not_applicable"},
+          "retention_policy_id": {"const": "not_applicable"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"effective_deployment_class": {"const": "B_PROFESSIONAL_ASSIST"}},
+        "required": ["effective_deployment_class"]
+      },
+      "then": {
+        "properties": {
+          "operator_legal_entity": {"$ref": "#/$defs/material_identifier"},
+          "operator_jurisdiction": {"$ref": "#/$defs/material_jurisdiction"},
+          "execution_enabled": {"const": false},
+          "human_reviewer_id": {"$ref": "#/$defs/material_identifier"},
+          "retention_policy_id": {"$ref": "#/$defs/material_identifier"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"effective_deployment_class": {"const": "C_REGULATED_ADVICE"}},
+        "required": ["effective_deployment_class"]
+      },
+      "then": {
+        "properties": {
+          "operator_legal_entity": {"$ref": "#/$defs/material_identifier"},
+          "operator_jurisdiction": {"$ref": "#/$defs/material_jurisdiction"},
+          "authorization_type": {"$ref": "#/$defs/material_identifier"},
+          "authorization_registry_id": {"$ref": "#/$defs/material_identifier"},
+          "client_specific": {"const": true},
+          "execution_enabled": {"const": false},
+          "conflict_policy_id": {"$ref": "#/$defs/material_identifier"},
+          "suitability_record_id": {"$ref": "#/$defs/material_identifier"},
+          "human_reviewer_id": {"$ref": "#/$defs/material_identifier"},
+          "counsel_opinion_id": {"$ref": "#/$defs/material_identifier"},
+          "retention_policy_id": {"$ref": "#/$defs/material_identifier"}
+        }
+      }
+    }
+  ]
+}

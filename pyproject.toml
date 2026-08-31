@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finplanbr"
+version = "0.1.0.dev0"
+description = "Nucleo deterministico local para planejamento financeiro no Brasil"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{name = "Arthur Amorim"}]
+maintainers = [{name = "Arthur Amorim"}]
+dependencies = []
+keywords = ["brasil", "cash-flow", "deterministic", "financial-planning"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/arthur0211/financial-planning-sdk-br"
+Documentation = "https://github.com/arthur0211/financial-planning-sdk-br/blob/main/docs/README.md"
+Repository = "https://github.com/arthur0211/financial-planning-sdk-br"
+Issues = "https://github.com/arthur0211/financial-planning-sdk-br/issues"
+
+[project.optional-dependencies]
+test = ["jsonschema==4.26.0"]
+dev = [
+  "build==1.4.0",
+  "coverage==7.16.0",
+  "jsonschema==4.26.0",
+  "mypy==1.19.1",
+  "ruff==0.14.14"
+]
+
+[project.scripts]
+finplanbr = "financial_planning_sdk_br.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["financial_planning_sdk_br"]
+
+[tool.setuptools.package-data]
+financial_planning_sdk_br = [
+  "py.typed",
+  "*.schema.json",
+  "reference-acceptance-pack.v1.json",
+  "reference-acceptance-pack.v2.json",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/financial_planning_sdk_br"]
+
+[tool.coverage.run]
+branch = true
+source = ["financial_planning_sdk_br"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
