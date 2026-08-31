@@ -127,8 +127,46 @@ jobs:
           python -m pip install build==1.4.0 jsonschema==4.26.0 setuptools==84.0.0
       - name: Validate the supported Windows backend artifact profile
         run: python -m unittest tests.portability.test_portability_artifact_inventory -v
-      - name: Run Windows diagnostics without live opt-in
-        run: python -m unittest discover -s tests/portability -p "test_windows_*.py" -v
+      - name: Run host-independent Windows diagnostics without live opt-in
+        run: >-
+          python -m unittest
+          tests.portability.test_windows_appcontainer_boundary_report
+          tests.portability.test_windows_appcontainer_child_probe
+          tests.portability.test_windows_appcontainer_helper_authority
+          tests.portability.test_windows_appcontainer_profile
+          tests.portability.test_windows_host_trust
+          tests.portability.test_windows_portability_fail_closed
+          tests.portability.test_windows_wsl2_endpoint
+          tests.portability.test_windows_appcontainer_spike.WindowsAppContainerSpikeProtocolTests
+          tests.portability.test_windows_appcontainer_spike.WindowsAppContainerSpikeExecutionTests
+          tests.portability.test_windows_appcontainer_spike.WindowsAppContainerPowerShellResolutionTests.test_watchdog_capture_enforces_output_budgets_during_execution
+          tests.portability.test_windows_appcontainer_spike.WindowsAppContainerRealDiagnosticTests
+          -v
+      - name: Classify and run protected-host PowerShell diagnostics
+        shell: pwsh
+        run: |
+          $probe = @'
+          from scripts.windows_host_trust import HostTrustFailure, acquire_trusted_powershell_hosts
+          try:
+              with acquire_trusted_powershell_hosts():
+                  print("supported")
+          except HostTrustFailure as exc:
+              print(f"unsupported:{exc}")
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) {
+            throw "PowerShell host preflight crashed with RC $LASTEXITCODE"
+          }
+          if ($probe -eq 'supported') {
+            python -m unittest `
+              tests.portability.test_windows_appcontainer_spike.WindowsAppContainerPowerShellResolutionTests `
+              -v
+            exit $LASTEXITCODE
+          }
+          if ($probe -eq 'unsupported:host_chain_mutable_by_current_token') {
+            Write-Host '::notice title=Protected-host diagnostics not supported::The GitHub-hosted runner chain is mutable by its current token; no host-bound claim was made.'
+            exit 0
+          }
+          throw "Unexpected PowerShell host preflight result: $probe"
 
   governance-windows:
     name: Documentation and fail-closed governance / Windows

@@ -26,7 +26,7 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 - parser e formatters privados do CLI mantêm ajuda e construção sem cor dependente do terminal no Python 3.14, inclusive sob streams substituídos em testes;
 - fixtures multi-OS removem symlink e junction pelo mecanismo correto, limitam ADS a NTFS e emitem tipos Unix explícitos nos membros ZIP sintéticos;
 - CodeQL recebe somente a permissão adicional `actions: read` exigida para consultar a própria execução;
-- CI separa módulos neutros no Ubuntu da integração do backend e dos diagnósticos específicos de Windows, sem habilitar o live AppContainer;
+- CI separa módulos neutros no Ubuntu, diagnósticos Windows independentes do host e testes que exigem uma cadeia PowerShell protegida; runner mutável recebe somente `not supported`, sem habilitar o live AppContainer;
 - goldens candidatos rebaselineados para wheel `6147b8ef…` e sdist `79df5ba4…`, ainda sem authority ou autorização de release.
 
 ### Limites conhecidos

@@ -80,7 +80,19 @@ class GitHubWorkflowSecurityTests(unittest.TestCase):
                 self.assertIn(module, source)
         self.assertIn("Validate the supported Windows backend artifact profile", source)
         self.assertIn("tests.portability.test_portability_artifact_inventory", source)
-        self.assertIn('discover -s tests/portability -p "test_windows_*.py"', source)
+        self.assertNotIn('discover -s tests/portability -p "test_windows_*.py"', source)
+        for marker in (
+            "Run host-independent Windows diagnostics without live opt-in",
+            "WindowsAppContainerSpikeProtocolTests",
+            "WindowsAppContainerSpikeExecutionTests",
+            "test_watchdog_capture_enforces_output_budgets_during_execution",
+            "WindowsAppContainerRealDiagnosticTests",
+            "Classify and run protected-host PowerShell diagnostics",
+            "WindowsAppContainerPowerShellResolutionTests",
+            "unsupported:host_chain_mutable_by_current_token",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, source)
 
     def test_gitleaks_exception_is_exactly_scoped_to_the_synthetic_fixture(self) -> None:
         ignore_path = REPOSITORY_ROOT / ".gitleaksignore"
