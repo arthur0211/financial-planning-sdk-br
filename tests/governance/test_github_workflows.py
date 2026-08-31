@@ -96,6 +96,7 @@ class GitHubWorkflowSecurityTests(unittest.TestCase):
 
     def test_supported_python_matrix_and_windows_smoke_are_explicit(self) -> None:
         source = self.workflow_sources()["technical-quality.yml"]
+        self.assertIn("\n  push:\n    branches: [main]\n", source)
         self.assertIn(
             'python-version: ["3.11", "3.12", "3.13", "3.14"]',
             source,

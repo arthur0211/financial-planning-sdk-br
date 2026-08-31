@@ -19,6 +19,7 @@ Este arquivo registra mudanças voltadas a usuários e contribuidores. A cronolo
 - CI pública com runtime em Python 3.11–3.14, cobertura de branches, CodeQL, dependency review e testes estáticos de least privilege.
 - licença Apache-2.0, roster de mantenedor e governança de publicação do source registrados no ADR 0012.
 - repositório público com Private Vulnerability Reporting, secret scanning, push protection, Actions restritas e Community Profile completo.
+- ruleset ativo da `main` com pull request, histórico linear, conversas resolvidas, dez checks obrigatórios e bloqueio de deleção/force-push, sem fingir reviewer ou exigir assinatura ainda inexistente.
 
 ### Corrigido
 

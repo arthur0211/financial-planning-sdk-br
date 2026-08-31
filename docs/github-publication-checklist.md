@@ -53,15 +53,17 @@ Estado observado: os commits iniciais foram enviados para o remoto privado, sem 
 - [x] habilitar e verificar secret scanning e push protection após a conversão pública;
 - [x] habilitar Dependabot alerts e security updates no staging privado;
 - [x] confirmar execução pública do CodeQL sem permissões extras além das declaradas;
-- [ ] confirmar dependency review no pull request final;
+- [x] confirmar dependency review no pull request final;
 - [x] criar os labels usados pelos templates e Dependabot, incluindo `proposal` e `dependencies`;
 - [x] restringir Actions a ações mantidas pelo GitHub e exigir referências por SHA integral;
-- [ ] configurar ruleset de `main`: pull request obrigatório, checks obrigatórios, resolução de conversas, bloqueio de force-push e deleção;
+- [x] configurar ruleset de `main`: pull request obrigatório, checks obrigatórios, resolução de conversas, histórico linear, bloqueio de force-push e deleção;
 - [ ] exigir review real quando houver reviewer independente; não configurar uma ficção de independência baseada no mesmo owner;
 - [x] manter ausentes environments, secrets e variables de publicação enquanto release continuar fora do escopo;
 - [x] revisar a aba Community Standards; o GitHub reporta 100% de health.
 
 Checks candidatos para o ruleset devem ser escolhidos somente depois de sua primeira execução real, usando os nomes exibidos pelo GitHub. Não adivinhar nomes de checks antes dessa execução.
+
+Estado observado no PR #9: o ruleset ativo `main-source-governance` (`id=21893891`) exige dez contextos emitidos pelo GitHub Actions (`integration_id=15368`): SDK 3.11–3.14, static/coverage, diagnósticos neutros, artefatos/Windows, governança, CodeQL e dependency review. Não há bypass. Aprovações exigidas continuam em zero até existir reviewer humano independente; assinatura verificada permanece na issue #6.
 
 ## 5. Conversão para público
 
